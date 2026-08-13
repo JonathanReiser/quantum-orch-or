@@ -103,6 +103,19 @@ The simulation runs six scenario combinations and outputs the following expected
 
 **In the quantum game, if Player 2 attempts to cheat by playing $D$ while you play $Q$, the entanglement causes Player 2's payoff to drop to **0**, while you get **5**. Since defection is heavily penalized by the quantum strategy, **$(Q, Q)$ becomes the only stable Nash Equilibrium**, allowing self-interested players to achieve mutual cooperation.
 
+### 🧠 Understanding the Web App Cognitive Agent
+
+If you run the interactive web application, the **Cognitive Agent (Orch-OR)** tab visualizes the Penrose-Hameroff model of decision-making with three interactive panels:
+
+1. **Cognitive State Vector Space (2D Circle Canvas):**
+   * Represents the agent's mind-state as a vector: $|\psi\rangle = \cos(\theta)|Ethics\rangle + \sin(\theta)|Profit\rangle$.
+   * **Vector Angle:** Points straight up ($90^\circ$) for pure Ethics, and straight right ($0^\circ$) for pure Profit. A $45^\circ$ angle represents an undecided, balanced superposition.
+   * **Rotations:** Clicking "Preserve Ethics" or "Maximize Profit" applies rotation matrices that swing the vector on the canvas, demonstrating how arguments tilt the agent's beliefs.
+2. **The Deliberation Loop & Drift:**
+   * Clicking **"Toggle Deliberation"** starts active contemplation. The vector drifts slightly representing natural thought wandering.
+   * **Entropy Integration:** The app integrates the Shannon entropy of the state over time to calculate the accumulated cognitive action. The closer the vector is to a balanced superposition, the higher the entropy and the faster the action meter rises.
+   * **Spontaneous Collapse:** The moment the action line crosses the threshold, a spontaneous collapse is triggered. The screen flashes, the vector collapses onto either the $|Ethics\rangle$ or $|Profit\rangle$ axis, and the decision is resolved.
+
 ### 🎮 Understanding the Web App Game Simulator
 
 If you run the interactive web application, the **Quantum Game Theory** tab visualizes the EWL model with three interactive panels:
