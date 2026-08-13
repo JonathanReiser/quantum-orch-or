@@ -16,3 +16,4 @@ __pycache__/
 
 # Simulation outputs
 *.png
+!simulation_results.png

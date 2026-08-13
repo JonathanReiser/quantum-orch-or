@@ -66,6 +66,8 @@ backend = service.least_busy(simulator=False, operational=True)
 
 ## 📊 Output Visualization Explained
 
+![Orch-OR Simulation Plot](simulation_results.png)
+
 The simulation output plot displays three sections:
 1. **Tubulin Dimers Conformation Evolution:** Tracks $P(|1\rangle)$ for each tubulin dimer. Oscillates smoothly until the vertical red line (the OR event), where it collapses to a discrete binary state (e.g., $|0110\rangle$).
 2. **Quantum Coherence Weight:** Tracks the degree of entanglement. Falls instantly back to base levels when the superposition collapses.
