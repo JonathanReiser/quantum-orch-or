@@ -72,3 +72,37 @@ The simulation output plot displays three sections:
 1. **Tubulin Dimers Conformation Evolution:** Tracks $P(|1\rangle)$ for each tubulin dimer. Oscillates smoothly until the vertical red line (the OR event), where it collapses to a discrete binary state (e.g., $|0110\rangle$).
 2. **Quantum Coherence Weight:** Tracks the degree of entanglement. Falls instantly back to base levels when the superposition collapses.
 3. **Penrose Threshold Evolution:** Shows the accumulated action rising until it hits the $\hbar$ threshold line, prompting the collapse.
+
+---
+
+## 🎮 Quantum Game Theory: Prisoner's Dilemma
+
+This repository also contains `quantum_game.py`, which implements the **Eisert-Wilkens-Lewenstein (EWL)** model of Quantum Game Theory to resolve the classical Prisoner's Dilemma.
+
+By entangling the decision space of two self-interested players, a new purely quantum strategy $Q$ is introduced that changes the Nash Equilibrium of the game from mutual defection (1,1) to mutual cooperation (3,3).
+
+### How to Run the Game Theory Simulation
+
+To run the EWL simulation and compute the expected payoffs for different classical vs. quantum strategies:
+
+```bash
+python3 quantum_game.py
+```
+
+### Payoff Matrix & Simulation Results
+
+The simulation runs six scenario combinations and outputs the following expected payoffs:
+
+| Scenario | Player 1 Strategy | Player 2 Strategy | Expected Payoff (P1, P2) | State Resolution |
+| :--- | :---: | :---: | :---: | :---: |
+| **Classical Cooperation** | Cooperate ($C$) | Cooperate ($C$) | (3.00, 3.00) | 100% $|CC\rangle$ |
+| **Classical Defection** | Defect ($D$) | Defect ($D$) | **(1.00, 1.00)** | 100% $|DD\rangle$ (Old Nash Eq.) |
+| **Classical Exploitation** | Defect ($D$) | Cooperate ($C$) | (5.00, 0.00) | 100% $|DC\rangle$ |
+| **Quantum Exploiting Defector**| Quantum ($Q$) | Defect ($D$) | (5.00, 0.00) | 100% $|DC\rangle$ |
+| **Quantum Mutual Cooperation** | Quantum ($Q$) | Quantum ($Q$) | **(3.00, 3.00)** | 100% $|CC\rangle$ (New Nash Eq.) |
+
+**Why this resolves the dilemma:**
+In a classical game, if you expect the other player to cooperate, you should defect (getting 5 instead of 3). If you expect them to defect, you should defect (getting 1 instead of 0). Thus, both defect.
+
+In the quantum game, if Player 2 attempts to cheat by playing $D$ while you play $Q$, the entanglement causes Player 2's payoff to drop to **0**, while you get **5**. Since defection is heavily penalized by the quantum strategy, **$(Q, Q)$ becomes the only stable Nash Equilibrium**, allowing self-interested players to achieve mutual cooperation.
+
