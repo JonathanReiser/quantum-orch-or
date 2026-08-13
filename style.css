@@ -529,6 +529,114 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: #0b0f19;
 }
 
+/* Spinozist Dual Canvases styling */
+.dual-canvas-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 380px;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+}
+
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45%;
+    gap: 0.8rem;
+}
+
+.canvas-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.canvas-relative {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+}
+
+.canvas-relative canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.canvas-axis-labels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.canvas-axis-labels span {
+    position: absolute;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.canvas-axis-labels .lbl-top {
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cyan) !important;
+}
+
+.canvas-axis-labels .lbl-right {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--purple) !important;
+}
+
+/* Spinozist Harmony Meter */
+.harmony-gauge {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.harmony-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.harmony-bar-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.harmony-bar {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.harmony-bar.agree {
+    background: linear-gradient(90deg, var(--cyan) 0%, var(--success) 100%);
+    box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+.harmony-bar.disagree {
+    background: linear-gradient(90deg, var(--purple) 0%, var(--crimson) 100%);
+    box-shadow: 0 0 10px var(--glow-purple);
+}
+
 /* Chart Container */
 .chart-container {
     height: 220px;

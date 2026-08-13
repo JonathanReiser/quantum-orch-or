@@ -25,7 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
         gameResults: {
             probs: [0, 0, 0, 0], // CC, DC, CD, DD
             payoffs: [0, 0]      // P1, P2
-        }
+        },
+
+        // Mode 3: Spinozist State
+        spinozaThetaA: Math.PI / 4, // Deliberation angle of Mind A [0, pi/2]
+        spinozaCollapsed: false,
+        spinozaCollapsedStates: [Math.PI / 4, Math.PI / 4] // Mind A, Mind B angles
     };
 
     // Constants
@@ -75,23 +80,52 @@ document.addEventListener("DOMContentLoaded", () => {
     const probDC = document.getElementById("prob-DC");
     const probDD = document.getElementById("prob-DD");
 
+    // Mode 3: Spinozist Controls
+    const sliderSpinozaTheta = document.getElementById("spinoza-theta");
+    const valSpinozaTheta = document.getElementById("spinoza-theta-val");
+    const btnSpinozaEthics = document.getElementById("btn-spinoza-ethics");
+    const btnSpinozaProfit = document.getElementById("btn-spinoza-profit");
+    const btnSpinozaCollapse = document.getElementById("btn-spinoza-collapse");
+    const badgeSpinozaState = document.getElementById("spinoza-state-indicator");
+    
+    const harmonyAgreeVal = document.getElementById("harmony-agreement-val");
+    const harmonyDisagreeVal = document.getElementById("harmony-disagree-val");
+    const harmonyBarAgree = document.getElementById("harmony-bar-agree");
+    const harmonyBarDisagree = document.getElementById("harmony-bar-disagree");
+
     // Common Elements
     const logConsole = document.getElementById("log-console");
     const flashOverlay = document.getElementById("collapse-flash");
 
-    // --- Canvas Setup (Mode 1) ---
+    // --- Canvas Setup (Mode 1 & Mode 3) ---
     const canvas = document.getElementById("vector-canvas");
     const ctx = canvas.getContext("2d");
     
-    function resizeCanvas() {
+    const canvasSpinozaA = document.getElementById("spinoza-canvas-a");
+    const ctxSpinozaA = canvasSpinozaA.getContext("2d");
+    const canvasSpinozaB = document.getElementById("spinoza-canvas-b");
+    const ctxSpinozaB = canvasSpinozaB.getContext("2d");
+    
+    function resizeCanvases() {
+        // Mode 1 Canvas
         const container = canvas.parentElement;
         if (container && canvas) {
             canvas.width = container.clientWidth;
             canvas.height = container.clientHeight;
             drawStateSpace();
         }
+        
+        // Mode 3 Canvases
+        const wrapA = canvasSpinozaA.parentElement;
+        if (wrapA && canvasSpinozaA && canvasSpinozaB) {
+            canvasSpinozaA.width = wrapA.clientWidth;
+            canvasSpinozaA.height = wrapA.clientHeight;
+            canvasSpinozaB.width = wrapA.clientWidth;
+            canvasSpinozaB.height = wrapA.clientHeight;
+            drawSpinozaCanvases();
+        }
     }
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("resize", resizeCanvases);
 
     // --- Tab Switching Logic ---
     tabButtons.forEach(btn => {
@@ -108,12 +142,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("agent-controls").classList.add("active-content");
                 document.getElementById("agent-visuals").classList.add("active-content");
                 logEvent("Switched to Mode 1: Cognitive Agent Simulator.", "system");
-                resizeCanvas();
-            } else {
+                resizeCanvases();
+            } else if (target === "game-tab") {
                 document.getElementById("game-controls").classList.add("active-content");
                 document.getElementById("game-visuals").classList.add("active-content");
                 logEvent("Switched to Mode 2: Quantum Game Theory Simulator.", "system");
                 runQuantumGame();
+            } else if (target === "spinoza-tab") {
+                document.getElementById("spinoza-controls").classList.add("active-content");
+                document.getElementById("spinoza-visuals").classList.add("active-content");
+                logEvent("Switched to Mode 3: Spinozist Entangled Intellect.", "system");
+                state.spinozaCollapsed = false;
+                updateSpinozaUI();
+                resizeCanvases();
             }
         });
     });
@@ -491,20 +532,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- MODE 2: QUANTUM GAME THEORY (EWL SCHEME) ---
 
-    // Complex math helpers
-    // Complex number structure: {re: float, im: float}
-    function c_mult(z1, z2) {
-        return {
-            re: z1.re * z2.re - z1.im * z2.im,
-            im: z1.re * z2.im + z1.im * z2.re
-        };
-    }
-
     function runQuantumGame() {
         const gamma = (parseFloat(sliderEntanglement.value) / 100) * (Math.PI / 2);
         
-        // 1. Initial State |00> (CC)
-        // psi represents the 4-dimensional statevector: index 0 (CC), 1 (DC), 2 (CD), 3 (DD)
         let psi = [
             {re: 1.0, im: 0.0},
             {re: 0.0, im: 0.0},
@@ -512,33 +542,19 @@ document.addEventListener("DOMContentLoaded", () => {
             {re: 0.0, im: 0.0}
         ];
         
-        // 2. Apply J(gamma)
-        // J = cos(gamma/2) I + i * sin(gamma/2) X⊗X
-        // Since initial state is |00>, J |00> = cos(gamma/2)|00> + i * sin(gamma/2)|11>
         const cos_g = Math.cos(gamma / 2);
         const sin_g = Math.sin(gamma / 2);
         
         psi[0] = { re: cos_g, im: 0.0 };
-        psi[3] = { re: 0.0, im: sin_g }; // i * sin(gamma/2)
+        psi[3] = { re: 0.0, im: sin_g }; 
 
-        // 3. Apply Player 1 Strategy U_1 on qubit 0 (least significant bit)
-        // qubit 0 targets swaps between 0-1, and 2-3
         psi = applyQubitStrategy(psi, state.p1Strategy, 0);
-        
-        // 4. Apply Player 2 Strategy U_2 on qubit 1 (most significant bit)
-        // qubit 1 targets swaps between 0-2, and 1-3
         psi = applyQubitStrategy(psi, state.p2Strategy, 1);
         
-        // 5. Apply J(gamma)† (De-entangling operator)
-        // J† = cos(gamma/2) I - i * sin(gamma/2) X⊗X
-        // For each index k, psi_new[k] = cos_g * psi[k] - i * sin_g * psi[k ^ 3]
         let finalPsi = [ {re:0, im:0}, {re:0, im:0}, {re:0, im:0}, {re:0, im:0} ];
         for (let k = 0; k < 4; k++) {
-            const target = k ^ 3; // swaps 0-3, 1-2 (flips both bits)
-            // Complex term 1: cos_g * psi[k]
+            const target = k ^ 3; 
             const term1 = { re: cos_g * psi[k].re, im: cos_g * psi[k].im };
-            // Complex term 2: -i * sin_g * psi[target]
-            // -i * (a + bi) = b - ai
             const term2 = { re: sin_g * psi[target].im, im: -sin_g * psi[target].re };
             
             finalPsi[k] = {
@@ -547,48 +563,34 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         }
         
-        // 6. Calculate state resolution probabilities
         const probs = finalPsi.map(z => z.re ** 2 + z.im ** 2);
         
-        // Map probabilities:
-        // probs[0] = CC
-        // probs[1] = DC (Player 1 defect, Player 2 cooperate)
-        // probs[2] = CD (Player 1 cooperate, Player 2 defect)
-        // probs[3] = DD
         const p_CC = probs[0];
         const p_DC = probs[1];
         const p_CD = probs[2];
         const p_DD = probs[3];
         
-        // 7. Calculate Expected Payoffs
         const payoff1 = 3 * p_CC + 5 * p_DC + 0 * p_CD + 1 * p_DD;
         const payoff2 = 3 * p_CC + 0 * p_DC + 5 * p_CD + 1 * p_DD;
         
-        // Update state results
         state.gameResults.probs = [p_CC, p_DC, p_CD, p_DD];
         state.gameResults.payoffs = [payoff1, payoff2];
         
-        // Update UI displays
         probCC.textContent = (p_CC * 100).toFixed(0) + "%";
         probDC.textContent = (p_DC * 100).toFixed(0) + "%";
         probCD.textContent = (p_CD * 100).toFixed(0) + "%";
         probDD.textContent = (p_DD * 100).toFixed(0) + "%";
         
-        // Highlight active grid cell(s)
-        // Remove active class
         [cellCC, cellDC, cellCD, cellDD].forEach(cell => cell.classList.remove("active-cell"));
         
-        // Highlight cells with non-zero probability
         if (p_CC > 0.02) cellCC.classList.add("active-cell");
         if (p_DC > 0.02) cellDC.classList.add("active-cell");
         if (p_CD > 0.02) cellCD.classList.add("active-cell");
         if (p_DD > 0.02) cellDD.classList.add("active-cell");
         
-        // Update Chart
         gameChart.data.datasets[0].data = [p_CC, p_DC, p_CD, p_DD];
         gameChart.update();
         
-        // Update state indicator badge
         if (state.entanglementPercent === 0) {
             badgeGameState.className = "badge";
             badgeGameState.style.color = "#ff0844";
@@ -604,7 +606,6 @@ document.addEventListener("DOMContentLoaded", () => {
             badgeGameState.textContent = `State: Entangled (&gamma; = ${state.entanglementPercent}%)`;
         }
         
-        // Log results
         logEvent(`Game simulation run. Expected Payoffs: <b>P1 = ${payoff1.toFixed(2)}</b>, <b>P2 = ${payoff2.toFixed(2)}</b>`, "success");
         if (state.p1Strategy === "Q" && state.p2Strategy === "Q" && state.entanglementPercent === 100) {
             logEvent("💫 <b>Quantum Nash Equilibrium reached!</b> Cooperative strategy (Q, Q) resolves the Prisoner's Dilemma.", "success");
@@ -617,25 +618,18 @@ document.addEventListener("DOMContentLoaded", () => {
         let nextPsi = [ {re:0, im:0}, {re:0, im:0}, {re:0, im:0}, {re:0, im:0} ];
         
         if (strategy === "C") {
-            // Identity: do nothing
             for (let k = 0; k < 4; k++) nextPsi[k] = { ...psi[k] };
         } else if (strategy === "D") {
-            // Bit flip swap along the target qubit
             for (let k = 0; k < 4; k++) {
                 let target = k ^ (1 << qubit);
                 nextPsi[target] = { ...psi[k] };
             }
         } else if (strategy === "Q") {
-            // Quantum rotation strategy Q:
-            // U_Q = |0><0| * i + |1><1| * -i
-            // Multiplies by i if bit is 0, and by -i if bit is 1
             for (let k = 0; k < 4; k++) {
                 let bitVal = (k >> qubit) & 1;
                 if (bitVal === 0) {
-                    // Multiply by i: re' = -im, im' = re
                     nextPsi[k] = { re: -psi[k].im, im: psi[k].re };
                 } else {
-                    // Multiply by -i: re' = im, im' = -re
                     nextPsi[k] = { re: psi[k].im, im: -psi[k].re };
                 }
             }
@@ -643,7 +637,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return nextPsi;
     }
 
-    // --- Mode 2 Controls Event Listeners ---
+    // --- Mode 2 Event Listeners ---
     selectP1Strategy.addEventListener("change", (e) => {
         state.p1Strategy = e.target.value;
         logEvent(`Player 1 selected strategy: <b>${state.p1Strategy}</b>`, "system");
@@ -664,16 +658,173 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnPlayGame.addEventListener("click", () => {
-        // Trigger a visual mini-flash on the matrix panel to show calculation
         const matrixCard = document.querySelector(".matrix-container").parentElement;
         matrixCard.style.boxShadow = "0 0 30px rgba(0, 242, 254, 0.4)";
         setTimeout(() => {
             matrixCard.style.boxShadow = "";
         }, 300);
-        
         logEvent("Executing quantum game circuit...", "info");
         runQuantumGame();
     });
+
+
+    // --- MODE 3: SPINOZIST ENTANGLED INTELLECT ---
+
+    function drawSpinozaCanvases() {
+        drawSingleSpinozaCanvas(canvasSpinozaA, ctxSpinozaA, state.spinozaCollapsed ? state.spinozaCollapsedStates[0] : state.spinozaThetaA, "A");
+        drawSingleSpinozaCanvas(canvasSpinozaB, ctxSpinozaB, state.spinozaCollapsed ? state.spinozaCollapsedStates[1] : state.spinozaThetaA, "B", true);
+    }
+
+    function drawSingleSpinozaCanvas(canv, c_ctx, theta, label, isFaded = false) {
+        c_ctx.clearRect(0, 0, canv.width, canv.height);
+        
+        const centerX = canv.width / 2;
+        const centerY = canv.height / 2;
+        const radius = Math.min(canv.width, canv.height) * 0.32;
+        
+        // Grid lines
+        c_ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+        c_ctx.lineWidth = 1;
+        c_ctx.beginPath();
+        c_ctx.moveTo(centerX - radius * 1.2, centerY);
+        c_ctx.lineTo(centerX + radius * 1.2, centerY);
+        c_ctx.moveTo(centerX, centerY - radius * 1.2);
+        c_ctx.lineTo(centerX, centerY + radius * 1.2);
+        c_ctx.stroke();
+        
+        // Circle border
+        c_ctx.strokeStyle = isFaded ? "rgba(255, 255, 255, 0.04)" : "rgba(255, 255, 255, 0.08)";
+        c_ctx.lineWidth = 2;
+        c_ctx.beginPath();
+        c_ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        c_ctx.stroke();
+        
+        // Vector coordinates
+        const vectorX = centerX + radius * Math.cos(theta);
+        const vectorY = centerY - radius * Math.sin(theta);
+        
+        // Vector styling
+        c_ctx.shadowBlur = isFaded ? 5 : 12;
+        c_ctx.shadowColor = isFaded ? "rgba(168, 85, 247, 0.5)" : "#00f2fe";
+        c_ctx.strokeStyle = isFaded ? "rgba(168, 85, 247, 0.7)" : "#00f2fe";
+        c_ctx.lineWidth = 3.5;
+        
+        if (isFaded && !state.spinozaCollapsed) {
+            c_ctx.setLineDash([4, 4]); // Dashed line to show it is an entangled projection
+        } else {
+            c_ctx.setLineDash([]);
+        }
+        
+        c_ctx.beginPath();
+        c_ctx.moveTo(centerX, centerY);
+        c_ctx.lineTo(vectorX, vectorY);
+        c_ctx.stroke();
+        
+        c_ctx.setLineDash([]);
+        c_ctx.shadowBlur = 0;
+        
+        // Vector endpoint
+        c_ctx.fillStyle = "#ffffff";
+        c_ctx.beginPath();
+        c_ctx.arc(vectorX, vectorY, 4, 0, 2 * Math.PI);
+        c_ctx.fill();
+    }
+
+    function updateSpinozaUI() {
+        const thetaDegrees = (state.spinozaThetaA * 180 / Math.PI).toFixed(1);
+        valSpinozaTheta.textContent = `${thetaDegrees}° (theta A)`;
+        
+        if (state.spinozaCollapsed) {
+            badgeSpinozaState.className = "badge badge-collapse";
+            badgeSpinozaState.textContent = "State: Collapsed (Resolved)";
+            badgeSpinozaState.style.animation = "flash-badge 1s infinite";
+        } else {
+            badgeSpinozaState.className = "badge badge-success";
+            badgeSpinozaState.textContent = "State: Entangled Bell State";
+            badgeSpinozaState.style.animation = "none";
+        }
+
+        // Metaphysical Harmony Calculations
+        // P(Agreement) = cos^2(thetaA/2)
+        // P(Disagreement) = sin^2(thetaA/2)
+        const pAgree = Math.cos(state.spinozaThetaA / 2) ** 2;
+        const pDisagree = Math.sin(state.spinozaThetaA / 2) ** 2;
+        
+        const agreePercent = Math.round(pAgree * 100);
+        const disagreePercent = Math.round(pDisagree * 100);
+        
+        harmonyAgreeVal.textContent = agreePercent + "%";
+        harmonyDisagreeVal.textContent = disagreePercent + "%";
+        harmonyBarAgree.style.width = agreePercent + "%";
+        harmonyBarDisagree.style.width = disagreePercent + "%";
+    }
+
+    function runSpinozaCollapse() {
+        state.spinozaCollapsed = true;
+        
+        const pAgree = Math.cos(state.spinozaThetaA / 2) ** 2;
+        const roll = Math.random();
+        
+        let decisionA, decisionB;
+        if (roll < pAgree) {
+            // Minds agree! Roll 50/50 for both choosing Ethics (pi/2) or both choosing Profit (0)
+            const bothEthics = Math.random() < 0.5;
+            decisionA = bothEthics ? Math.PI / 2 : 0;
+            decisionB = decisionA; // Perfect correlation
+            logEvent("💫 <b>METAPHYSICAL HARMONY:</b> Both minds resolved in complete agreement!", "success");
+        } else {
+            // Minds disagree! Roll 50/50 for which is which
+            const aEthics = Math.random() < 0.5;
+            decisionA = aEthics ? Math.PI / 2 : 0;
+            decisionB = aEthics ? 0 : Math.PI / 2; // Anti-correlated
+            logEvent("⚠️ <b>ATTRIBUTE SEPARATION:</b> The dual modes collapsed into disagreement.", "info");
+        }
+        
+        state.spinozaCollapsedStates = [decisionA, decisionB];
+        
+        // Trigger visual flash
+        flashOverlay.classList.add("active");
+        setTimeout(() => { flashOverlay.classList.remove("active"); }, 100);
+        
+        logEvent(`⚡ <b>Spinozist Collapse Triggered</b> ⚡`, "collapse");
+        logEvent(`Mind A resolved to: <b>${decisionA === Math.PI/2 ? '|ETHICS>' : '|PROFIT>'}</b>`, "info");
+        logEvent(`Mind B resolved to: <b>${decisionB === Math.PI/2 ? '|ETHICS>' : '|PROFIT>'}</b>`, "info");
+        
+        updateSpinozaUI();
+        drawSpinozaCanvases();
+    }
+
+    // --- Mode 3 Event Listeners ---
+    sliderSpinozaTheta.addEventListener("input", (e) => {
+        state.spinozaCollapsed = false;
+        state.spinozaThetaA = parseFloat(e.target.value);
+        logEvent(`Applied sensory input to Mind A: <b>&theta;<sub>A</sub> = ${(state.spinozaThetaA * 180 / Math.PI).toFixed(0)}°</b>`, "system");
+        updateSpinozaUI();
+        drawSpinozaCanvases();
+    });
+
+    btnSpinozaEthics.addEventListener("click", () => {
+        state.spinozaCollapsed = false;
+        state.spinozaThetaA = Math.PI / 2;
+        sliderSpinozaTheta.value = state.spinozaThetaA;
+        logEvent("Mind A sensory input rotated to pure <b>|Ethics></b> (90°).", "info");
+        updateSpinozaUI();
+        drawSpinozaCanvases();
+    });
+
+    btnSpinozaProfit.addEventListener("click", () => {
+        state.spinozaCollapsed = false;
+        state.spinozaThetaA = 0.0;
+        sliderSpinozaTheta.value = state.spinozaThetaA;
+        logEvent("Mind A sensory input rotated to pure <b>|Profit></b> (0°).", "info");
+        updateSpinozaUI();
+        drawSpinozaCanvases();
+    });
+
+    btnSpinozaCollapse.addEventListener("click", () => {
+        runSpinozaCollapse();
+    });
+
 
     // --- Mode 1 Controls Event Listeners ---
     selectInitialState.addEventListener("change", () => resetMind());
@@ -706,6 +857,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnExpPE.addEventListener("click", () => runQuestionOrderExperiment('profit'));
 
     // --- Initialization ---
-    resizeCanvas();
+    resizeCanvases();
     resetMind("superposition");
 });

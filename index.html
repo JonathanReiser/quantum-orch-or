@@ -25,6 +25,7 @@
             <nav class="tabs-navigation">
                 <button class="tab-btn active" data-target="agent-tab">Cognitive Agent (Orch-OR)</button>
                 <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
+                <button class="tab-btn" data-target="spinoza-tab">Entangled Intellect (Spinoza)</button>
             </nav>
         </div>
         <p class="subtitle">Exploring the boundaries of quantum cognition, spontaneous collapse, and entangled decision spaces</p>
@@ -147,6 +148,41 @@
                 </div>
             </div>
 
+            <!-- MODE 3: SPINOZIST INTERCONNECTED MINDS CONTROLS -->
+            <div id="spinoza-controls" class="tab-content">
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>1. Sensory Input (Mind A)</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-instruction">Apply argument rotation to Mind A and watch Mind B respond:</p>
+                        <div class="input-group">
+                            <label for="spinoza-theta">Deliberation Angle (&theta;<sub>A</sub>):</label>
+                            <input type="range" id="spinoza-theta" min="0" max="1.5708" step="0.03" value="0.7854">
+                            <span id="spinoza-theta-val" class="badge">45.0° (pi/4)</span>
+                        </div>
+                        <div class="button-row">
+                            <button id="btn-spinoza-ethics" class="btn btn-cyan">Sensory Ethics (90°)</button>
+                            <button id="btn-spinoza-profit" class="btn btn-purple">Sensory Profit (0°)</button>
+                        </div>
+                        <div class="input-group" style="margin-top: 1.5rem;">
+                            <button id="btn-spinoza-collapse" class="btn btn-glow">Resolve Dual Minds</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>Spinozist Metaphysics</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="experiment-info">
+                            <p>Individual minds are not isolated substances, but finite "modes" of one unified attribute of Thought. By entangling Qubit A (Mind A) and Qubit B (Mind B) in a Bell state, any shift in Mind A's vector will be physically mirrored in Mind B's state, illustrating their shared underlying reality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <!-- RIGHT COLUMN: VISUALIZATIONS -->
@@ -232,6 +268,66 @@
                     </div>
                     <div class="card-body chart-container">
                         <canvas id="game-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE 3: SPINOZIST INTERCONNECTED MINDS VISUALS -->
+            <div id="spinoza-visuals" class="tab-content">
+                <!-- Dual Canvases Card -->
+                <div class="card glass visual-card">
+                    <div class="card-header">
+                        <h2>Entangled Twin Canvases (Thought)</h2>
+                        <span id="spinoza-state-indicator" class="badge badge-success">State: Entangled</span>
+                    </div>
+                    <div class="card-body dual-canvas-container">
+                        <div class="canvas-wrapper">
+                            <span class="canvas-title">Mind A (Receives Input)</span>
+                            <div class="canvas-relative">
+                                <canvas id="spinoza-canvas-a"></canvas>
+                                <div class="canvas-axis-labels">
+                                    <span class="lbl-top">|Ethics&rangle;</span>
+                                    <span class="lbl-right">|Profit&rangle;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <span class="canvas-title">Mind B (No Direct Input)</span>
+                            <div class="canvas-relative">
+                                <canvas id="spinoza-canvas-b"></canvas>
+                                <div class="canvas-axis-labels">
+                                    <span class="lbl-top">|Ethics&rangle;</span>
+                                    <span class="lbl-right">|Profit&rangle;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Harmony Card -->
+                <div class="card glass harmony-card">
+                    <div class="card-header">
+                        <h2>Metaphysical Harmony Correlation</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="harmony-gauge">
+                            <div class="harmony-label-row">
+                                <span>Agreement (Substance Harmony)</span>
+                                <span id="harmony-agreement-val" class="badge">85%</span>
+                            </div>
+                            <div class="harmony-bar-container">
+                                <div id="harmony-bar-agree" class="harmony-bar agree" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="harmony-gauge" style="margin-top: 1.2rem;">
+                            <div class="harmony-label-row">
+                                <span>Disagreement (Attribute Separation)</span>
+                                <span id="harmony-disagree-val" class="badge" style="color: var(--crimson);">15%</span>
+                            </div>
+                            <div class="harmony-bar-container">
+                                <div id="harmony-bar-disagree" class="harmony-bar disagree" style="width: 15%;"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
