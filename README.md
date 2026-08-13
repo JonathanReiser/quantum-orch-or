@@ -89,6 +89,19 @@ To run the EWL simulation and compute the expected payoffs for different classic
 python3 quantum_game.py
 ```
 
+### Running on Real Quantum Hardware (IBM QPU)
+
+You can run the game theory circuit directly on a physical quantum computer on the IBM Quantum cloud by providing the `--ibmq` flag and your API token:
+
+```bash
+python3 quantum_game.py --ibmq --token YOUR_IBM_QUANTUM_TOKEN --p1 Q --p2 Q
+```
+
+* `--p1`: Player 1 Strategy (`C`, `D`, or `Q`)
+* `--p2`: Player 2 Strategy (`C`, `D`, or `Q`)
+* `--token`: Your IBM Quantum API Token (from quantum.ibm.com). Optional if already configured locally.
+
+
 ### Payoff Matrix & Simulation Results
 
 The simulation runs six scenario combinations and outputs the following expected payoffs:
