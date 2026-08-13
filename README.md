@@ -179,3 +179,55 @@ If you run the interactive web application, the **Quantum Game Theory** tab visu
 3. **The Outcome Distribution Chart:**
    * A bar chart showing the probability of resolving onto the eigenstates: $|CC\rangle$, $|DC\rangle$, $|CD\rangle$, and $|DD\rangle$. 
    * In Qiskit qubit ordering, index 1 ($|01\rangle$) represents Player 1 playing $D$ and Player 2 playing $C$ (DC), while index 2 ($|10\rangle$) represents CD.
+
+---
+
+## 🏛️ Spinoza's "Entangled Intellect" Simulator (`spinoza_mind.py`)
+
+This repository also contains `spinoza_mind.py`, which implements a 2-qubit Qiskit experiment modeling Baruch Spinoza's theory of **Dual-Aspect Monism** and the **Entangled Intellect**.
+
+According to Spinoza, individual minds are not isolated, separate entities. Rather, they are finite "modes" of one single, infinite attribute of Thought (Nature). This means that a shift in one mind must correlate with a shift in an interconnected mind.
+
+### The Physics Model
+1. **Unity of Substance:** We initialize Qubit 0 (Mind A) and Qubit 1 (Mind B) in a maximally entangled Bell State:
+   $$|\psi\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)$$
+2. **Sensory Deliberation:** We apply a rotation $R_y(\theta)$ representing arguments/information presented *only* to Mind A (Qubit 0).
+3. **Observation:** Measuring Mind B (Qubit 1) reveals that its probability of choosing Ethics ($|0\rangle$) vs. Profit ($|1\rangle$) has been rotated as a direct result of the arguments applied to Mind A.
+
+### How to Run the Simulator
+To run the local Aer simulation (e.g. with a deliberation angle of $\pi/4$):
+```bash
+python3 spinoza_mind.py --theta 0.7854
+```
+
+To run the experiment directly on a real IBM Quantum computer in the cloud:
+```bash
+python3 spinoza_mind.py --ibmq --token YOUR_IBM_QUANTUM_TOKEN --theta 0.7854
+```
+
+### Expected Output
+```text
+==================================================
+     SPINOZA'S ENTANGLED INTELLECT SIMULATOR      
+==================================================
+Metaphysical Premise: Mind A and Mind B are modes of a
+single substance. Deliberating on Mind A will physically
+rotate and collapse the decision state of Mind B.
+Deliberation Angle (theta) = 0.7854 radians (45.0°)
+==================================================
+Running local Aer simulator run...
+
+=== SIMULATION RESULTS ===
+Backend: AerSimulator
+Total Shots: 1024
+  P(Both Choose Ethics |00>): 43.0%
+  P(Both Choose Profit |11>): 40.5%
+  P(Mind A Profit, Mind B Ethics |01>): 9.7%
+  P(Mind A Ethics, Mind B Profit |10>): 6.8%
+--------------------------------------------------
+Unified Decision Agreement (00 or 11): 83.5%
+Cognitive Disagreement (01 or 10): 16.5%
+==================================================
+```
+*(Note: Because the two minds share a single underlying state, their decisions collapse in high correlation, demonstrating how a change in one mode of the infinite intellect is mirrored in another).*
+
