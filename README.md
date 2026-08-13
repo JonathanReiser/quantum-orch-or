@@ -121,7 +121,15 @@ Payoffs: Player 1 = 2.89, Player 2 = 2.89
 Probabilities: CC=0.93, CD=0.03, DC=0.03, DD=0.01
 ==================================================
 ```
-*(Note: Due to physical device gate noise and readout errors on NISQ quantum processors, the probabilities won't be exactly 100% CC. However, the system still clearly settles near the cooperative (2.89, 2.89) payoff, physically confirming the quantum resolution of the dilemma).*
+
+#### How to read the QPU results:
+* **`CC=0.93` (93%):** Probability of resolving into **Mutual Cooperation** (both players cooperated).
+* **`CD=0.03` / `DC=0.03` (3% each):** Probability of one player cooperating and the other defecting (exploitation state).
+* **`DD=0.01` (1%):** Probability of resolving into **Mutual Defection** (both players defected).
+* **`Payoffs: 2.89, 2.89`:** The actual expected scores computed from the QPU measurements. 
+
+*(Note: Due to physical device gate noise and readout errors on real quantum hardware, the probability of the $|CC\rangle$ state is 93% rather than 100%. However, the system still clearly settles near the cooperative (2.89, 2.89) payoff, physically escaping the classical defect trap of 1.00).*
+
 
 
 
