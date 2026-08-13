@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Cognitive & Game Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="collapse-flash" class="flash-overlay"></div>
+    
+    <header class="app-header">
+        <div class="header-main">
+            <div class="logo-container">
+                <span class="pulse-dot"></span>
+                <h1>Quantum Mind & Game Simulator</h1>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="tabs-navigation">
+                <button class="tab-btn active" data-target="agent-tab">Cognitive Agent (Orch-OR)</button>
+                <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
+            </nav>
+        </div>
+        <p class="subtitle">Exploring the boundaries of quantum cognition, spontaneous collapse, and entangled decision spaces</p>
+    </header>
+
+    <main class="app-container">
+        <!-- LEFT COLUMN: CONTROLS -->
+        <section class="controls-panel">
+            
+            <!-- MODE 1: COGNITIVE AGENT CONTROLS -->
+            <div id="agent-controls" class="tab-content active-content">
+                <!-- parameters card -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>1. Cognitive Settings</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label for="initial-state">Initial Mind State:</label>
+                            <select id="initial-state">
+                                <option value="superposition">Balanced Superposition (Undecided)</option>
+                                <option value="ethical">Ethically Biased</option>
+                                <option value="profit">Profit Biased</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="collapse-threshold">Collapse Threshold (&hbar;<sub>cog</sub>):</label>
+                            <input type="range" id="collapse-threshold" min="0.1" max="1.5" step="0.05" value="0.5">
+                            <span id="threshold-val" class="badge">0.50</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="deliberation-speed">Deliberation Speed (dt):</label>
+                            <input type="range" id="deliberation-speed" min="0.005" max="0.05" step="0.005" value="0.02">
+                            <span id="speed-val" class="badge">0.02s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- contemplation card -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>2. Contemplation & Arguments</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-instruction">Present arguments to rotate the agent's belief vector:</p>
+                        <div class="button-row">
+                            <button id="btn-ethics-arg" class="btn btn-cyan">Preserve Ethics (+&theta;)</button>
+                            <button id="btn-profit-arg" class="btn btn-purple">Maximize Profit (-&theta;)</button>
+                        </div>
+                        
+                        <p class="card-instruction">Let the agent deliberate over time:</p>
+                        <div class="button-row">
+                            <button id="btn-deliberate" class="btn btn-glow">Toggle Deliberation</button>
+                            <button id="btn-reset" class="btn btn-outline">Reset Mind</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- question order experiments -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>3. Order Effects Experiments</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-instruction">Ask questions in different orders to show non-commutativity:</p>
+                        <div class="button-row-vertical">
+                            <button id="btn-exp-ep" class="btn btn-outline">Run: Ask "Ethics?" then "Profit?"</button>
+                            <button id="btn-exp-pe" class="btn btn-outline">Run: Ask "Profit?" then "Ethics?"</button>
+                        </div>
+                        <div class="experiment-info">
+                            <p id="exp-text">Select an experiment to observe the cognitive trajectory.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE 2: QUANTUM GAME THEORY CONTROLS -->
+            <div id="game-controls" class="tab-content">
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>1. Strategy Settings</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label for="p1-strategy">Player 1 Strategy:</label>
+                            <select id="p1-strategy">
+                                <option value="C">Cooperate (Classical C)</option>
+                                <option value="D">Defect (Classical D)</option>
+                                <option value="Q">Quantum Strategy (Q)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="p2-strategy">Player 2 Strategy:</label>
+                            <select id="p2-strategy">
+                                <option value="C">Cooperate (Classical C)</option>
+                                <option value="D">Defect (Classical D)</option>
+                                <option value="Q">Quantum Strategy (Q)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="game-entanglement">Entanglement Level (&gamma;):</label>
+                            <input type="range" id="game-entanglement" min="0" max="100" step="5" value="100">
+                            <span id="entanglement-val" class="badge">100% (Maximum)</span>
+                        </div>
+                        <div class="input-group" style="margin-top: 1.5rem;">
+                            <button id="btn-play-game" class="btn btn-glow">Run Quantum Game</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>EWL Game Theory Model</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="experiment-info">
+                            <p>This panel simulates the 1999 Eisert-Wilkens-Lewenstein (EWL) quantum game. When entanglement is 100%, the classical Prisoner's Dilemma is resolved, making mutual quantum cooperation (Q, Q) the unique, stable Nash Equilibrium.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RIGHT COLUMN: VISUALIZATIONS -->
+        <section class="visuals-panel">
+            
+            <!-- MODE 1: COGNITIVE AGENT VISUALS -->
+            <div id="agent-visuals" class="tab-content active-content">
+                <!-- vector state canvas -->
+                <div class="card glass visual-card">
+                    <div class="card-header">
+                        <h2>Cognitive State Vector Space</h2>
+                        <span id="purity-indicator" class="badge badge-success">State: Coherent Superposition</span>
+                    </div>
+                    <div class="card-body canvas-container">
+                        <canvas id="vector-canvas"></canvas>
+                        <div class="axis-labels">
+                            <span class="label-top">|Ethics&rangle; (Choose Fair)</span>
+                            <span class="label-bottom">|&minus;Ethics&rangle;</span>
+                            <span class="label-right">|Profit&rangle; (Choose Money)</span>
+                            <span class="label-left">|&minus;Profit&rangle;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OR meter chart -->
+                <div class="card glass chart-card">
+                    <div class="card-header">
+                        <h2>Objective Reduction Meter</h2>
+                        <span id="action-indicator" class="badge">Action: 0.00 / 0.50</span>
+                    </div>
+                    <div class="card-body chart-container">
+                        <canvas id="action-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE 2: QUANTUM GAME THEORY VISUALS -->
+            <div id="game-visuals" class="tab-content">
+                <!-- payoff matrix grid -->
+                <div class="card glass visual-card">
+                    <div class="card-header">
+                        <h2>Payoff Matrix & State Probabilities</h2>
+                        <span id="game-state-indicator" class="badge badge-success">State: Entangled</span>
+                    </div>
+                    <div class="card-body matrix-container">
+                        <!-- Payoff Grid -->
+                        <div class="payoff-grid">
+                            <div class="grid-header">P1 \ P2</div>
+                            <div class="grid-header">Cooperate (C)</div>
+                            <div class="grid-header">Defect (D)</div>
+                            
+                            <div class="grid-row-header">Cooperate (C)</div>
+                            <div class="grid-cell" id="cell-CC">
+                                <span class="payoff-label">CC</span>
+                                <span class="payoff-vals">3, 3</span>
+                                <span class="cell-prob" id="prob-CC">0%</span>
+                            </div>
+                            <div class="grid-cell" id="cell-CD">
+                                <span class="payoff-label">CD</span>
+                                <span class="payoff-vals">0, 5</span>
+                                <span class="cell-prob" id="prob-CD">0%</span>
+                            </div>
+                            
+                            <div class="grid-row-header">Defect (D)</div>
+                            <div class="grid-cell" id="cell-DC">
+                                <span class="payoff-label">DC</span>
+                                <span class="payoff-vals">5, 0</span>
+                                <span class="cell-prob" id="prob-DC">0%</span>
+                            </div>
+                            <div class="grid-cell" id="cell-DD">
+                                <span class="payoff-label">DD</span>
+                                <span class="payoff-vals">1, 1</span>
+                                <span class="cell-prob" id="prob-DD">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probability Bar Chart -->
+                <div class="card glass chart-card">
+                    <div class="card-header">
+                        <h2>Quantum Outcome Distribution</h2>
+                    </div>
+                    <div class="card-body chart-container">
+                        <canvas id="game-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGS CARD (COMMON TO BOTH MODES) -->
+            <div class="card glass log-card">
+                <div class="card-header">
+                    <h2>Event Logs</h2>
+                </div>
+                <div class="card-body log-container" id="log-console">
+                    <div class="log-entry system">[System] Initializing Quantum Mind & Game Simulator...</div>
+                    <div class="log-entry info">[Mind] Mode: Cognitive Agent active. Qubits initialized.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Built with Qiskit-inspired linear algebra in JS. Simulating quantum cognition and quantum game theory.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
