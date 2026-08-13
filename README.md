@@ -101,7 +101,24 @@ The simulation runs six scenario combinations and outputs the following expected
 | **Quantum Exploiting Defector**| Quantum ($Q$) | Defect ($D$) | (5.00, 0.00) | 100% $|DC\rangle$ |
 | **Quantum Mutual Cooperation** | Quantum ($Q$) | Quantum ($Q$) | **(3.00, 3.00)** | 100% $|CC\rangle$ (New Nash Eq.) |
 
-**Why this resolves the dilemma:**
-In a classical game, if you expect the other player to cooperate, you should defect (getting 5 instead of 3). If you expect them to defect, you should defect (getting 1 instead of 0). Thus, both defect.
+**In the quantum game, if Player 2 attempts to cheat by playing $D$ while you play $Q$, the entanglement causes Player 2's payoff to drop to **0**, while you get **5**. Since defection is heavily penalized by the quantum strategy, **$(Q, Q)$ becomes the only stable Nash Equilibrium**, allowing self-interested players to achieve mutual cooperation.
 
-In the quantum game, if Player 2 attempts to cheat by playing $D$ while you play $Q$, the entanglement causes Player 2's payoff to drop to **0**, while you get **5**. Since defection is heavily penalized by the quantum strategy, **$(Q, Q)$ becomes the only stable Nash Equilibrium**, allowing self-interested players to achieve mutual cooperation.
+### 🎮 Understanding the Web App Game Simulator
+
+If you run the interactive web application, the **Quantum Game Theory** tab visualizes the EWL model with three interactive panels:
+
+1. **The Payoff Grid (2x2 Matrix):**
+   * **Rows (P1)** and **Columns (P2)** represent the choices to Cooperate ($C$) or Defect ($D$).
+   * Each cell displays the score: `(Player 1, Player 2)`.
+     * **CC (3, 3):** Mutual cooperation (good outcome).
+     * **DD (1, 1):** Mutual defection (classical trap).
+     * **DC (5, 0) / CD (0, 5):** One player defects and exploits the other.
+   * **Probability Badges & Glow Highlights:** Shows how likely the system is to resolve into each outcome. The grid dynamically highlights the active outcomes in glowing cyan.
+2. **The Entanglement Slider ($\gamma$):**
+   * Adjusts the quantum coupling between the players. 
+   * **At 0% (Classical):** You are playing the standard, unentangled Prisoner's Dilemma. Playing $(D, D)$ always results in $100\%$ probability of DD.
+   * **At 100% (Quantum):** Qubits are maximally entangled. Playing $(Q, Q)$ rotates the states back to $100\%$ probability of CC.
+   * **At 50% (Superposition):** You will see multiple cells light up (e.g. $50\%$ CC and $50\%$ DD), representing a quantum superposition of different game outcomes before the measurement resolves it.
+3. **The Outcome Distribution Chart:**
+   * A bar chart showing the probability of resolving onto the eigenstates: $|CC\rangle$, $|DC\rangle$, $|CD\rangle$, and $|DD\rangle$. 
+   * In Qiskit qubit ordering, index 1 ($|01\rangle$) represents Player 1 playing $D$ and Player 2 playing $C$ (DC), while index 2 ($|10\rangle$) represents CD.
