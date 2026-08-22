@@ -39,6 +39,19 @@ bash setup_env.sh
 source venv/bin/activate
 ```
 
+### Running the Test Suite
+
+A `pytest` suite in `tests/` covers the physics helpers, circuit builders, the
+Orch-OR collapse loop, the EWL quantum game's payoff table, and the Spinoza
+entangled-minds circuit — regression protection against the math/quantum
+plumbing silently breaking. It runs automatically on every push and PR via
+GitHub Actions (`.github/workflows/tests.yml`); to run it locally:
+
+```bash
+pip install -r requirements.txt
+pytest
+```
+
 ### 2. Running the Orch-OR Simulation
 
 Run the CLI tool to execute a simulation. We apply a scaling factor to $E_G$ (e.g. `--scale-eg 1e17`) to make the collapse visible with a small toy system of 4 qubits:
