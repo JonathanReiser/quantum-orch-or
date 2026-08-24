@@ -195,6 +195,88 @@ If you run the interactive web application, the **Quantum Game Theory** tab visu
 
 ---
 
+## 🎟️ Verifiable Quantum Lottery (`quantum_orch_or/lottery.py`)
+
+This repository also contains a **commit-reveal quantum lottery** — a
+worked answer to "can we build a random draw that can't be cheated?"
+using the same H-then-measure quantum primitive that drives the OR
+collapse in `simulation.py`.
+
+"Can't be cheated" is really three separate properties, and none of
+them comes for free just because a quantum computer is involved:
+
+1. **Unpredictability** — no party, including the organizer, can know
+   or steer the outcome in advance.
+2. **Verifiability** — anyone holding the public transcript can
+   recompute the result themselves, without trusting whoever ran the
+   draw.
+3. **Non-manipulability** — no participant can bias the result by
+   choosing *when* to reveal their input once other inputs are visible.
+
+The module gets there with three ingredients:
+
+* **Commit-reveal:** every participant locks in a secret behind a
+  public SHA-256 hash *before* the draw, so nobody can pick a
+  favorable value after seeing everyone else's.
+* **A quantum entropy beacon:** a superposition of qubits, measured on
+  a simulator (or real IBM hardware, exactly like `main.py --hw-circuit`),
+  contributes entropy that no participant supplied and nobody could
+  have precomputed.
+* **Unbiased, re-computable winner selection:** every public input —
+  every reveal, the quantum bitstring, and the entry list — is folded
+  into one SHA-256 seed, and winners are picked from it via rejection
+  sampling (never `hash % n`, which is subtly biased), so the same
+  published transcript always reproduces the same winners.
+
+`verify_draw()` is the actual cheat-proofing: it recomputes the entire
+draw from nothing but the published transcript and returns `False` if
+a reveal, the quantum bitstring, the entry list, or the winners were
+tampered with after the fact — so nobody has to trust the operator,
+only the transcript.
+
+**This does not require a blockchain.** The transcript just needs to
+be public before the draw and immutable after it (a website, a git
+commit, a notice board all work) — what makes it trustless is that
+anyone can independently re-run `verify_draw` on it, not the storage
+medium.
+
+### Running the demo
+
+```bash
+python3 lottery_demo.py
+```
+
+This walks through five entrants publishing commitments, revealing
+their secrets, drawing quantum entropy, publishing the full
+transcript, verifying it, and then demonstrates `verify_draw` catching
+a swapped winner and a forged reveal.
+
+### A real-world use case, and a limit
+
+A lot of government programs already *are* lotteries run on pure
+institutional trust with no public verifiability — the H-1B visa cap,
+the Green Card Diversity Visa lottery, Section 8 housing waitlists,
+and school-choice admissions among them. Swapping "an agency runs an
+internal script and publishes a list of winners" for a public
+commit-reveal draw like this one is a direct, honest use of this
+mechanism: any applicant, journalist, or watchdog could re-run
+`verify_draw` themselves.
+
+It does **not**, by itself, extend to disintermediating something like
+Social Security. That's not a randomness problem — there's no draw,
+just eligibility (identity, earnings history, disability status) and
+disbursement. This mechanism can make the *allocation-by-lottery* step
+of a government program trustless; it has nothing to say about who
+gets to attest that you're eligible for a benefit in the first place.
+
+### Running the tests
+
+```bash
+pytest tests/test_lottery.py
+```
+
+---
+
 ## 🏛️ Spinoza's "Entangled Intellect" Simulator (`spinoza_mind.py`)
 
 This repository also contains `spinoza_mind.py`, which implements a 2-qubit Qiskit experiment modeling Baruch Spinoza's theory of **Dual-Aspect Monism** and the **Entangled Intellect**.
