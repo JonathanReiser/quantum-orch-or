@@ -13,12 +13,14 @@ try:
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
     from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
     from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
+    from q_ai_governance.q_ai_bot import QAIGovernanceBot
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
     from snapshot_live_oracle import SnapshotLiveOracle
     from quantum_economics import run_quantum_econ_benchmark
+    from q_ai_bot import QAIGovernanceBot
 
 def main():
     parser = argparse.ArgumentParser(
@@ -26,6 +28,12 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: bot
+    bot_parser = subparsers.add_parser("bot", help="Run Telegram & Discord Governance Alert Bot")
+    bot_parser.add_argument("--simulate", action="store_true", help="Print live alerts in terminal")
+
+    # Subcommand: econ
 
     # Subcommand: econ
     econ_parser = subparsers.add_parser("econ", help="Run Quantum Economics & Financial Market simulation")
@@ -51,7 +59,14 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "econ":
+    if args.command == "bot":
+        bot = QAIGovernanceBot()
+        alerts = bot.generate_alerts()
+        print(f"🤖 Generated {len(alerts)} Q-AI Governance Alerts:\n")
+        for i, a in enumerate(alerts, 1):
+            print(f"--- ALERT #{i} ---\n{a}")
+
+    elif args.command == "econ":
         run_quantum_econ_benchmark(output_plot=args.output)
 
     elif args.command == "live":
