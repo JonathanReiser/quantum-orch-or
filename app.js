@@ -472,9 +472,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const p1 = Math.sin(state.theta) ** 2;
         const entropy = -(p0 > 0 ? p0 * Math.log2(p0) : 0) - (p1 > 0 ? p1 * Math.log2(p1) : 0);
         
-        // Accumulate Penrose action S(t) = ∫ E_G dt (fast dynamic threshold accumulation)
-        const instEg = 0.15 * (1.0 + entropy);
-        state.action += instEg * 0.3;
+        // Accumulate Penrose action S(t) = ∫ E_G dt (gradual dynamic threshold accumulation)
+        const instEg = 0.035 * (1.0 + entropy);
+        state.action += instEg * 0.05;
         
         // Update 3D Status Badge
         if (badgeStatus3D) {
