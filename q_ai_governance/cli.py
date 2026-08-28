@@ -15,6 +15,7 @@ try:
     from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
     from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_governance.crypto_recommendations import QuantumCryptoRecommendationOracle
+    from q_ai_governance.uniswap_quantum_governance import UniswapQuantumGovernor
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
 except ImportError:
@@ -25,6 +26,7 @@ except ImportError:
     from quantum_economics import run_quantum_econ_benchmark
     from quantum_crypto_engine import QuantumCryptoPredictor
     from crypto_recommendations import QuantumCryptoRecommendationOracle
+    from uniswap_quantum_governance import UniswapQuantumGovernor
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
 
@@ -34,6 +36,12 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: uniswap
+    uni_parser = subparsers.add_parser("uniswap", help="Run Uniswap-specific governance simulation and proposal generator")
+    uni_parser.add_argument("--output", type=str, default="UNISWAP_GOVERNANCE_PROPOSAL.md", help="Output proposal path")
+
+    # Subcommand: recommend
 
     # Subcommand: recommend
     rec_parser = subparsers.add_parser("recommend", help="Generate live quantitative Q-AI crypto trade signals")
@@ -84,7 +92,12 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "recommend":
+    if args.command == "uniswap":
+        governor = UniswapQuantumGovernor()
+        governor.run_uniswap_benchmark()
+        governor.generate_uniswap_forum_proposal(output_md=args.output)
+
+    elif args.command == "recommend":
         oracle = QuantumCryptoRecommendationOracle()
         summary = oracle.generate_recommendations()
 

@@ -9,6 +9,7 @@ try:
     from q_ai_governance.quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
     from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_governance.crypto_recommendations import QuantumCryptoRecommendationOracle
+    from q_ai_governance.uniswap_quantum_governance import UniswapQuantumGovernor
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -19,6 +20,7 @@ except ImportError:
     from quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
     from quantum_crypto_engine import QuantumCryptoPredictor
     from crypto_recommendations import QuantumCryptoRecommendationOracle
+    from uniswap_quantum_governance import UniswapQuantumGovernor
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -35,6 +37,7 @@ __all__ = [
     "QuantumLiquidityContagion",
     "QuantumCryptoPredictor",
     "QuantumCryptoRecommendationOracle",
+    "UniswapQuantumGovernor",
     "QAIGovernanceBot",
     "QAITwitterBot",
     "LindbladMasterEquationSolver"
