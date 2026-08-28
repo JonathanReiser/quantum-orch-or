@@ -346,6 +346,18 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: #fff;
 }
 
+.btn-crimson {
+    background: linear-gradient(135deg, #ef4444 0%, #ff0844 100%);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 0 12px var(--glow-crimson);
+}
+
+.btn-crimson:hover {
+    box-shadow: 0 0 20px var(--glow-crimson);
+    transform: translateY(-1px);
+}
+
 .card-instruction {
     font-size: 0.8rem;
     color: var(--text-secondary);
