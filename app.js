@@ -262,7 +262,14 @@ document.addEventListener("DOMContentLoaded", () => {
         animate();
     }
     
+    // Initialize 3D WebGL Canvas
     init3DVisualizer();
+    
+    // Parse URL Query Parameters for Live Oracle Proposal Links
+    parseURLQueryParams();
+    
+    // Trigger initial simulation render
+    runSimulation();
     window.addEventListener("resize", init3DVisualizer);
 
     // --- Chart.js Setup ---
@@ -556,12 +563,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (btnRunGallup) {
-        btnRunGallup.addEventListener("click", () => {
-            logEvent("▶ Verifying <strong>Wang & Busemeyer Gallup Order Effect (QQ Equality)</strong>...", "info");
-            setTimeout(() => {
-                logEvent("QQ Equality Check: q_YY + q_NN = <strong>0.661</strong> (Exact Match). Q-AI Empirical Fit: <strong>R² = 0.98</strong>", "success");
-            }, 600);
-        });
+    // --- Live Oracle URL Query Parameter Parser ---
+    function parseURLQueryParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const proposal = urlParams.get('proposal');
+        const yesVal = urlParams.get('yes');
+        const noVal = urlParams.get('no');
+        const riskVal = urlParams.get('risk');
+
+        if (proposal && yesVal) {
+            const banner = document.getElementById('oracle-live-banner');
+            const titleEl = document.getElementById('banner-proposal-title');
+            const yesEl = document.getElementById('banner-yes-val');
+            const noEl = document.getElementById('banner-no-val');
+            const riskEl = document.getElementById('banner-risk-val');
+
+            if (banner) banner.classList.remove('hidden');
+            if (titleEl) titleEl.innerText = decodeURIComponent(proposal);
+            if (yesEl) yesEl.innerText = `${yesVal}%`;
+            if (noEl) noEl.innerText = `${noVal || (100.0 - parseFloat(yesVal)).toFixed(1)}%`;
+            if (riskEl) riskEl.innerText = riskVal ? decodeURIComponent(riskVal).toUpperCase() : 'LOW';
+
+            // Log event in audit trail
+            logEvent(`🔮 Live Oracle Link Detected: <strong>${decodeURIComponent(proposal)}</strong> (YES: ${yesVal}% | Risk: ${riskVal || 'LOW'})`, "success");
+        }
     }
+
+    parseURLQueryParams();
 });

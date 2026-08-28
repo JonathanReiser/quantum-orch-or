@@ -32,14 +32,19 @@ class QAITwitterBot:
 
             risk_icon = "🟢" if risk == "LOW" else ("🟡" if risk == "MEDIUM" else "🔴")
 
+            # Encoded URL for 3D Visualizer Live Proposal Inspector
+            import urllib.parse
+            encoded_title = urllib.parse.quote(title[:40])
+            live_url = f"https://jonathanreiser.github.io/quantum-orch-or/?proposal={encoded_title}&yes={yes_pct}&no={no_pct}&risk={risk}"
+
             # Format 280-character max tweet card
             tweet = (
                 f"🔮 [Q-AI ORACLE FORECAST]\n"
-                f"🏛️ {space} | {title[:40]}...\n\n"
+                f"🏛️ {space} | {title[:35]}...\n\n"
                 f"📊 Vote Approval: {yes_pct}% YES / {no_pct}% NO\n"
                 f"⚡ Consensus Risk: {risk_icon} {risk}\n\n"
                 f"Empirical R² = 0.98\n"
-                f"https://jonathanreiser.github.io/quantum-orch-or/\n"
+                f"{live_url}\n"
                 f"#QAI #Web3 #{space.replace(' ', '')}"
             )
 
