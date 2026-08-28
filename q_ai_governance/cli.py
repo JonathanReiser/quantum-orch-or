@@ -3,6 +3,7 @@ cli.py — Main Command Line Interface executable via `q-ai-gov`
 """
 
 import sys
+import json
 import argparse
 import numpy as np
 

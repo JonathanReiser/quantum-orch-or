@@ -70,8 +70,13 @@ class SnapshotLiveOracle:
             headers={"Content-Type": "application/json", "User-Agent": "Q-AI-Governance-Oracle/1.0"}
         )
 
+        import ssl
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+
         try:
-            with urllib.request.urlopen(req, timeout=10) as resp:
+            with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
                 result = json.loads(resp.read().decode("utf-8"))
                 return result.get("data", {}).get("proposals", [])
         except Exception as e:
