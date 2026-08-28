@@ -110,9 +110,9 @@
                         
                         <p class="card-instruction">Run real-time continuous deliberation or force Penrose collapse:</p>
                         <div class="button-row">
-                            <button id="btn-deliberate" onclick="window.startQuantumDeliberation()" class="btn btn-glow">▶ Start Deliberation</button>
-                            <button id="btn-force-collapse" onclick="window.forceQuantumCollapse()" class="btn btn-crimson">⚡ Trigger Penrose Collapse</button>
-                            <button id="btn-reset" onclick="window.resetQuantumMind()" class="btn btn-outline">🔄 Reset Mind</button>
+                            <button id="btn-deliberate" class="btn btn-glow">▶ Start Deliberation</button>
+                            <button id="btn-force-collapse" class="btn btn-crimson">⚡ Trigger Penrose Collapse</button>
+                            <button id="btn-reset" class="btn btn-outline">🔄 Reset Mind</button>
                         </div>
                     </div>
                 </div>
@@ -283,18 +283,6 @@
     </footer>
 
     <!-- App JavaScript -->
-    <script src="app.js?v=100"></script>
-    <script>
-      window.addEventListener("load", function() {
-        var btnDelib = document.getElementById("btn-deliberate");
-        if (btnDelib) {
-          btnDelib.addEventListener("click", function() {
-            if (typeof window.startQuantumDeliberation === "function") {
-              window.startQuantumDeliberation();
-            }
-          });
-        }
-      });
-    </script>
+    <script src="app.js?v=101"></script>
 </body>
 </html>
