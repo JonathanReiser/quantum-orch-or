@@ -13,6 +13,7 @@ try:
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
     from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
     from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
+    from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
 except ImportError:
@@ -21,6 +22,7 @@ except ImportError:
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
     from snapshot_live_oracle import SnapshotLiveOracle
     from quantum_economics import run_quantum_econ_benchmark
+    from quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
 
@@ -30,6 +32,13 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: crypto
+    crypto_parser = subparsers.add_parser("crypto", help="Forecast crypto price direction and target levels")
+    crypto_parser.add_argument("--asset", type=str, default="BTC", help="Asset Code (BTC, ETH, SOL, ARB, OP)")
+    crypto_parser.add_argument("--output", type=str, default="crypto_benchmark_plot.png", help="Output plot path")
+
+    # Subcommand: tweet
 
     # Subcommand: tweet
     tweet_parser = subparsers.add_parser("tweet", help="Generate Twitter/X 280-character Q-AI forecast cards")
@@ -67,7 +76,14 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "tweet":
+    if args.command == "crypto":
+        predictor = QuantumCryptoPredictor(asset=args.asset)
+        res = predictor.predict_market_direction()
+        print(f"📈 Running Q-AI Crypto Market Forecast for {res['asset']}...")
+        print(f"Current Price: ${res['current_price']:,.2f} | Q-AI Target: ${res['q_ai_target_price']:,.2f} ({res['prob_bullish_pct']}% Bullish)")
+        predictor.generate_crypto_chart(res, output_plot=args.output)
+
+    elif args.command == "tweet":
         bot = QAITwitterBot()
         tweets = bot.generate_tweet_cards()
         print(f"🔮 Generated {len(tweets)} Twitter/X Q-AI Forecast Cards:\n")

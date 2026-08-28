@@ -7,6 +7,7 @@ try:
     from q_ai_governance.dao_budget_allocator import DAOBudgetAllocator, Proposal
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
     from q_ai_governance.quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
+    from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -15,6 +16,7 @@ except ImportError:
     from dao_budget_allocator import DAOBudgetAllocator, Proposal
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
     from quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
+    from quantum_crypto_engine import QuantumCryptoPredictor
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -29,6 +31,7 @@ __all__ = [
     "QuantumMarketSentimentModel",
     "QuantumFinancialOrderEffect",
     "QuantumLiquidityContagion",
+    "QuantumCryptoPredictor",
     "QAIGovernanceBot",
     "QAITwitterBot",
     "LindbladMasterEquationSolver"
