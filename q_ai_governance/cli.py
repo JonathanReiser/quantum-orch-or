@@ -11,11 +11,13 @@ try:
     from q_ai_governance.dao_budget_allocator import DAOBudgetAllocator, sample_proposals
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
     from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
+    from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
     from snapshot_live_oracle import SnapshotLiveOracle
+    from quantum_economics import run_quantum_econ_benchmark
 
 def main():
     parser = argparse.ArgumentParser(
@@ -23,6 +25,10 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: econ
+    econ_parser = subparsers.add_parser("econ", help="Run Quantum Economics & Financial Market simulation")
+    econ_parser.add_argument("--output", type=str, default="quantum_econ_results.png", help="Output plot path")
 
     # Subcommand: live
     live_parser = subparsers.add_parser("live", help="Pull and predict live active proposals from Snapshot API")
@@ -44,7 +50,10 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "live":
+    if args.command == "econ":
+        run_quantum_econ_benchmark(output_plot=args.output)
+
+    elif args.command == "live":
         print(f"📡 Connecting to Snapshot GraphQL API...")
         oracle = SnapshotLiveOracle()
         summary = oracle.predict_live_proposals()
