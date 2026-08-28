@@ -49,6 +49,38 @@ class QAIGovernanceBot:
 
         return alerts
 
+    def send_telegram_alert(self, bot_token, chat_id, alerts=None):
+        if alerts is None:
+            alerts = self.generate_alerts()
+
+        sent_count = 0
+        for alert in alerts[:3]:
+            url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+            payload = {
+                "chat_id": chat_id,
+                "text": alert,
+                "parse_mode": "Markdown"
+            }
+            req_data = json.dumps(payload).encode("utf-8")
+            
+            import ssl
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
+            ctx.verify_mode = ssl.CERT_NONE
+
+            req = urllib.request.Request(
+                url,
+                data=req_data,
+                headers={"Content-Type": "application/json"}
+            )
+            try:
+                with urllib.request.urlopen(req, context=ctx, timeout=8) as resp:
+                    if resp.status == 200:
+                        sent_count += 1
+            except Exception as e:
+                print(f"⚠️ Telegram dispatch notice: {e}")
+        return sent_count
+
     def send_discord_webhook(self, webhook_url, alerts=None):
         if alerts is None:
             alerts = self.generate_alerts()
@@ -74,6 +106,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Q-AI Governance Alert Bot")
     parser.add_argument("--simulate", action="store_true", help="Print formatted live bot alerts in terminal")
     parser.add_argument("--webhook", type=str, help="Discord Webhook URL to dispatch alerts")
+    parser.add_argument("--telegram-token", type=str, help="Telegram Bot Token from @BotFather")
+    parser.add_argument("--chat-id", type=str, help="Telegram Chat ID or Channel Username")
 
     args = parser.parse_args()
     bot = QAIGovernanceBot()
@@ -87,6 +121,10 @@ if __name__ == "__main__":
     for i, alert_msg in enumerate(alerts, 1):
         print(f"--- ALERT #{i} ---")
         print(alert_msg)
+
+    if args.telegram_token and args.chat_id:
+        count = bot.send_telegram_alert(args.telegram_token, args.chat_id, alerts)
+        print(f"✅ Dispatched {count} real-time alerts to Telegram chat ({args.chat_id})!")
 
     if args.webhook:
         count = bot.send_discord_webhook(args.webhook, alerts)
