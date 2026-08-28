@@ -439,12 +439,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startDeliberation() {
-        if (state.collapsed) resetState();
+        state.collapsed = false;
+        state.action = 0.0; // Reset action to zero on start so collapse doesn't trigger on step 1
+        state.stepCount = 0;
         state.isDeliberating = true;
         btnDeliberate.textContent = "⏸ Pause Deliberation";
         btnDeliberate.classList.add("active");
         logEvent("▶ Deliberation loop started. Statevector evolving in Hilbert space...", "info");
 
+        if (state.deliberationTimer) clearInterval(state.deliberationTimer);
         state.deliberationTimer = setInterval(stepDeliberation, 100);
     }
 
