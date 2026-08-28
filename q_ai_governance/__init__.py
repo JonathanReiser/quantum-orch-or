@@ -8,6 +8,7 @@ try:
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
     from q_ai_governance.quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
     from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
+    from q_ai_governance.crypto_recommendations import QuantumCryptoRecommendationOracle
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -17,6 +18,7 @@ except ImportError:
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
     from quantum_economics import QuantumMarketSentimentModel, QuantumFinancialOrderEffect, QuantumLiquidityContagion
     from quantum_crypto_engine import QuantumCryptoPredictor
+    from crypto_recommendations import QuantumCryptoRecommendationOracle
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
     from quantum_orch_or.open_quantum_system import LindbladMasterEquationSolver
@@ -32,6 +34,7 @@ __all__ = [
     "QuantumFinancialOrderEffect",
     "QuantumLiquidityContagion",
     "QuantumCryptoPredictor",
+    "QuantumCryptoRecommendationOracle",
     "QAIGovernanceBot",
     "QAITwitterBot",
     "LindbladMasterEquationSolver"

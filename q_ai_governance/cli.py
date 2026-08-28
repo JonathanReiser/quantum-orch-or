@@ -14,6 +14,7 @@ try:
     from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
     from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
     from q_ai_governance.quantum_crypto_engine import QuantumCryptoPredictor
+    from q_ai_governance.crypto_recommendations import QuantumCryptoRecommendationOracle
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
 except ImportError:
@@ -23,6 +24,7 @@ except ImportError:
     from snapshot_live_oracle import SnapshotLiveOracle
     from quantum_economics import run_quantum_econ_benchmark
     from quantum_crypto_engine import QuantumCryptoPredictor
+    from crypto_recommendations import QuantumCryptoRecommendationOracle
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
 
@@ -32,6 +34,12 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: recommend
+    rec_parser = subparsers.add_parser("recommend", help="Generate live quantitative Q-AI crypto trade signals")
+    rec_parser.add_argument("--output", type=str, default="crypto_recommendations_report.json", help="Output JSON report path")
+
+    # Subcommand: crypto
 
     # Subcommand: crypto
     crypto_parser = subparsers.add_parser("crypto", help="Forecast crypto price direction and target levels")
@@ -76,7 +84,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "crypto":
+    if args.command == "recommend":
+        oracle = QuantumCryptoRecommendationOracle()
+        summary = oracle.generate_recommendations()
+
+    elif args.command == "crypto":
         predictor = QuantumCryptoPredictor(asset=args.asset)
         res = predictor.predict_market_direction()
         print(f"📈 Running Q-AI Crypto Market Forecast for {res['asset']}...")
