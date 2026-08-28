@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Cognitive & Game Simulator</title>
+    <title>Quantum Cognitive & Governance Lab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Three.js CDN for 3D Microtubule Visualizer -->
@@ -20,168 +20,164 @@
         <div class="header-main">
             <div class="logo-container">
                 <span class="pulse-dot"></span>
-                <h1>Quantum Mind & Game Simulator</h1>
+                <h1>Quantum Cognitive & Governance Lab</h1>
             </div>
             
             <!-- Navigation Tabs -->
             <nav class="tabs-navigation">
-                <button class="tab-btn active" data-target="agent-tab">Cognitive Agent (Orch-OR 3D)</button>
+                <button class="tab-btn active" data-target="agent-tab">3D Microtubule Lab & Scenarios</button>
                 <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
                 <button class="tab-btn" data-target="spinoza-tab">Entangled Intellect (Spinoza)</button>
                 <button class="tab-btn" data-target="benchmark-tab">Human Cognition (Q-AI)</button>
             </nav>
         </div>
-        <p class="subtitle">Exploring the boundaries of quantum cognition, spontaneous collapse, and entangled decision spaces</p>
+        <p class="subtitle">Interactive Real-Time Quantum Superposition, Lindblad Decoherence, & Penrose Objective Reduction Playground</p>
     </header>
 
     <main class="app-container">
         <!-- LEFT COLUMN: CONTROLS -->
         <section class="controls-panel">
             
-            <!-- MODE 1: COGNITIVE AGENT CONTROLS -->
+            <!-- MODE 1: COGNITIVE AGENT & SCENARIO CONTROLS -->
             <div id="agent-controls" class="tab-content active-content">
-                <!-- parameters card -->
+                
+                <!-- Live Scenario Selector Card -->
                 <div class="card glass">
                     <div class="card-header">
-                        <h2>1. Cognitive Settings</h2>
+                        <h2>1. Real-World Scenario Selector</h2>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label for="initial-state">Initial Mind State:</label>
-                            <select id="initial-state">
-                                <option value="superposition">Balanced Superposition (Undecided)</option>
-                                <option value="ethical">Ethically Biased</option>
-                                <option value="profit">Profit Biased</option>
+                            <label for="scenario-select">Active Research Domain:</label>
+                            <select id="scenario-select">
+                                <option value="geopolitical">🌍 Geopolitical Crisis (De-escalation vs Escalation)</option>
+                                <option value="dao-governance">🏛️ DAO Treasury (Public Good vs Profit Yield)</option>
+                                <option value="linda-fallacy">🧠 Cognitive Paradox (Linda Fallacy & Order Effects)</option>
                             </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="initial-state">Initial Mind State Vector:</label>
+                            <select id="initial-state">
+                                <option value="superposition">Balanced Superposition (|ψ⟩ = (|0⟩ + |1⟩)/√2)</option>
+                                <option value="ethical">Biased State (|0⟩ - Public Good / Ethics)</option>
+                                <option value="profit">Biased State (|1⟩ - Treasury / Escalation)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parameters & Physics Tuning Card -->
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>2. Quantum Physics & Environmental Tuning</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label for="slider-pressure">Geopolitical / Cognitive Pressure Index:</label>
+                            <input type="range" id="slider-pressure" min="0" max="100" step="1" value="65">
+                            <span id="val-pressure" class="badge">65%</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="slider-temp">Thermal Decoherence Temp (Lindblad γ<sub>ϕ</sub>):</label>
+                            <input type="range" id="slider-temp" min="0" max="350" step="5" value="310">
+                            <span id="val-temp" class="badge badge-success">310 K (Body Temp)</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="slider-entanglement">GHZ Entanglement Coupling (γ):</label>
+                            <input type="range" id="slider-entanglement" min="0" max="100" step="1" value="85">
+                            <span id="val-entanglement" class="badge">85% Entangled</span>
                         </div>
                         <div class="input-group">
                             <label for="collapse-threshold">Collapse Threshold (&hbar;<sub>cog</sub>):</label>
                             <input type="range" id="collapse-threshold" min="0.1" max="1.5" step="0.05" value="0.5">
                             <span id="threshold-val" class="badge">0.50</span>
                         </div>
-                        <div class="input-group">
-                            <label for="deliberation-speed">Deliberation Speed (dt):</label>
-                            <input type="range" id="deliberation-speed" min="0.005" max="0.05" step="0.005" value="0.02">
-                            <span id="speed-val" class="badge">0.02s</span>
-                        </div>
                     </div>
                 </div>
 
-                <!-- contemplation card -->
+                <!-- Contemplation & Execution Card -->
                 <div class="card glass">
                     <div class="card-header">
-                        <h2>2. Contemplation & Arguments</h2>
+                        <h2>3. Real-Time Execution & Arguments</h2>
                     </div>
                     <div class="card-body">
-                        <p class="card-instruction">Present arguments to rotate the agent's belief vector:</p>
+                        <p class="card-instruction">Apply arguments to rotate Hilbert space statevector:</p>
                         <div class="button-row">
-                            <button id="btn-ethics-arg" class="btn btn-cyan">Preserve Ethics (+&theta;)</button>
-                            <button id="btn-profit-arg" class="btn btn-purple">Maximize Profit (-&theta;)</button>
+                            <button id="btn-ethics-arg" class="btn btn-cyan">Public Good (+θ)</button>
+                            <button id="btn-profit-arg" class="btn btn-purple">Private Gain (-θ)</button>
                         </div>
                         
-                        <p class="card-instruction">Let the agent deliberate over time or force Penrose collapse:</p>
+                        <p class="card-instruction">Run real-time continuous deliberation or force Penrose collapse:</p>
                         <div class="button-row">
-                            <button id="btn-deliberate" class="btn btn-glow">Toggle Deliberation</button>
+                            <button id="btn-deliberate" class="btn btn-glow">▶ Start Deliberation</button>
                             <button id="btn-force-collapse" class="btn btn-crimson">⚡ Trigger Penrose Collapse</button>
-                            <button id="btn-reset" class="btn btn-outline">Reset Mind</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- question order experiments -->
-                <div class="card glass">
-                    <div class="card-header">
-                        <h2>3. Order Effects Experiments</h2>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-instruction">Ask questions in different orders to show non-commutativity:</p>
-                        <div class="button-row-vertical">
-                            <button id="btn-exp-ep" class="btn btn-outline">Run: Ask "Ethics?" then "Profit?"</button>
-                            <button id="btn-exp-pe" class="btn btn-outline">Run: Ask "Profit?" then "Ethics?"</button>
-                        </div>
-                        <div class="experiment-info">
-                            <p id="exp-text">Select an experiment to observe the cognitive trajectory.</p>
+                            <button id="btn-reset" class="btn btn-outline">🔄 Reset Mind</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- MODE 2: QUANTUM GAME THEORY CONTROLS -->
+            <!-- MODE 2: GAME THEORY CONTROLS -->
             <div id="game-controls" class="tab-content">
                 <div class="card glass">
                     <div class="card-header">
-                        <h2>1. Strategy Settings</h2>
+                        <h2>Quantum Prisoner's Dilemma (EWL)</h2>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label for="p1-strategy">Player 1 Strategy:</label>
-                            <select id="p1-strategy">
-                                <option value="C">Cooperate (Classical C)</option>
-                                <option value="D">Defect (Classical D)</option>
-                                <option value="Q">Quantum Strategy (Q)</option>
+                            <label for="player1-strategy">Player 1 Strategy:</label>
+                            <select id="player1-strategy">
+                                <option value="C">Classical Cooperate (C)</option>
+                                <option value="D">Classical Defect (D)</option>
+                                <option value="Q" selected>Quantum Strategy (Q)</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label for="p2-strategy">Player 2 Strategy:</label>
-                            <select id="p2-strategy">
-                                <option value="C">Cooperate (Classical C)</option>
-                                <option value="D">Defect (Classical D)</option>
-                                <option value="Q">Quantum Strategy (Q)</option>
+                            <label for="player2-strategy">Player 2 Strategy:</label>
+                            <select id="player2-strategy">
+                                <option value="C">Classical Cooperate (C)</option>
+                                <option value="D">Classical Defect (D)</option>
+                                <option value="Q" selected>Quantum Strategy (Q)</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label for="game-entanglement">Entanglement Level (&gamma;):</label>
-                            <input type="range" id="game-entanglement" min="0" max="100" step="5" value="100">
-                            <span id="entanglement-val" class="badge">100% (Maximum)</span>
-                        </div>
-                        <div class="input-group" style="margin-top: 1.5rem;">
-                            <button id="btn-play-game" class="btn btn-glow">Run Quantum Game</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card glass">
-                    <div class="card-header">
-                        <h2>EWL Game Theory Model</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="experiment-info">
-                            <p>This panel simulates the 1999 Eisert-Wilkens-Lewenstein (EWL) quantum game. When entanglement is 100%, the classical Prisoner's Dilemma is resolved, making mutual quantum cooperation (Q, Q) the unique, stable Nash Equilibrium.</p>
+                            <label for="entanglement-gamma">Entanglement Level (γ):</label>
+                            <input type="range" id="entanglement-gamma" min="0" max="1.5708" step="0.05" value="1.5708">
+                            <span id="gamma-val" class="badge badge-success">Max (π/2)</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- MODE 3: SPINOZIST INTERCONNECTED MINDS CONTROLS -->
+            <!-- MODE 3: SPINOZA CONTROLS -->
             <div id="spinoza-controls" class="tab-content">
                 <div class="card glass">
                     <div class="card-header">
-                        <h2>1. Sensory Input (Mind A)</h2>
+                        <h2>Spinoza Entangled Minds</h2>
                     </div>
                     <div class="card-body">
-                        <p class="card-instruction">Apply argument rotation to Mind A and watch Mind B respond:</p>
                         <div class="input-group">
-                            <label for="spinoza-theta">Deliberation Angle (&theta;<sub>A</sub>):</label>
-                            <input type="range" id="spinoza-theta" min="0" max="1.5708" step="0.03" value="0.7854">
-                            <span id="spinoza-theta-val" class="badge">45.0° (pi/4)</span>
+                            <label for="spinoza-theta">Mind A Deliberation Angle (&theta;):</label>
+                            <input type="range" id="spinoza-theta" min="0" max="3.14159" step="0.05" value="0.7854">
+                            <span id="spinoza-theta-val" class="badge">0.79 rad (45°)</span>
                         </div>
                         <div class="button-row">
-                            <button id="btn-spinoza-ethics" class="btn btn-cyan">Sensory Ethics (90°)</button>
-                            <button id="btn-spinoza-profit" class="btn btn-purple">Sensory Profit (0°)</button>
-                        </div>
-                        <div class="input-group" style="margin-top: 1.5rem;">
-                            <button id="btn-spinoza-collapse" class="btn btn-glow">Resolve Dual Minds</button>
+                            <button id="btn-spinoza-run" class="btn btn-cyan">Run Entangled Deliberation</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- MODE 4: HUMAN COGNITION BENCHMARK CONTROLS -->
+            <div id="benchmark-controls" class="tab-content">
                 <div class="card glass">
                     <div class="card-header">
-                        <h2>Spinozist Metaphysics</h2>
+                        <h2>Q-AI Human Benchmark Suite</h2>
                     </div>
                     <div class="card-body">
-                        <div class="experiment-info">
-                            <p>Individual minds are not isolated substances, but finite "modes" of one unified attribute of Thought. By entangling Qubit A (Mind A) and Qubit B (Mind B) in a Bell state, any shift in Mind A's vector will be physically mirrored in Mind B's state, illustrating their shared underlying reality.</p>
+                        <div class="button-row-vertical">
+                            <button id="btn-run-linda" class="btn btn-glow">Run Linda Conjunction Fallacy Benchmark</button>
+                            <button id="btn-run-gallup" class="btn btn-purple">Verify Gallup Order Effect (QQ Equality)</button>
                         </div>
                     </div>
                 </div>
@@ -189,181 +185,71 @@
 
         </section>
 
-        <!-- RIGHT COLUMN: VISUALIZATIONS -->
-        <section class="visuals-panel">
+        <!-- RIGHT COLUMN: 3D VIEWPORT & ANALYTICS -->
+        <section class="visualizer-panel">
             
-            <!-- MODE 1: COGNITIVE AGENT VISUALS -->
-            <div id="agent-visuals" class="tab-content active-content">
-                <!-- 3D Microtubule Cylinder Card -->
-                <div class="card glass visual-card">
-                    <div class="card-header">
-                        <h2>3D Microtubule Lattice (13 Protofilaments)</h2>
-                        <span id="microtubule-3d-status" class="badge badge-success">3D Phase: Coherent Wave</span>
-                    </div>
-                    <div class="card-body canvas-container-3d">
-                        <div id="microtubule-3d-canvas"></div>
-                    </div>
+            <!-- 3D WebGL Canvas Card -->
+            <div class="card glass visualization-card">
+                <div class="card-header">
+                    <h2>3D Microtubule Lattice & Quantum Phase Field</h2>
+                    <span id="status-badge-3d" class="badge">SUPERPOSITION: ACTIVE</span>
                 </div>
-
-                <!-- vector state canvas -->
-                <div class="card glass visual-card">
-                    <div class="card-header">
-                        <h2>Cognitive State Vector Space</h2>
-                        <span id="purity-indicator" class="badge badge-success">State: Coherent Superposition</span>
-                    </div>
-                    <div class="card-body canvas-container">
-                        <canvas id="vector-canvas"></canvas>
-                        <div class="axis-labels">
-                            <span class="label-top">|Ethics&rangle; (Choose Fair)</span>
-                            <span class="label-bottom">|&minus;Ethics&rangle;</span>
-                            <span class="label-right">|Profit&rangle; (Choose Money)</span>
-                            <span class="label-left">|&minus;Profit&rangle;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- OR meter chart -->
-                <div class="card glass chart-card">
-                    <div class="card-header">
-                        <h2>Objective Reduction Meter</h2>
-                        <span id="action-indicator" class="badge">Action: 0.00 / 0.50</span>
-                    </div>
-                    <div class="card-body chart-container">
-                        <canvas id="action-chart"></canvas>
+                <div class="card-body canvas-container-3d">
+                    <div id="microtubule-3d-canvas"></div>
+                    <div class="visualizer-overlay-info">
+                        <div>Protofilaments: <strong>13 Cylindrical</strong></div>
+                        <div>Decoherence: <strong id="lbl-decoherence-rate">T = 310 K (γ_ϕ = 0.05)</strong></div>
                     </div>
                 </div>
             </div>
 
-            <!-- MODE 2: QUANTUM GAME THEORY VISUALS -->
-            <div id="game-visuals" class="tab-content">
-                <!-- payoff matrix grid -->
-                <div class="card glass visual-card">
+            <!-- Real-Time Metrics & Charts Grid -->
+            <div class="grid-2col">
+                <div class="card glass">
                     <div class="card-header">
-                        <h2>Payoff Matrix & State Probabilities</h2>
-                        <span id="game-state-indicator" class="badge badge-success">State: Entangled</span>
-                    </div>
-                    <div class="card-body matrix-container">
-                        <!-- Payoff Grid -->
-                        <div class="payoff-grid">
-                            <div class="grid-header">P1 \ P2</div>
-                            <div class="grid-header">Cooperate (C)</div>
-                            <div class="grid-header">Defect (D)</div>
-                            
-                            <div class="grid-row-header">Cooperate (C)</div>
-                            <div class="grid-cell" id="cell-CC">
-                                <span class="payoff-label">CC</span>
-                                <span class="payoff-vals">3, 3</span>
-                                <span class="cell-prob" id="prob-CC">0%</span>
-                            </div>
-                            <div class="grid-cell" id="cell-CD">
-                                <span class="payoff-label">CD</span>
-                                <span class="payoff-vals">0, 5</span>
-                                <span class="cell-prob" id="prob-CD">0%</span>
-                            </div>
-                            
-                            <div class="grid-row-header">Defect (D)</div>
-                            <div class="grid-cell" id="cell-DC">
-                                <span class="payoff-label">DC</span>
-                                <span class="payoff-vals">5, 0</span>
-                                <span class="cell-prob" id="prob-DC">0%</span>
-                            </div>
-                            <div class="grid-cell" id="cell-DD">
-                                <span class="payoff-label">DD</span>
-                                <span class="payoff-vals">1, 1</span>
-                                <span class="cell-prob" id="prob-DD">0%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Probability Bar Chart -->
-                <div class="card glass chart-card">
-                    <div class="card-header">
-                        <h2>Quantum Outcome Distribution</h2>
-                    </div>
-                    <div class="card-body chart-container">
-                        <canvas id="game-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODE 3: SPINOZIST INTERCONNECTED MINDS VISUALS -->
-            <div id="spinoza-visuals" class="tab-content">
-                <!-- Dual Canvases Card -->
-                <div class="card glass visual-card">
-                    <div class="card-header">
-                        <h2>Entangled Twin Canvases (Thought)</h2>
-                        <span id="spinoza-state-indicator" class="badge badge-success">State: Entangled</span>
-                    </div>
-                    <div class="card-body dual-canvas-container">
-                        <div class="canvas-wrapper">
-                            <span class="canvas-title">Mind A (Receives Input)</span>
-                            <div class="canvas-relative">
-                                <canvas id="spinoza-canvas-a"></canvas>
-                                <div class="canvas-axis-labels">
-                                    <span class="lbl-top">|Ethics&rangle;</span>
-                                    <span class="lbl-right">|Profit&rangle;</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="canvas-wrapper">
-                            <span class="canvas-title">Mind B (No Direct Input)</span>
-                            <div class="canvas-relative">
-                                <canvas id="spinoza-canvas-b"></canvas>
-                                <div class="canvas-axis-labels">
-                                    <span class="lbl-top">|Ethics&rangle;</span>
-                                    <span class="lbl-right">|Profit&rangle;</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Harmony Card -->
-                <div class="card glass harmony-card">
-                    <div class="card-header">
-                        <h2>Metaphysical Harmony Correlation</h2>
+                        <h2>Quantum Statevector & Action Meter</h2>
                     </div>
                     <div class="card-body">
-                        <div class="harmony-gauge">
-                            <div class="harmony-label-row">
-                                <span>Agreement (Substance Harmony)</span>
-                                <span id="harmony-agreement-val" class="badge">85%</span>
-                            </div>
-                            <div class="harmony-bar-container">
-                                <div id="harmony-bar-agree" class="harmony-bar agree" style="width: 85%;"></div>
-                            </div>
+                        <div class="chart-container">
+                            <canvas id="actionChart"></canvas>
                         </div>
-                        <div class="harmony-gauge" style="margin-top: 1.2rem;">
-                            <div class="harmony-label-row">
-                                <span>Disagreement (Attribute Separation)</span>
-                                <span id="harmony-disagree-val" class="badge" style="color: var(--crimson);">15%</span>
-                            </div>
-                            <div class="harmony-bar-container">
-                                <div id="harmony-bar-disagree" class="harmony-bar disagree" style="width: 15%;"></div>
-                            </div>
+                    </div>
+                </div>
+
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>Quantum State Probabilities</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="probabilityChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- LOGS CARD (COMMON TO BOTH MODES) -->
-            <div class="card glass log-card">
+            <!-- Live Event Console & Telemetry -->
+            <div class="card glass console-card">
                 <div class="card-header">
-                    <h2>Event Logs</h2>
+                    <h2>Quantum Telemetry & Event Log</h2>
+                    <button id="btn-clear-log" class="btn-text">Clear</button>
                 </div>
-                <div class="card-body log-container" id="log-console">
-                    <div class="log-entry system">[System] Initializing Quantum Mind & Game Simulator...</div>
-                    <div class="log-entry info">[Mind] Mode: Cognitive Agent active. Qubits initialized.</div>
+                <div class="card-body">
+                    <div id="event-log" class="log-terminal">
+                        <div class="log-entry info">[INIT] 3D WebGL Microtubule Canvas initialized with 13 protofilament lattice.</div>
+                        <div class="log-entry info">[SYSTEM] Quantum-Cognitive Engine ready. Select scenario and press Start Deliberation.</div>
+                    </div>
                 </div>
             </div>
+
         </section>
     </main>
 
     <footer class="app-footer">
-        <p>Built with Qiskit-inspired linear algebra in JS. Simulating quantum cognition and quantum game theory.</p>
+        <p>Built with Three.js, Chart.js, Qiskit, and Python Open Quantum Systems. Research repository: <a href="https://github.com/JonathanReiser/quantum-orch-or" target="_blank">JonathanReiser/quantum-orch-or</a></p>
     </footer>
 
-    <script src="app.js?v=2"></script>
+    <!-- App JavaScript -->
+    <script src="app.js?v=3"></script>
 </body>
 </html>

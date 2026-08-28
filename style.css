@@ -278,6 +278,34 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 /* Buttons */
+.grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+.visualizer-overlay-info {
+    position: absolute;
+    bottom: 12px;
+    left: 15px;
+    background: rgba(11, 15, 25, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 15px;
+}
+
 .button-row {
     display: flex;
     gap: 1rem;
