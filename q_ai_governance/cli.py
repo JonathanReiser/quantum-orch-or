@@ -14,6 +14,7 @@ try:
     from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
     from q_ai_governance.quantum_economics import run_quantum_econ_benchmark
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
+    from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
@@ -21,6 +22,7 @@ except ImportError:
     from snapshot_live_oracle import SnapshotLiveOracle
     from quantum_economics import run_quantum_econ_benchmark
     from q_ai_bot import QAIGovernanceBot
+    from q_ai_twitter_bot import QAITwitterBot
 
 def main():
     parser = argparse.ArgumentParser(
@@ -28,6 +30,12 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: tweet
+    tweet_parser = subparsers.add_parser("tweet", help="Generate Twitter/X 280-character Q-AI forecast cards")
+    tweet_parser.add_argument("--simulate", action="store_true", help="Print live tweet cards in terminal")
+
+    # Subcommand: bot
 
     # Subcommand: bot
     bot_parser = subparsers.add_parser("bot", help="Run Telegram & Discord Governance Alert Bot")
@@ -59,7 +67,14 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "bot":
+    if args.command == "tweet":
+        bot = QAITwitterBot()
+        tweets = bot.generate_tweet_cards()
+        print(f"🔮 Generated {len(tweets)} Twitter/X Q-AI Forecast Cards:\n")
+        for i, card in enumerate(tweets, 1):
+            print(f"--- TWEET #{i} ({len(card)} chars) ---\n{card}\n")
+
+    elif args.command == "bot":
         bot = QAIGovernanceBot()
         alerts = bot.generate_alerts()
         print(f"🤖 Generated {len(alerts)} Q-AI Governance Alerts:\n")
