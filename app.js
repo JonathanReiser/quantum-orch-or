@@ -856,7 +856,109 @@ document.addEventListener("DOMContentLoaded", () => {
     btnExpEP.addEventListener("click", () => runQuestionOrderExperiment('ethics'));
     btnExpPE.addEventListener("click", () => runQuestionOrderExperiment('profit'));
 
+    // --- Three.js 3D Microtubule Lattice Engine ---
+    let scene3D, camera3D, renderer3D, microtubuleGroup;
+    let tubulinDimers = [];
+    let phaseTime = 0;
+
+    function init3DMicrotubule() {
+        const container = document.getElementById("microtubule-3d-canvas");
+        if (!container || typeof THREE === "undefined") return;
+
+        scene3D = new THREE.Scene();
+        camera3D = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera3D.position.set(0, 0, 24);
+
+        renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer3D.setSize(container.clientWidth, container.clientHeight);
+        renderer3D.setPixelRatio(window.devicePixelRatio);
+        container.innerHTML = "";
+        container.appendChild(renderer3D.domElement);
+
+        // Ambient & Directional Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene3D.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0x00f2fe, 1.2);
+        dirLight.position.set(10, 20, 15);
+        scene3D.add(dirLight);
+
+        const pointLight = new THREE.PointLight(0xa855f7, 1.5, 50);
+        pointLight.position.set(-10, -10, 10);
+        scene3D.add(pointLight);
+
+        // 13-protofilament cylindrical microtubule geometry
+        microtubuleGroup = new THREE.Group();
+        tubulinDimers = [];
+
+        const protofilaments = 13;
+        const rings = 10;
+        const radius = 5.5;
+        const heightStep = 1.2;
+
+        const sphereGeo = new THREE.SphereGeometry(0.45, 16, 16);
+
+        for (let ring = 0; ring < rings; ring++) {
+            const y = (ring - rings / 2) * heightStep;
+            const ringPhaseShift = (ring * 1.5 * Math.PI) / protofilaments; // Helical skew
+
+            for (let pf = 0; pf < protofilaments; pf++) {
+                const angle = (pf * 2 * Math.PI) / protofilaments + ringPhaseShift;
+                const x = radius * Math.cos(angle);
+                const z = radius * Math.sin(angle);
+
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x00f2fe,
+                    emissive: 0x003344,
+                    roughness: 0.3,
+                    metalness: 0.5
+                });
+
+                const dimer = new THREE.Mesh(sphereGeo, mat);
+                dimer.position.set(x, y, z);
+                microtubuleGroup.add(dimer);
+
+                tubulinDimers.push({
+                    mesh: dimer,
+                    angle: angle,
+                    ring: ring,
+                    pf: pf
+                });
+            }
+        }
+
+        scene3D.add(microtubuleGroup);
+
+        // Animation Loop
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            if (microtubuleGroup) {
+                microtubuleGroup.rotation.y += 0.005;
+                microtubuleGroup.rotation.x = Math.sin(Date.now() * 0.0005) * 0.15;
+            }
+
+            // Phase Wave propagation during deliberation
+            phaseTime += 0.03;
+            tubulinDimers.forEach((d, idx) => {
+                const wave = Math.sin(phaseTime + d.ring * 0.4 + d.pf * 0.3);
+                if (state.isDeliberating) {
+                    const r = 0.5 + 0.5 * wave;
+                    const g = 0.2 + 0.3 * Math.cos(phaseTime + idx);
+                    const b = 0.9;
+                    d.mesh.material.color.setRGB(r, g, b);
+                    d.mesh.material.emissive.setRGB(r * 0.3, g * 0.1, b * 0.3);
+                }
+            });
+
+            renderer3D.render(scene3D, camera3D);
+        }
+
+        animate3D();
+    }
+
     // --- Initialization ---
     resizeCanvases();
     resetMind("superposition");
+    init3DMicrotubule();
 });

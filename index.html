@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="style.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Three.js CDN for 3D Microtubule Visualizer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <div id="collapse-flash" class="flash-overlay"></div>
@@ -23,9 +25,10 @@
             
             <!-- Navigation Tabs -->
             <nav class="tabs-navigation">
-                <button class="tab-btn active" data-target="agent-tab">Cognitive Agent (Orch-OR)</button>
+                <button class="tab-btn active" data-target="agent-tab">Cognitive Agent (Orch-OR 3D)</button>
                 <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
                 <button class="tab-btn" data-target="spinoza-tab">Entangled Intellect (Spinoza)</button>
+                <button class="tab-btn" data-target="benchmark-tab">Human Cognition (Q-AI)</button>
             </nav>
         </div>
         <p class="subtitle">Exploring the boundaries of quantum cognition, spontaneous collapse, and entangled decision spaces</p>
@@ -190,6 +193,17 @@
             
             <!-- MODE 1: COGNITIVE AGENT VISUALS -->
             <div id="agent-visuals" class="tab-content active-content">
+                <!-- 3D Microtubule Cylinder Card -->
+                <div class="card glass visual-card">
+                    <div class="card-header">
+                        <h2>3D Microtubule Lattice (13 Protofilaments)</h2>
+                        <span id="microtubule-3d-status" class="badge badge-success">3D Phase: Coherent Wave</span>
+                    </div>
+                    <div class="card-body canvas-container-3d">
+                        <div id="microtubule-3d-canvas"></div>
+                    </div>
+                </div>
+
                 <!-- vector state canvas -->
                 <div class="card glass visual-card">
                     <div class="card-header">
