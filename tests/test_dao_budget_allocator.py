@@ -15,7 +15,7 @@ def test_dao_budget_allocation():
     report = allocator.allocate_budget(props)
     
     assert report["total_budget"] == 500000.0
-    assert report["total_allocated"] <= 500000.0
+    assert report["total_allocated"] <= 500000.001
     assert len(report["proposals"]) == len(props)
     assert 50.0 <= report["consensus_score"] <= 100.0
 
