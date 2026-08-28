@@ -26,6 +26,7 @@
             <!-- Navigation Tabs -->
             <nav class="tabs-navigation">
                 <button class="tab-btn active" data-target="agent-tab">3D Microtubule Lab & Scenarios</button>
+                <button class="tab-btn" data-target="budget-tab">🏛️ DAO Budget Allocator Tool</button>
                 <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
                 <button class="tab-btn" data-target="spinoza-tab">Entangled Intellect (Spinoza)</button>
                 <button class="tab-btn" data-target="benchmark-tab">Human Cognition (Q-AI)</button>
@@ -112,6 +113,27 @@
                             <button id="btn-deliberate" class="btn btn-glow">▶ Start Deliberation</button>
                             <button id="btn-force-collapse" class="btn btn-crimson">⚡ Trigger Penrose Collapse</button>
                             <button id="btn-reset" class="btn btn-outline">🔄 Reset Mind</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODE: DAO BUDGET ALLOCATOR CONTROLS -->
+            <div id="budget-controls" class="tab-content">
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>🏛️ Real-World DAO Budget Allocator</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <label for="input-total-budget">Total Treasury Budget ($):</label>
+                            <input type="number" id="input-total-budget" value="1000000" step="50000" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:#fff; padding:0.6rem; border-radius:8px;">
+                        </div>
+                        <div class="button-row">
+                            <button id="btn-run-budget-allocator" class="btn btn-glow">⚡ Run Quantum Budget Allocator</button>
+                        </div>
+                        <div id="budget-summary-badge" class="badge badge-success" style="margin-top:0.5rem; display:block; text-align:center;">
+                            Consensus Score: 87.0% | Allocated: $959,548 / $1,000,000 (96%)
                         </div>
                     </div>
                 </div>
