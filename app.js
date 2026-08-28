@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Constants
-    const COGNITIVE_ENERGY_BASE = 0.08;
-    const DRIFT_SPEED = 0.15;
+    const COGNITIVE_ENERGY_BASE = 0.35;
+    const DRIFT_SPEED = 0.25;
     const HBAR = 1.0545718e-34; // Cognitive scale maps to values directly
 
     // --- DOM Elements ---
@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnEthicsArg = document.getElementById("btn-ethics-arg");
     const btnProfitArg = document.getElementById("btn-profit-arg");
     const btnDeliberate = document.getElementById("btn-deliberate");
+    const btnForceCollapse = document.getElementById("btn-force-collapse");
     const btnReset = document.getElementById("btn-reset");
     
     const btnExpEP = document.getElementById("btn-exp-ep");
@@ -437,33 +438,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function triggerObjectiveReduction() {
-        clearInterval(state.deliberationInterval);
-        state.isDeliberating = false;
-        btnDeliberate.textContent = "Toggle Deliberation";
-        btnDeliberate.classList.remove("active");
+        if (state.isDeliberating) {
+            clearInterval(state.deliberationInterval);
+            state.isDeliberating = false;
+            btnDeliberate.textContent = "Toggle Deliberation";
+            btnDeliberate.classList.remove("active");
+        }
         
         const p = getProbabilities();
         const roll = Math.random();
         
         let finalState;
         let logStyle;
+        let collapseColorHex;
+
         if (roll < p.ethics) {
             state.theta = Math.PI / 2;
             finalState = "|ETHICS> (Choose Fairness)";
             logStyle = "success";
+            collapseColorHex = 0x00f2fe; // Cyan
         } else {
             state.theta = 0.0;
             finalState = "|PROFIT> (Choose Money)";
             logStyle = "collapse";
+            collapseColorHex = 0xf59e0b; // Gold
         }
         
         state.history.push(state.theta);
         
+        // 1. Flash Screen Overlay
         flashOverlay.classList.add("active");
-        setTimeout(() => { flashOverlay.classList.remove("active"); }, 100);
+        setTimeout(() => { flashOverlay.classList.remove("active"); }, 120);
         
-        logEvent("⚡ <b>OBJECTIVE REDUCTION TRIGGERED</b> ⚡", "collapse");
-        logEvent(`Superposition collapsed! Agent resolved to: <b>${finalState}</b>`, logStyle);
+        // 2. Animate 3D Microtubule Collapse
+        const statusBadge3D = document.getElementById("microtubule-3d-status");
+        if (statusBadge3D) {
+            statusBadge3D.className = "badge badge-success";
+            statusBadge3D.style.background = "rgba(239, 68, 68, 0.2)";
+            statusBadge3D.style.color = "#ef4444";
+            statusBadge3D.textContent = `⚡ COLLAPSED: ${finalState.split(" ")[0]}`;
+        }
+
+        if (tubulinDimers && tubulinDimers.length > 0) {
+            tubulinDimers.forEach(d => {
+                d.mesh.material.color.setHex(collapseColorHex);
+                d.mesh.material.emissive.setHex(collapseColorHex);
+            });
+        }
+
+        logEvent("⚡ <b>OBJECTIVE REDUCTION TRIGGERED (S >= &hbar;<sub>cog</sub>)</b> ⚡", "collapse");
+        logEvent(`Spontaneous Penrose Collapse! State vector resolved to: <b>${finalState}</b>`, logStyle);
         
         state.action = 0.0;
         updateStateUI();
@@ -852,6 +876,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     btnDeliberate.addEventListener("click", toggleDeliberation);
+    if (btnForceCollapse) btnForceCollapse.addEventListener("click", triggerObjectiveReduction);
 
     btnExpEP.addEventListener("click", () => runQuestionOrderExperiment('ethics'));
     btnExpPE.addEventListener("click", () => runQuestionOrderExperiment('profit'));
