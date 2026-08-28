@@ -415,8 +415,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Global Window Bindings ---
+    // --- Global Window Bindings & 500ms Debounce Guard ---
+    let lastToggleTime = 0;
     window.startQuantumDeliberation = function() {
+        const now = Date.now();
+        if (now - lastToggleTime < 500) return; // Block rapid double-click toggles within 500ms
+        lastToggleTime = now;
+
         if (state.isDeliberating) {
             stopDeliberation();
         } else {
