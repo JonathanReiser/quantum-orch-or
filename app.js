@@ -275,63 +275,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Chart.js Setup ---
     function initCharts() {
+        if (typeof Chart === "undefined") {
+            console.warn("Chart.js CDN loading... retrying chart init");
+            setTimeout(initCharts, 500);
+            return;
+        }
+
         const ctxAction = document.getElementById("actionChart");
         const ctxProb = document.getElementById("probabilityChart");
         if (!ctxAction || !ctxProb) return;
 
-        state.actionChart = new Chart(ctxAction, {
-            type: "line",
-            data: {
-                labels: [0],
-                datasets: [
-                    {
-                        label: "Accumulated Action S(t)",
-                        data: [0],
-                        borderColor: "#00f2fe",
-                        backgroundColor: "rgba(0, 242, 254, 0.1)",
-                        fill: true,
-                        tension: 0.3
-                    },
-                    {
-                        label: "Penrose Threshold ℏ_cog",
-                        data: [state.threshold],
-                        borderColor: "#ef4444",
-                        borderDash: [5, 5],
-                        pointRadius: 0
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" } },
-                    y: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" }, min: 0, max: 1.0 }
-                },
-                plugins: { legend: { labels: { color: "#f8fafc" } } }
-            }
-        });
+        try {
+            if (state.actionChart) state.actionChart.destroy();
+            if (state.probChart) state.probChart.destroy();
 
-        state.probChart = new Chart(ctxProb, {
-            type: "bar",
-            data: {
-                labels: ["|0⟩ Public Good", "|1⟩ Private Gain"],
-                datasets: [{
-                    label: "Statevector Probability",
-                    data: [0.5, 0.5],
-                    backgroundColor: ["#00f2fe", "#a855f7"]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { min: 0, max: 1.0, ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" } },
-                    x: { ticks: { color: "#f8fafc" } }
+            state.actionChart = new Chart(ctxAction, {
+                type: "line",
+                data: {
+                    labels: [0],
+                    datasets: [
+                        {
+                            label: "Accumulated Action S(t)",
+                            data: [0],
+                            borderColor: "#00f2fe",
+                            backgroundColor: "rgba(0, 242, 254, 0.1)",
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: "Penrose Threshold ℏ_cog",
+                            data: [state.threshold],
+                            borderColor: "#ef4444",
+                            borderDash: [5, 5],
+                            pointRadius: 0
+                        }
+                    ]
                 },
-                plugins: { legend: { display: false } }
-            }
-        });
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" } },
+                        y: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" }, min: 0, max: 1.0 }
+                    },
+                    plugins: { legend: { labels: { color: "#f8fafc" } } }
+                }
+            });
+
+            state.probChart = new Chart(ctxProb, {
+                type: "bar",
+                data: {
+                    labels: ["|0⟩ Public Good", "|1⟩ Private Gain"],
+                    datasets: [{
+                        label: "Statevector Probability",
+                        data: [0.5, 0.5],
+                        backgroundColor: ["rgba(0, 242, 254, 0.7)", "rgba(245, 158, 11, 0.7)"],
+                        borderColor: ["#00f2fe", "#f59e0b"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" }, min: 0, max: 1.0 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        } catch (e) {
+            console.error("Chart initialization error:", e);
+        }
     }
 
     initCharts();
