@@ -10,10 +10,12 @@ try:
     from q_ai_governance.quantum_agent import QuantumOrchORAgent
     from q_ai_governance.dao_budget_allocator import DAOBudgetAllocator, sample_proposals
     from q_ai_governance.benchmark_real_dao_data import RealDAOBenchmarkRunner
+    from q_ai_governance.snapshot_live_oracle import SnapshotLiveOracle
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
     from benchmark_real_dao_data import RealDAOBenchmarkRunner
+    from snapshot_live_oracle import SnapshotLiveOracle
 
 def main():
     parser = argparse.ArgumentParser(
@@ -21,6 +23,10 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: live
+    live_parser = subparsers.add_parser("live", help="Pull and predict live active proposals from Snapshot API")
+    live_parser.add_argument("--output", type=str, default="live_snapshot_predictions.json", help="Output JSON report path")
 
     # Subcommand: allocate
     alloc_parser = subparsers.add_parser("allocate", help="Allocate DAO budget across competing proposals")
@@ -38,7 +44,15 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "allocate":
+    if args.command == "live":
+        print(f"📡 Connecting to Snapshot GraphQL API...")
+        oracle = SnapshotLiveOracle()
+        summary = oracle.predict_live_proposals()
+        with open(args.output, "w") as f:
+            json.dump(summary, f, indent=2)
+        print(f"✅ Live Snapshot predictions saved to {args.output}")
+
+    elif args.command == "allocate":
         print(f"⚡ Running Q-AI DAO Budget Allocator for ${args.budget:,.2f} Treasury...")
         allocator = DAOBudgetAllocator(total_budget=args.budget)
         props = sample_proposals()
