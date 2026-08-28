@@ -1,6 +1,7 @@
 # ⚛️ Quantum-Orch-OR: Quantum-Cognitive AI Policy & Governance Engine
 
 [![PyPI Version](https://img.shields.io/badge/pypi-v1.0.0-blue.svg)](https://pypi.org/project/q-ai-governance/)
+[![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
 [![Tests](https://img.shields.io/badge/tests-99%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
 [![arXiv](https://img.shields.io/badge/arXiv-2408.xxxxx-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/q_ai_governance_paper.pdf)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
