@@ -435,8 +435,8 @@ document.addEventListener("DOMContentLoaded", () => {
         state.stepCount++;
         
         // Statevector drift influenced by pressure and Lindblad thermal noise
-        const noise = (Math.random() - 0.5) * 0.05 * (state.temperature / 310.0);
-        const pressureBias = (state.pressure - 50) / 500.0;
+        const noise = (Math.random() - 0.5) * 0.12 * (state.temperature / 310.0);
+        const pressureBias = (state.pressure - 50) / 100.0;
         state.theta = Math.max(0, Math.min(Math.PI / 2, state.theta + noise + pressureBias));
         
         // Calculate Shannon entropy and instant E_G
@@ -444,10 +444,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const p1 = Math.sin(state.theta) ** 2;
         const entropy = -(p0 > 0 ? p0 * Math.log2(p0) : 0) - (p1 > 0 ? p1 * Math.log2(p1) : 0);
         
-        // Accumulate Penrose action S(t) = ∫ E_G dt
-        const instEg = 0.035 * (1.0 + entropy);
-        state.action += instEg * state.dt;
+        // Accumulate Penrose action S(t) = ∫ E_G dt (fast dynamic threshold accumulation)
+        const instEg = 0.15 * (1.0 + entropy);
+        state.action += instEg * 0.3;
         
+        // Update 3D Status Badge
+        if (badgeStatus3D) {
+            badgeStatus3D.className = "badge badge-info";
+            badgeStatus3D.textContent = `▶ DELIBERATING... (S = ${state.action.toFixed(2)} / ${state.threshold.toFixed(2)})`;
+        }
+
+        // Pulse 3D Tubulin Dimers dynamically during deliberation
+        if (dimers && dimers.length > 0) {
+            dimers.forEach((d, idx) => {
+                if (d.mesh) {
+                    d.mesh.position.x = d.originalPos.x + (Math.random() - 0.5) * 0.2;
+                    d.mesh.position.y = d.originalPos.y + (Math.random() - 0.5) * 0.2;
+                }
+            });
+        }
+
         updateCharts();
 
         // Check Penrose Collapse Threshold S >= ℏ_cog
