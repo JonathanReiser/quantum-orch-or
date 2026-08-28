@@ -415,18 +415,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Global Window Bindings & 500ms Debounce Guard ---
-    let lastToggleTime = 0;
-    window.startQuantumDeliberation = function() {
-        const now = Date.now();
-        if (now - lastToggleTime < 500) return; // Block rapid double-click toggles within 500ms
-        lastToggleTime = now;
+    const btnPause = document.getElementById("btn-pause");
 
-        if (state.isDeliberating) {
-            stopDeliberation();
-        } else {
-            startDeliberation();
-        }
+    // --- Global Window Bindings ---
+    window.startQuantumDeliberation = function() {
+        startDeliberation();
+    };
+
+    window.stopQuantumDeliberation = function() {
+        stopDeliberation();
     };
 
     window.forceQuantumCollapse = function() {
@@ -440,7 +437,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Real-Time Deliberation Loop ---
     if (btnDeliberate) {
-        btnDeliberate.addEventListener("click", window.startQuantumDeliberation);
+        btnDeliberate.addEventListener("click", startDeliberation);
+    }
+
+    if (btnPause) {
+        btnPause.addEventListener("click", stopDeliberation);
     }
 
     function startDeliberation() {
