@@ -103,7 +103,7 @@ class UniswapQuantumGovernor:
             "| **UNI-PROP-12** (v3 Arbitrum Deployment) | **98.4%** | **98.0%** | **0.4% Error** |\n"
             "| **UNI-PROP-18** (v4 Hooks Security Audit) | **96.2%** | **96.0%** | **0.2% Error** |\n"
             "| **UNI-PROP-24** (Protocol Fee Switch) | **58.4%** | **58.0%** | **0.4% Error** |\n\n"
-            "**Key Metric:** Q-AI achieves an **86.7% error reduction** ($1.3\%$ MAE vs $9.8\%$ classical models, $R^2 = 0.98$).\n\n"
+            "**Key Metric:** Q-AI achieves an **86.7% error reduction** (1.3% MAE vs 9.8% classical models, $R^2 = 0.98$).\n\n"
             "## Proposed Deliverables for Uniswap v4\n\n"
             "1. **Uniswap v4 Hooks Parameter Simulator:** Live simulation tool allowing delegates to model pool fee tier shifts and hook liquidity risks.\n"
             "2. **Delegate Alert Bot:** Real-time Telegram/Discord & X forecasting bot querying Snapshot GraphQL API.\n"
