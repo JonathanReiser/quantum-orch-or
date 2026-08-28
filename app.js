@@ -417,15 +417,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // --- Global Window Bindings ---
+    window.startQuantumDeliberation = function() {
+        if (state.isDeliberating) {
+            stopDeliberation();
+        } else {
+            startDeliberation();
+        }
+    };
+
+    window.forceQuantumCollapse = function() {
+        const p0 = Math.cos(state.theta) ** 2;
+        triggerPenroseCollapse(p0);
+    };
+
+    window.resetQuantumMind = function() {
+        resetState();
+    };
+
     // --- Real-Time Deliberation Loop ---
     if (btnDeliberate) {
-        btnDeliberate.addEventListener("click", () => {
-            if (state.isDeliberating) {
-                stopDeliberation();
-            } else {
-                startDeliberation();
-            }
-        });
+        btnDeliberate.addEventListener("click", window.startQuantumDeliberation);
     }
 
     function startDeliberation() {
