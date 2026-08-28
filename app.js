@@ -473,14 +473,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const pressureBias = (state.pressure - 50) / 100.0;
         state.theta = Math.max(0, Math.min(Math.PI / 2, state.theta + noise + pressureBias));
         
-        // Calculate Shannon entropy and instant E_G
+        // Calculate Shannon entropy with safe probability bounds (prevents 0 * -Infinity = NaN)
         const p0 = Math.cos(state.theta) ** 2;
-        const p1 = Math.sin(state.theta) ** 2;
-        const entropy = -(p0 > 0 ? p0 * Math.log2(p0) : 0) - (p1 > 0 ? p1 * Math.log2(p1) : 0);
+        const safeP0 = Math.max(0.0001, Math.min(0.9999, p0));
+        const safeP1 = 1.0 - safeP0;
+        const entropy = -(safeP0 * Math.log2(safeP0) + safeP1 * Math.log2(safeP1));
         
-        // Accumulate Penrose action S(t) = ∫ E_G dt (gradual dynamic threshold accumulation)
+        // Accumulate Penrose action S(t) = ∫ E_G dt
         const instEg = 0.035 * (1.0 + entropy);
-        state.action += instEg * 0.05;
+        state.action = (isNaN(state.action) ? 0 : state.action) + instEg * 0.05;
         
         // Update 3D Status Badge
         if (badgeStatus3D) {
