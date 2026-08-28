@@ -269,8 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Parse URL Query Parameters for Live Oracle Proposal Links
     parseURLQueryParams();
     
-    // Trigger initial simulation render
-    runSimulation();
     window.addEventListener("resize", init3DVisualizer);
 
     // --- Chart.js Setup ---
