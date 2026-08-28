@@ -262,7 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
         animate();
     }
     
-    // Initialize 3D WebGL Canvas
+    // Initialize Charts & 3D WebGL Canvas
+    initCharts();
     init3DVisualizer();
     
     // Parse URL Query Parameters for Live Oracle Proposal Links
