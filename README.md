@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/q-ai-governance.svg)](https://pypi.org/project/q-ai-governance/)
 [![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
-[![Tests](https://img.shields.io/badge/tests-125%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
+[![Tests](https://img.shields.io/badge/tests-126%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
 [![arXiv](https://img.shields.io/badge/arXiv-2408.xxxxx-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/q_ai_governance_paper.pdf)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -35,6 +35,7 @@ pip install q-ai-governance
 
 | Directory / File | Component Description |
 | :--- | :--- |
+| 🛡️ [`dao_app.py`](dao_app.py) | **B2B DAO Treasury Security Audit Portal** (Interactive $\ge 80\%$ Consensus Meter) |
 | 🤖 [`q_ai_governance/q_ai_agent_swarm.py`](q_ai_governance/q_ai_agent_swarm.py) | **Enterprise AI Swarm Engine** (Entangles Multi-Agent Decision Vectors) |
 | 🎁 [`q_ai_governance/q_ai_giving_portal.py`](q_ai_governance/q_ai_giving_portal.py) | **Base L2 Q-Giving Philanthropy Portal** (Audits Non-Profit Grant Impact) |
 | 📈 [`q_ai_governance/market_signal_api.py`](q_ai_governance/market_signal_api.py) | **Quantitative Trading API** (Real-time $P(\text{BULL})$ & Stop-Loss Targets) |
@@ -49,7 +50,7 @@ pip install q-ai-governance
 | 💰 [`quantum_economics_engine.py`](quantum_economics_engine.py) | **Quantum Economics Engine** (Ellsberg Paradox & Market Liquidity Shocks) |
 | 🧠 [`quantum_psychiatry_engine.py`](quantum_psychiatry_engine.py) | **Quantum Psychiatry Engine** (Depression Eigenstate Traps & Ketamine Resets) |
 | 📈 [`market_phase_collapse_bot.py`](market_phase_collapse_bot.py) | **Market Phase Collapse Signal Bot** (BTC, ETH, SPY, QQQ, NVDA, TSLA) |
-| 🧪 [`tests/`](tests/) | **125 Automated Unit Tests** (100% Pass Rate via `pytest`) |
+| 🧪 [`tests/`](tests/) | **126 Automated Unit Tests** (100% Pass Rate via `pytest`) |
 
 ---
 
