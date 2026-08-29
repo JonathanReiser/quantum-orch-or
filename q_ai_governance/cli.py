@@ -45,6 +45,9 @@ def main():
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
+    # Subcommand: app
+    app_parser = subparsers.add_parser("app", help="Launch Streamlit Quantum Market Phase Dashboard")
+
     # Subcommand: hook
     hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
     hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
@@ -118,7 +121,12 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "hook":
+    if args.command == "app":
+        import subprocess
+        app_path = os.path.join(os.path.dirname(__file__), "app.py")
+        subprocess.run(["streamlit", "run", app_path])
+
+    elif args.command == "hook":
         oracle = UniswapV4HookOracle()
         oracle.generate_hook_deployment_summary(output_json=args.output)
 
