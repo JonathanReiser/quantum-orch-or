@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/q-ai-governance.svg)](https://pypi.org/project/q-ai-governance/)
 [![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
-[![Tests](https://img.shields.io/badge/tests-103%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
+[![Tests](https://img.shields.io/badge/tests-108%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
 [![arXiv](https://img.shields.io/badge/arXiv-2408.xxxxx-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/q_ai_governance_paper.pdf)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -34,6 +34,9 @@ pip install q-ai-governance
 ```bash
 # 🔮 Predict proposal vote approval
 q-ai-gov predict --public-good 9.5 --roi 9.8
+
+# 💰 Quantum Economics & Finance Engine (Ellsberg Paradox & Liquidity Shocks)
+q-ai-gov econ-full
 
 # 🧠 Quantum Psychiatry Engine (Depression Traps & Ketamine Resets)
 q-ai-gov psychiatry
