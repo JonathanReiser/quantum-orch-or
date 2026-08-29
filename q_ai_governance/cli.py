@@ -48,6 +48,14 @@ def main():
     # Subcommand: app
     app_parser = subparsers.add_parser("app", help="Launch Streamlit Quantum Market Phase Dashboard")
 
+    # Subcommand: audit
+    audit_parser = subparsers.add_parser("audit", help="Audit DAO proposal and generate Quantum Security Certificate")
+    audit_parser.add_argument("--proposal-id", type=str, default="PROP-101", help="Proposal ID")
+    audit_parser.add_argument("--yes", type=int, default=550000, help="YES vote count")
+    audit_parser.add_argument("--no", type=int, default=450000, help="NO vote count")
+    audit_parser.add_argument("--category", type=str, default="Public Goods", help="Proposal Category")
+    audit_parser.add_argument("--output", type=str, default="dao_security_certificate.json", help="Output JSON path")
+
     # Subcommand: hook
     hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
     hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
@@ -125,6 +133,19 @@ def main():
         import subprocess
         app_path = os.path.join(os.path.dirname(__file__), "app.py")
         subprocess.run(["streamlit", "run", app_path])
+
+    elif args.command == "audit":
+        from q_ai_governance.dao_security_oracle import DAOSecurityOracle
+        oracle = DAOSecurityOracle()
+        cert = oracle.audit_proposal(
+            proposal_id=args.proposal_id,
+            yes_votes=args.yes,
+            no_votes=args.no,
+            category=args.category
+        )
+        oracle.export_certificate(cert, output_file=args.output)
+        print(f"🔒 B2B DAO Security Certificate exported to {args.output}")
+        print(json.dumps(cert, indent=2))
 
     elif args.command == "hook":
         oracle = UniswapV4HookOracle()
