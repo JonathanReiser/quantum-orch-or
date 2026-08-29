@@ -69,15 +69,15 @@ and **Penrose Orchestrated Objective Reduction (Orch-OR)**.
 # ALWAYS-VISIBLE Legend Callout Banner (No Hovering or Clicking Needed!)
 st.markdown("""
 <div class="info-banner">
-    <h3 style="margin-top:0; color:#38bdf8;">📖 Dashboard Guide: Key Metrics & Risk Thresholds</h3>
+    <h3 style="margin-top:0; color:#38bdf8;">📖 Dashboard Guide: Phase States & Metric Thresholds</h3>
     <ul style="line-height: 1.6; font-size: 10.5pt;">
-        <li>📈 <strong>P(BULL) & 📉 P(BEAR):</strong> The <strong>Probability (%)</strong> of the asset moving UP (Bullish) vs DOWN (Bearish), calculated via quantum statevector projection (|⟨BULL|ψ⟩|²).</li>
-        <li>🌀 <strong>Dephasing Noise (γ_ϕ):</strong> Measures <strong>market panic & order-book confusion</strong> (0.00 = Perfectly Calm, >0.70 = Extreme Panic).</li>
+        <li>🟢 <strong>COHERENT SUPERPOSITION (Stable Market Harmony):</strong> The market is calm, harmonized, and healthy. Buyers & sellers are aligned. Safe to trade.</li>
+        <li>🟡 <strong>DEPHASING PHASE (Noise Building Up):</strong> Market confusion and social rumors are rising (γ_ϕ ≥ 0.40). Tighten stop-losses.</li>
+        <li>🔴 <strong>COLLAPSE IMMINENT (Penrose Crash Warning):</strong> Thermal panic has hit a tipping point (S(t) ≥ 1.00). The market is about to undergo a sudden, violent drop! Exit or hedge longs.</li>
+        <li>📈 <strong>P(BULL) & 📉 P(BEAR):</strong> The <strong>Probability (%)</strong> of the price moving UP vs DOWN, calculated via quantum statevector projection (|⟨BULL|ψ⟩|²).</li>
+        <li>🌀 <strong>Dephasing Noise (γ_ϕ):</strong> Measures <strong>market panic & order-book noise</strong> (0.00 = Perfectly Calm, >0.70 = Extreme Panic).</li>
         <li>⚛️ <strong>Penrose Threshold (S_crit = 1.00):</strong> Measures spacetime quantum collapse action. 
             When <strong>Penrose Action S(t) ≥ 1.00</strong>, a <strong>Statevector Collapse</strong> triggers an immediate market crash warning!</li>
-        <li>🟢 <strong>LOW RISK (γ_ϕ < 0.40):</strong> Calm market harmony. Safe trend momentum.</li>
-        <li>🟡 <strong>MEDIUM RISK (0.40 ≤ γ_ϕ ≤ 0.70):</strong> Rising social noise. Tighten stop-losses.</li>
-        <li>🔴 <strong>HIGH RISK (γ_ϕ > 0.70 or S(t) ≥ 1.00):</strong> Panic collapse imminent! Impending crash warning.</li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
