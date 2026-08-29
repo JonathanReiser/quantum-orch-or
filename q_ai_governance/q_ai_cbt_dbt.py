@@ -149,4 +149,15 @@ class QuantumCBTEngine:
             "metrics": metrics,
             "cbt_reframe_applied": distortion_indices is not None and len(distortion_indices) > 0,
             "dbt_dialectical_alignment": metrics["dialectical_status"],
+            "dialectical_message": self.generate_dialectical_reframe_message(user_thought_embedding),
         }
+
+    def generate_dialectical_reframe_message(self, user_thought: Any = None) -> str:
+        """
+        Generates a 3-part DBT Dialectical Superposition Message (|Acceptance> + |Reason> = |Wise Mind>).
+        """
+        return (
+            "1. ACCEPTANCE (Emotion Mind): 'It makes complete sense that your body is reacting with panic right now—your nervous system is trying to protect you.'\n"
+            "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, your physical health and flight safety facts are 100% solid.'\n"
+            "3. WISE MIND SYNTHESIS: 'We don't need to eliminate the fear to step onto the plane—we can walk down the jet bridge carrying both fear and safety together.'"
+        )

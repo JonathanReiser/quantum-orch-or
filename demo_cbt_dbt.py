@@ -41,7 +41,10 @@ def main():
     print("\n" + "-" * 80)
     print("✨ COMPARISON 2: QUANTUM CBT/DBT ENGINE (Statevector Resolution)")
     print("-" * 80)
-    print("   Step 1: Dialectical Superposition |Psi> = 1/sqrt(2) (|Terrified> + |Healthy Heart>)")
+    print("   Bot Message (Quantum Dialectical Reframe):")
+    for line in result["dialectical_message"].split("\n"):
+        print(f"     {line}")
+    print("\n   Step 1: Dialectical Superposition |Psi> = 1/sqrt(2) (|Terrified> + |Healthy Heart>)")
     print("   Step 2: Destructive Phase Cancellation Uhat(pi) applied to panic indices (e^{i*pi} = -1)")
     print("   Step 3: Wise Mind Coherence Measurement: 100.0% (WISE_MIND_HARMONY)")
     print("   Step 4: Recovery Delta (\\Delta S):       +12 (Full Restoration)")
