@@ -43,21 +43,21 @@ if preset_thought != "Custom Thought":
 else:
     user_thought_input = st.text_input("Enter Any Intrusive Thought:", "I am terrified that I am failing everyone.")
 
-if st.button("🚀 Run Quantum Statevector Resolution", type="primary"):
-    np.random.seed(hash(user_thought_input) % (2**32))
-    raw_embedding = np.random.randn(128)
-    fact_embedding = np.random.randn(128)
-    distortion_indices = np.array([0, 2, 4, 8, 12])
+# Compute automatically on any text input or slider change
+np.random.seed(abs(hash(user_thought_input)) % (2**32))
+raw_embedding = np.random.randn(128)
+fact_embedding = np.random.randn(128)
+distortion_indices = np.array([0, 2, 4, 8, 12])
 
-    cbt_engine = QuantumCBTEngine(baseline_stability=baseline_stability)
-    res = cbt_engine.process_cognitive_cycle(raw_embedding, distortion_indices=distortion_indices)
-    m = res["metrics"]
+cbt_engine = QuantumCBTEngine(baseline_stability=baseline_stability)
+res = cbt_engine.process_cognitive_cycle(raw_embedding, distortion_indices=distortion_indices)
+m = res["metrics"]
 
-    steering_engine = LatentVectorSteeringEngine(baseline_stability=baseline_stability)
-    steering_res = steering_engine.compute_steering_activation(raw_embedding, distortion_indices, phase_angle=np.pi)
+steering_engine = LatentVectorSteeringEngine(baseline_stability=baseline_stability)
+steering_res = steering_engine.compute_steering_activation(raw_embedding, distortion_indices, phase_angle=np.pi)
 
-    truth_pipeline = TruthAlignedSteeringPipeline(baseline_stability=baseline_stability)
-    truth_res = truth_pipeline.compute_truth_steering(raw_embedding, fact_embedding, distortion_indices)
+truth_pipeline = TruthAlignedSteeringPipeline(baseline_stability=baseline_stability)
+truth_res = truth_pipeline.compute_truth_steering(raw_embedding, fact_embedding, distortion_indices)
 
     st.divider()
     col1, col2, col3 = st.columns(3)
