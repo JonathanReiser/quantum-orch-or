@@ -59,6 +59,15 @@ and **Penrose Orchestrated Objective Reduction (Orch-OR)**.
 *Published Paper DOI:* [`10.5281/zenodo.22151233`](https://zenodo.org/records/22151233) | *PyPI SDK:* `pip install q-ai-governance`
 """)
 
+# Plain-English Legend Callout Box
+with st.expander("📖 **What do Dephasing Noise (γ_ϕ) and Risk Levels mean? (Click to Expand)**", expanded=True):
+    st.markdown("""
+    * 🌀 **Dephasing Noise ($\gamma_\phi$):** Measures **market panic, confusion, and order-book noise**. Low noise means high harmony; high noise means chaotic panic.
+    * 🟢 **LOW RISK ($\gamma_\phi < 0.40$):** Calm, harmonized market. Clear trend momentum. Safe to trade.
+    * 🟡 **MEDIUM RISK ($0.40 \le \gamma_\phi \le 0.70$):** Rising market noise and conflicting social rumors. Tighten stop-losses.
+    * 🔴 **HIGH RISK ($\gamma_\phi > 0.70$):** Extreme market panic! Penrose action triggers a **Statevector Collapse**, warning of an impending sharp drop.
+    """)
+
 # Sidebar Controls
 st.sidebar.header("⚙️ Scanner Controls")
 selected_assets = st.sidebar.multiselect(
