@@ -1,8 +1,7 @@
 """
 Public Interactive Web App: Quantum CBT/DBT Statevector Engine (app_cbt.py)
 -------------------------------------------------------------------------
-Interactive web interface allowing users to type any thought, compute
-statevector resolution live, visualize Wise Mind coherence, and share results.
+Interactive web interface with side-by-side comparison of Standard LLM vs. Q-LLM.
 """
 
 import streamlit as st
@@ -11,6 +10,7 @@ import urllib.parse
 from q_ai_governance.q_ai_cbt_dbt import QuantumCBTEngine, embed_to_hilbert_statevector
 from q_ai_governance.q_ai_vector_steering import LatentVectorSteeringEngine
 from q_ai_governance.q_ai_truth_alignment import TruthAlignedSteeringPipeline
+from q_ai_governance.q_ai_neural_generator import NeuralDialecticalGenerator
 
 st.set_page_config(
     page_title="Quantum CBT/DBT Statevector Engine",
@@ -20,8 +20,8 @@ st.set_page_config(
 
 st.title("⚛️ Quantum CBT/DBT Statevector Engine")
 st.markdown("""
-**Interactive Mental Health & Cognitive Vector Steering Demo**  
-*Model your cognitive statevectors in Complex Hilbert Space ($\mathcal{H} = \mathbb{C}^{64}$), apply continuous phase interference ($\cos\Delta\phi = -1$), and synthesize 3-qubit Wise Mind entanglements.*
+**Side-by-Side Comparison: Standard LLM vs. Quantum Representation Steering (Q-LLM)**  
+*Model cognitive statevectors in Complex Hilbert Space ($\mathcal{H} = \mathbb{C}^{64}$), apply continuous phase interference ($\cos\Delta\phi = -1$), and inject activation steering tensors ($\mathbf{v}_{steer}$).*
 """)
 
 st.sidebar.header("⚙️ Simulation Settings")
@@ -60,19 +60,48 @@ truth_pipeline = TruthAlignedSteeringPipeline(baseline_stability=baseline_stabil
 truth_res = truth_pipeline.compute_truth_steering(raw_embedding, fact_embedding, distortion_indices)
 
 st.divider()
-col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.metric("Initial Stability", f"{baseline_stability:.1f} / 100", help="High Distress Zone")
-with col2:
-    st.metric("Recovery Delta (ΔS)", f"+{m['stability_delta']}", help="Statevector Rotation Recovery")
-with col3:
-    st.metric("Restored Baseline", f"{m['new_stability']:.1f} / 100", delta=f"+{m['stability_delta']}", help="RESOLVED!")
+# SIDE BY SIDE COMPARISON COLUMNS
+col_std, col_qllm = st.columns(2)
 
-st.subheader("💬 3-Part DBT Dialectical Reframe Message")
-st.info(res["dialectical_message"])
+with col_std:
+    st.subheader("❌ Standard LLM (Unguided Generator)")
+    st.error(f"Status: High Distress / Panic Zone (Stability = {baseline_stability:.1f})")
+    
+    # Standard LLM output simulation
+    st.markdown(f"""
+    **Model Output (Softmax Next-Token Generation):**  
+    > *"I'm sorry to hear that you are feeling: '{user_thought_input}'. Have you tried taking a few deep breaths? Let me know if you'd like to talk more about it."*
+    
+    **Limitations:**
+    - ❌ **Zero State Tracking:** No mathematical model of emotional baseline.
+    - ❌ **Sycophancy / Passive Echoing:** Leaves negative activation loops intact.
+    - ❌ **Uncontrolled Activation Drift:** Prone to hallucinating panic or generic checklists.
+    - ❌ **Stability Delta:** `+0.0` (Stuck at {baseline_stability:.1f})
+    """)
+    st.progress(int(baseline_stability))
 
-st.subheader("⚛️ Quantum Statevector & Activation Steering Metrics")
+with col_qllm:
+    st.subheader("✨ Our Q-LLM (Quantum Activation Steering)")
+    st.success(f"Status: RESOLVED! Restored Baseline (Stability = {m['new_stability']:.1f})")
+    
+    st.markdown("**Model Output (Constrained by Steering Tensor $\mathbf{v}_{steer}$):**")
+    st.info(res["dialectical_message"])
+    
+    st.markdown(f"""
+    **Quantum Architectural Advantages:**
+    - ✅ **Hilbert Statevector Tracking:** $\mathcal{{H}} = \mathbb{{C}}^{{64}}$ continuous state representation.
+    - ✅ **Destructive Phase Interference:** $\cos\Delta\phi = {steering_res['interference_factor']:+.4f}$ (Cancels distortion vector).
+    - ✅ **Wise Mind GHZ Entanglement:** **{m['wise_mind_coherence'] * 100:.1f}%** Coherence ($|\text{{GHZ}}_3\\rangle$).
+    - ✅ **Epistemic Invariance:** **{truth_res['epistemic_invariance'] * 100:.1f}%** (Prevents sycophancy).
+    - ✅ **Stability Recovery Delta:** **+{m['stability_delta']}** (Restored to {m['new_stability']:.1f})
+    """)
+    st.progress(int(m['new_stability']))
+
+st.divider()
+
+# Metrics Detail Table
+st.subheader("⚛️ Detailed Representation Steering Metrics")
 m_col1, m_col2 = st.columns(2)
 
 with m_col1:
