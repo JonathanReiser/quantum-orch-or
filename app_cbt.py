@@ -59,41 +59,41 @@ steering_res = steering_engine.compute_steering_activation(raw_embedding, distor
 truth_pipeline = TruthAlignedSteeringPipeline(baseline_stability=baseline_stability)
 truth_res = truth_pipeline.compute_truth_steering(raw_embedding, fact_embedding, distortion_indices)
 
-    st.divider()
-    col1, col2, col3 = st.columns(3)
+st.divider()
+col1, col2, col3 = st.columns(3)
 
-    with col1:
-        st.metric("Initial Stability", f"{baseline_stability:.1f} / 100", help="High Distress Zone")
-    with col2:
-        st.metric("Recovery Delta (ΔS)", f"+{m['stability_delta']}", help="Statevector Rotation Recovery")
-    with col3:
-        st.metric("Restored Baseline", f"{m['new_stability']:.1f} / 100", delta=f"+{m['stability_delta']}", help="RESOLVED!")
+with col1:
+    st.metric("Initial Stability", f"{baseline_stability:.1f} / 100", help="High Distress Zone")
+with col2:
+    st.metric("Recovery Delta (ΔS)", f"+{m['stability_delta']}", help="Statevector Rotation Recovery")
+with col3:
+    st.metric("Restored Baseline", f"{m['new_stability']:.1f} / 100", delta=f"+{m['stability_delta']}", help="RESOLVED!")
 
-    st.subheader("💬 3-Part DBT Dialectical Reframe Message")
-    st.info(res["dialectical_message"])
+st.subheader("💬 3-Part DBT Dialectical Reframe Message")
+st.info(res["dialectical_message"])
 
-    st.subheader("⚛️ Quantum Statevector & Activation Steering Metrics")
-    m_col1, m_col2 = st.columns(2)
+st.subheader("⚛️ Quantum Statevector & Activation Steering Metrics")
+m_col1, m_col2 = st.columns(2)
 
-    with m_col1:
-        st.write(f"**Wise Mind Coherence:** {m['wise_mind_coherence'] * 100:.1f}%")
-        st.write(f"**De-escalation Probability P(|000>):** {m['p_deescalate'] * 100:.1f}%")
-        st.write(f"**Continuous Interference cos(Δφ):** {steering_res['interference_factor']:+.4f}")
+with m_col1:
+    st.write(f"**Wise Mind Coherence:** {m['wise_mind_coherence'] * 100:.1f}%")
+    st.write(f"**De-escalation Probability P(|000>):** {m['p_deescalate'] * 100:.1f}%")
+    st.write(f"**Continuous Interference cos(Δφ):** {steering_res['interference_factor']:+.4f}")
 
-    with m_col2:
-        st.write(f"**Epistemic Fact Invariance (I_fact):** {truth_res['epistemic_invariance'] * 100:.1f}%")
-        st.write(f"**Representation Coherence:** {truth_res['representation_coherence'] * 100:.1f}%")
-        st.write(f"**Steering Vector Norm (||v_steer||):** {steering_res['steering_vector_norm']:.4f}")
+with m_col2:
+    st.write(f"**Epistemic Fact Invariance (I_fact):** {truth_res['epistemic_invariance'] * 100:.1f}%")
+    st.write(f"**Representation Coherence:** {truth_res['representation_coherence'] * 100:.1f}%")
+    st.write(f"**Steering Vector Norm (||v_steer||):** {steering_res['steering_vector_norm']:.4f}")
 
-    st.divider()
+st.divider()
 
-    # Share Section
-    st.subheader("📢 Share Your Result")
-    share_text = f"I just ran '{user_thought_input}' through the Quantum CBT/DBT Engine! Restored stability from {baseline_stability} to {m['new_stability']} using Hilbert Space statevector steering. Try it out: https://github.com/JonathanReiser/quantum-orch-or"
-    encoded_share = urllib.parse.quote(share_text)
+# Share Section
+st.subheader("📢 Share Your Result")
+share_text = f"I just ran '{user_thought_input}' through the Quantum CBT/DBT Engine! Restored stability from {baseline_stability} to {m['new_stability']} using Hilbert Space statevector steering. Try it out: https://github.com/JonathanReiser/quantum-orch-or"
+encoded_share = urllib.parse.quote(share_text)
 
-    share_col1, share_col2 = st.columns(2)
-    with share_col1:
-        st.markdown(f"[📲 Share on X / Twitter](https://twitter.com/intent/tweet?text={encoded_share})")
-    with share_col2:
-        st.markdown(f"[💼 Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/JonathanReiser/quantum-orch-or)")
+share_col1, share_col2 = st.columns(2)
+with share_col1:
+    st.markdown(f"[📲 Share on X / Twitter](https://twitter.com/intent/tweet?text={encoded_share})")
+with share_col2:
+    st.markdown(f"[💼 Share on LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/JonathanReiser/quantum-orch-or)")
