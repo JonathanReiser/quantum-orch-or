@@ -67,11 +67,13 @@ via [`Q_AIGovernanceHook.sol`](https://github.com/JonathanReiser/quantum-orch-or
 # Guide Banner
 st.markdown("""
 <div class="info-banner">
-    <h3 style="margin-top:0; color:#38bdf8;">🛡️ How DAO Treasury Security Audits Work</h3>
+    <h3 style="margin-top:0; color:#38bdf8;">🎻 What is "Vote Vector Entanglement"? (The Orchestra Analogy)</h3>
     <ul style="line-height: 1.6; font-size: 10.5pt;">
-        <li>⚛️ <strong>80% Quantum Consensus Threshold:</strong> Standard binary votes fail at ~40% due to whale noise. Q-AI entangles vote vectors to require <strong>≥ 80.00% consensus</strong> before smart contract payout.</li>
-        <li>🌊 <strong>Destructive Phase Interference:</strong> Selfish whale votes aimed at draining treasury funds interfere destructively and get cancelled out.</li>
-        <li>🔒 <strong>Tamper-Evident SHA-256 Proof:</strong> Generates cryptographic Qiskit proof hashes executed on IBM Quantum hardware.</li>
+        <li>🗣️ <strong>Classical Un-Entangled Voting (The Old Way):</strong> Votes are isolated numbers. A whale with 51% of tokens acts like a person shouting through a megaphone—he forces bad proposals through.</li>
+        <li>🎻 <strong>Q-AI Entangled Voting (The New Way):</strong> Q-AI maps votes into an <i>N-qubit GHZ quantum entangled state</i>. Votes act like an <strong>Orchestra playing in harmony</strong>.</li>
+        <li>🟢 <strong>Constructive Boost (Public-Good Alignment):</strong> Community members voting for public goods share phase harmony. Their waves entangle constructively, boosting consensus to <strong>≥ 80.00%</strong>!</li>
+        <li>🔴 <strong>Destructive Cancellation (Whale Attack):</strong> A selfish whale voting to drain funds is out-of-phase. His wave entangles destructively and <strong>cancels itself out (1 - 1 = 0)</strong>!</li>
+        <li>🔒 <strong>Tamper-Evident SHA-256 Proof:</strong> Every audit generates a cryptographic Qiskit proof hash executed on 127-qubit IBM Quantum hardware.</li>
     </ul>
 </div>
 """, unsafe_allow_html=True)
