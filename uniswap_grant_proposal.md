@@ -6,6 +6,7 @@
 **Track:** Uniswap v4 Hooks & Security Infrastructure  
 **Requested Amount:** $100,000 USD  
 **CERN Zenodo DOI:** [10.5281/zenodo.22151233](https://zenodo.org/records/22151233)  
+**Full Academic Paper:** [full_quantum_governance_paper.md](https://github.com/JonathanReiser/quantum-orch-or/blob/main/full_quantum_governance_paper.md)  
 **GitHub Repository:** [JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)  
 
 ---
