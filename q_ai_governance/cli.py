@@ -18,7 +18,8 @@ try:
     from q_ai_governance.uniswap_quantum_governance import UniswapQuantumGovernor
     from q_ai_governance.q_ai_bot import QAIGovernanceBot
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
-    from quantum_psychiatry_engine import QuantumPsychiatrySimulator
+    from q_ai_governance.quantum_psychiatry_engine import QuantumPsychiatrySimulator
+    from q_ai_governance.quantum_economics_engine import QuantumEconomicsSimulator
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
@@ -31,6 +32,7 @@ except ImportError:
     from q_ai_bot import QAIGovernanceBot
     from q_ai_twitter_bot import QAITwitterBot
     from quantum_psychiatry_engine import QuantumPsychiatrySimulator
+    from quantum_economics_engine import QuantumEconomicsSimulator
 
 def main():
     parser = argparse.ArgumentParser(
@@ -38,6 +40,11 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: econ-full
+    econ_full_parser = subparsers.add_parser("econ-full", help="Run Quantum Economics simulation & paper generator")
+    econ_full_parser.add_argument("--plot", type=str, default="quantum_economics_benchmark_plot.png", help="Output plot path")
+    econ_full_parser.add_argument("--paper", type=str, default="quantum_economics_paper.md", help="Output paper path")
 
     # Subcommand: psychiatry
     psy_parser = subparsers.add_parser("psychiatry", help="Run Quantum Psychiatry simulation & paper generator")
@@ -99,7 +106,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "psychiatry":
+    if args.command == "econ-full":
+        sim = QuantumEconomicsSimulator()
+        sim.run_economics_benchmark(output_plot=args.plot, output_paper=args.paper)
+
+    elif args.command == "psychiatry":
         sim = QuantumPsychiatrySimulator()
         sim.run_psychiatry_benchmark(output_plot=args.plot, output_paper=args.paper)
 
