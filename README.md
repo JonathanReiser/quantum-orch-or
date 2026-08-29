@@ -37,7 +37,8 @@ pip install q-ai-governance
 | :--- | :--- |
 | 🦄 [`contracts/Q_AIGovernanceHook.sol`](contracts/Q_AIGovernanceHook.sol) | **On-Chain Solidity Uniswap v4 Governance Hook** (Enforces $\ge 80\%$ consensus) |
 | 📦 [`q_ai_governance/`](q_ai_governance/) | **PyPI Package Core Engine** (`pip install q-ai-governance`) |
-| 📄 [`full_quantum_governance_paper.tex`](full_quantum_governance_paper.tex) | **Full 15-Page RevTeX 4.2 Academic Journal Manuscript** (APS Style) |
+| 🎧 [`EXECUTIVE_WHITEPAPER.md`](EXECUTIVE_WHITEPAPER.md) | **Noise-Canceling Governance: Executive Whitepaper** (Plain-English Guide) |
+| 📄 [`full_quantum_governance_paper.md`](full_quantum_governance_paper.md) | **Full 15-Page Academic Journal Paper** (Readable Markdown Edition) |
 | 🎯 [`WEB3_QUANTUM_AI_PROTOCOL_PITCH.md`](WEB3_QUANTUM_AI_PROTOCOL_PITCH.md) | **10-Slide Web3 VC & Foundation Pitch Deck** |
 | 🦄 [`uniswap_grant_proposal.md`](uniswap_grant_proposal.md) | **$100,000 Uniswap Foundation Grant Application** |
 | 💰 [`quantum_economics_engine.py`](quantum_economics_engine.py) | **Quantum Economics Engine** (Ellsberg Paradox & Market Liquidity Shocks) |
