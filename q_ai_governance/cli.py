@@ -65,6 +65,11 @@ def main():
     give_parser.add_argument("--nonprofit", type=str, default="Clean Water Initiative", help="Non-Profit Organization Name")
     give_parser.add_argument("--grant-usd", type=float, default=25000.0, help="Grant Amount in USD")
 
+    # Subcommand: swarm
+    swarm_parser = subparsers.add_parser("swarm", help="Evaluate Enterprise Multi-Agent AI Swarm Consensus")
+    swarm_parser.add_argument("--task", type=str, default="Autonomous Fleet Path Optimization", help="Multi-Agent AI Task Description")
+    swarm_parser.add_argument("--agents", type=int, default=5, help="Number of AI agents in swarm")
+
     # Subcommand: hook
     hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
     hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
@@ -168,6 +173,13 @@ def main():
         portal = QGivingPortal()
         res = portal.audit_giving_grant(nonprofit_name=args.nonprofit, grant_amount_usd=args.grant_usd)
         print(f"🎁 Base L2 Q-Giving Philanthropy Impact Audit [{args.nonprofit}]")
+        print(json.dumps(res, indent=2))
+
+    elif args.command == "swarm":
+        from q_ai_governance.q_ai_agent_swarm import QAIAgentSwarm
+        swarm = QAIAgentSwarm()
+        res = swarm.evaluate_swarm_consensus(task_name=args.task, num_agents=args.agents)
+        print(f"🤖 Enterprise Multi-Agent AI Swarm Consensus [{args.task}]")
         print(json.dumps(res, indent=2))
 
     elif args.command == "hook":
