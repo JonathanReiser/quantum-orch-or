@@ -20,6 +20,7 @@ try:
     from q_ai_governance.q_ai_twitter_bot import QAITwitterBot
     from q_ai_governance.quantum_psychiatry_engine import QuantumPsychiatrySimulator
     from q_ai_governance.quantum_economics_engine import QuantumEconomicsSimulator
+    from q_ai_governance.market_phase_collapse_bot import MarketPhaseCollapseBot
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
@@ -33,6 +34,7 @@ except ImportError:
     from q_ai_twitter_bot import QAITwitterBot
     from quantum_psychiatry_engine import QuantumPsychiatrySimulator
     from quantum_economics_engine import QuantumEconomicsSimulator
+    from market_phase_collapse_bot import MarketPhaseCollapseBot
 
 def main():
     parser = argparse.ArgumentParser(
@@ -40,6 +42,10 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: market-bot
+    mkt_parser = subparsers.add_parser("market-bot", help="Run Quantum Market Phase Collapse Signal Bot")
+    mkt_parser.add_argument("--output", type=str, default="market_signals_report.json", help="Output JSON path")
 
     # Subcommand: econ-full
     econ_full_parser = subparsers.add_parser("econ-full", help="Run Quantum Economics simulation & paper generator")
@@ -106,7 +112,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "econ-full":
+    if args.command == "market-bot":
+        bot = MarketPhaseCollapseBot()
+        bot.run_market_scan(output_json=args.output)
+
+    elif args.command == "econ-full":
         sim = QuantumEconomicsSimulator()
         sim.run_economics_benchmark(output_plot=args.plot, output_paper=args.paper)
 
