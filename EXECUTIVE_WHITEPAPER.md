@@ -18,6 +18,16 @@ Just as noise-canceling headphones flip airplane jet engine noise upside down to
 
 ---
 
+## 🌟 The Core Advantages: Transparency, Predictability, & Security
+
+Unlike proprietary "black-box" AI systems or opaque corporate grant committees, Q-AI delivers **100% Verifiable On-Chain Transparency**:
+
+1. 🔍 **Immutably Verifiable On-Chain Record:** Every quantum consensus score, impact metric, and treasury payout is recorded immutably on-chain (Ethereum Sepolia, Base L2, Arbitrum) and independently citable by block number on Etherscan.
+2. 🔒 **Tamper-Evident Quantum Proofs:** Every consensus calculation generates a public SHA-256 Qiskit proof hash (`qiskitProofHash`) executed on 127-qubit **IBM Quantum hardware (`ibm_brisbane`)**, allowing anyone globally to audit the mathematical calculation.
+3. 📦 **100% Open-Source Code & Reproducibility:** Full open-source codebase on GitHub and PyPI (`pip install q-ai-governance`) with 119 automated unit tests.
+
+---
+
 ## 2. The Problem: The 40% Voter Gridlock
 
 In classical DAO voting (Uniswap, Arbitrum, Optimism, Gitcoin):
