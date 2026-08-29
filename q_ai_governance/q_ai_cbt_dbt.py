@@ -120,7 +120,7 @@ class QuantumCBTEngine:
         self.baseline_stability = baseline_stability
 
     def process_cognitive_cycle(
-        self, user_thought_embedding: np.ndarray, distortion_indices: np.ndarray = None
+        self, user_thought_embedding: np.ndarray, distortion_indices: np.ndarray = None, user_thought_text: str = None
     ) -> Dict[str, Any]:
         # 1. Project to Complex Hilbert Space
         psi = embed_to_hilbert_statevector(user_thought_embedding)
@@ -149,15 +149,49 @@ class QuantumCBTEngine:
             "metrics": metrics,
             "cbt_reframe_applied": distortion_indices is not None and len(distortion_indices) > 0,
             "dbt_dialectical_alignment": metrics["dialectical_status"],
-            "dialectical_message": self.generate_dialectical_reframe_message(user_thought_embedding),
+            "dialectical_message": self.generate_dialectical_reframe_message(user_thought_text or user_thought_embedding),
         }
 
     def generate_dialectical_reframe_message(self, user_thought: Any = None) -> str:
         """
         Generates a 3-part DBT Dialectical Superposition Message (|Acceptance> + |Reason> = |Wise Mind>).
         """
+        text = str(user_thought).strip() if isinstance(user_thought, str) else ""
+
+        if "sad" in text.lower():
+            return (
+                "1. ACCEPTANCE (Emotion Mind): 'It is completely okay and valid to feel sad right now—your nervous system is giving space to something heavy.'\n"
+                "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, this sadness is a temporary wave passing through, not your permanent identity.'\n"
+                "3. WISE MIND SYNTHESIS: 'We don't need to force fake positivity right now—we can sit with this sadness gently while keeping space for warmth and peace to return.'"
+            )
+        elif "plane" in text.lower() or "fly" in text.lower() or "die" in text.lower():
+            return (
+                "1. ACCEPTANCE (Emotion Mind): 'It makes complete sense that your body is reacting with panic at the gate—your nervous system is trying to protect you.'\n"
+                "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, your physical health check and aviation safety statistics are 100% solid.'\n"
+                "3. WISE MIND SYNTHESIS: 'We don't need to eliminate fear to board the plane—we can step onto the jet bridge carrying both fear and safety together.'"
+            )
+        elif "fail" in text.lower() or "terrified" in text.lower():
+            return (
+                "1. ACCEPTANCE (Emotion Mind): 'Feeling terrified of failing shows how much you care about the people and outcomes in your life.'\n"
+                "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, a high-anxiety thought is an emotional prediction, not an established factual outcome.'\n"
+                "3. WISE MIND SYNTHESIS: 'We can honor your deep care while grounding in the present moment, focusing only on the single next manageable step.'"
+            )
+        elif "rent" in text.lower() or "money" in text.lower() or "pay" in text.lower():
+            return (
+                "1. ACCEPTANCE (Emotion Mind): 'Financial stress is deeply unsettling, and feeling anxious about paying bills is a completely understandable reaction.'\n"
+                "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, panic amplifies worst-case scenarios, whereas calm problem-solving reveals practical options.'\n"
+                "3. WISE MIND SYNTHESIS: 'We will acknowledge the financial pressure without letting panic run the show, focusing on practical resources and step-by-step solutions.'"
+            )
+        elif text:
+            cleaned = text if len(text) <= 60 else text[:57] + "..."
+            return (
+                f"1. ACCEPTANCE (Emotion Mind): 'It is completely valid to experience distress around: \"{cleaned}\"—your nervous system is signaling concern.'\n"
+                f"2. GROUNDING (Reasonable Mind): 'AND at the exact same time, an intense thought or feeling is a transient internal state, not an absolute objective truth.'\n"
+                f"3. WISE MIND SYNTHESIS: 'We can acknowledge this concern with compassion while anchoring in grounded Wise Mind action, focusing on what is controllable right now.'"
+            )
+
         return (
-            "1. ACCEPTANCE (Emotion Mind): 'It makes complete sense that your body is reacting with panic right now—your nervous system is trying to protect you.'\n"
-            "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, your physical health and flight safety facts are 100% solid.'\n"
-            "3. WISE MIND SYNTHESIS: 'We don't need to eliminate the fear to step onto the plane—we can walk down the jet bridge carrying both fear and safety together.'"
+            "1. ACCEPTANCE (Emotion Mind): 'It makes complete sense that your body is reacting with distress right now—your nervous system is trying to protect you.'\n"
+            "2. GROUNDING (Reasonable Mind): 'AND at the exact same time, your baseline physical health and safety facts remain grounded.'\n"
+            "3. WISE MIND SYNTHESIS: 'We don't need to eliminate the fear immediately—we can move forward carrying both self-compassion and clear-headed grounding together.'"
         )

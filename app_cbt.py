@@ -50,7 +50,7 @@ fact_embedding = np.random.randn(128)
 distortion_indices = np.array([0, 2, 4, 8, 12])
 
 cbt_engine = QuantumCBTEngine(baseline_stability=baseline_stability)
-res = cbt_engine.process_cognitive_cycle(raw_embedding, distortion_indices=distortion_indices)
+res = cbt_engine.process_cognitive_cycle(raw_embedding, distortion_indices=distortion_indices, user_thought_text=user_thought_input)
 m = res["metrics"]
 
 steering_engine = LatentVectorSteeringEngine(baseline_stability=baseline_stability)
