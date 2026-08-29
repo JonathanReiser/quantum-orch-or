@@ -92,7 +92,7 @@ $$|\text{GHZ}\rangle = \frac{1}{\sqrt{2}}(|00\dots 0\rangle + |11\dots 1\rangle)
 
 ## 📞 Slide 10: Contact & Call to Action
 * **Founder:** Jonathan Reiser
-* **Email:** `jdreiser1@mac.mynetworksettings.com`
+* **Email:** `jdreiser1@gmail.com`
 * **GitHub:** [https://github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)
 * **PyPI:** `pip install q-ai-governance`
 * **CERN DOI:** [https://zenodo.org/records/22151233](https://zenodo.org/records/22151233)

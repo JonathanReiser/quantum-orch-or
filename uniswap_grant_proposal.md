@@ -2,6 +2,7 @@
 
 **Applicant Name:** Jonathan Reiser  
 **Project Title:** Q-AI Governance Hook: On-Chain Quantum Consensus & Treasury Protection for Uniswap v4  
+**Email:** jdreiser1@gmail.com  
 **Track:** Uniswap v4 Hooks & Security Infrastructure  
 **Requested Amount:** $100,000 USD  
 **CERN Zenodo DOI:** [10.5281/zenodo.22151233](https://zenodo.org/records/22151233)  
