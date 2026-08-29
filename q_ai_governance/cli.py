@@ -60,6 +60,11 @@ def main():
     serve_parser = subparsers.add_parser("serve", help="Fetch real-time Quantitative Trading API signal")
     serve_parser.add_argument("--asset", type=str, default="BTC", help="Crypto or Equity Ticker (e.g. BTC, ETH, SOL, NVDA)")
 
+    # Subcommand: give
+    give_parser = subparsers.add_parser("give", help="Audit Base L2 non-profit grant impact and issue Q-Giving proof")
+    give_parser.add_argument("--nonprofit", type=str, default="Clean Water Initiative", help="Non-Profit Organization Name")
+    give_parser.add_argument("--grant-usd", type=float, default=25000.0, help="Grant Amount in USD")
+
     # Subcommand: hook
     hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
     hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
@@ -156,6 +161,13 @@ def main():
         api = MarketSignalAPI()
         res = api.get_signal(asset=args.asset)
         print(f"📈 Quantitative Trading API Signal [{args.asset}]")
+        print(json.dumps(res, indent=2))
+
+    elif args.command == "give":
+        from q_ai_governance.q_ai_giving_portal import QGivingPortal
+        portal = QGivingPortal()
+        res = portal.audit_giving_grant(nonprofit_name=args.nonprofit, grant_amount_usd=args.grant_usd)
+        print(f"🎁 Base L2 Q-Giving Philanthropy Impact Audit [{args.nonprofit}]")
         print(json.dumps(res, indent=2))
 
     elif args.command == "hook":
