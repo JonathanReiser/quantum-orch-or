@@ -56,6 +56,10 @@ def main():
     audit_parser.add_argument("--category", type=str, default="Public Goods", help="Proposal Category")
     audit_parser.add_argument("--output", type=str, default="dao_security_certificate.json", help="Output JSON path")
 
+    # Subcommand: serve
+    serve_parser = subparsers.add_parser("serve", help="Fetch real-time Quantitative Trading API signal")
+    serve_parser.add_argument("--asset", type=str, default="BTC", help="Crypto or Equity Ticker (e.g. BTC, ETH, SOL, NVDA)")
+
     # Subcommand: hook
     hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
     hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
@@ -146,6 +150,13 @@ def main():
         oracle.export_certificate(cert, output_file=args.output)
         print(f"🔒 B2B DAO Security Certificate exported to {args.output}")
         print(json.dumps(cert, indent=2))
+
+    elif args.command == "serve":
+        from q_ai_governance.market_signal_api import MarketSignalAPI
+        api = MarketSignalAPI()
+        res = api.get_signal(asset=args.asset)
+        print(f"📈 Quantitative Trading API Signal [{args.asset}]")
+        print(json.dumps(res, indent=2))
 
     elif args.command == "hook":
         oracle = UniswapV4HookOracle()
