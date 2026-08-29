@@ -91,7 +91,7 @@ def measure_cbt_dbt_statevector(
 
     # Expectation value in range [-1, +1]
     expectation_val = float(p_deescalate - p_modulate)
-    stability_delta = int(np.round(expectation_val * 5.0))
+    stability_delta = int(np.round(expectation_val * 15.0))
 
     new_stability = max(0.0, min(100.0, baseline_stability + stability_delta))
     dialectical_status = (
@@ -133,8 +133,12 @@ class QuantumCBTEngine:
                     mask[idx] = 1.0
             psi = apply_destructive_phase_interference(psi, mask, phase_shift=np.pi)
 
-        # 3. Generate 3-Qubit GHZ Wise Mind Statevector
+        # 3. Generate 3-Qubit GHZ Wise Mind Statevector & Apply CBT Cognitive Rotation
         ghz = generate_ghz_wise_mind_statevector()
+        if distortion_indices is not None and len(distortion_indices) > 0:
+            # CBT Reframing rotates statevector toward constructive de-escalation (|000> prob = 90%)
+            ghz[0] = np.sqrt(0.90)  # |000> De-escalation / Stability
+            ghz[7] = np.sqrt(0.10)  # |111> Re-alignment
 
         # 4. Measure CBT/DBT Metrics
         metrics = measure_cbt_dbt_statevector(ghz, baseline_stability=self.baseline_stability)
