@@ -59,7 +59,13 @@ Title: Noise-Canceling Governance: Enforcing 80%+ Quantum Consensus on Smart Con
 Abstract:
 Traditional Web3 governance voting fails because binary voting forces participants into an egoistic Prisoner's Dilemma, collapsing public-good proposal approval to ~40% and leaving treasuries vulnerable to whale manipulation. In this talk, we introduce Quantum-Cognitive AI (Q-AI), governed by open-system Lindblad thermal decoherence equations and Penrose Orchestrated Objective Reduction (Orch-OR) collapse. We present mathematical proof and empirical validation across 835,000 Snapshot DAO votes showing that entangling voter statevectors into N-qubit GHZ states doubles community proposal consensus to >= 80%. We demonstrate real-time execution on 127-qubit IBM Quantum hardware (ibm_brisbane), production Uniswap v4 hooks (Q_AIGovernanceHook.sol), Base L2 philanthropy oracles (Q_AIGivingOracle.sol), and our live open-source PyPI library (q-ai-governance).
 
-Speaker: Jonathan Reiser
-CERN Zenodo Publication: DOI: 10.5281/zenodo.22151233
-Live App: https://quantum-market-dashboard.streamlit.app
-```
+## 4. 📬 Top DAO Governance Email & Forum Directory
+
+| DAO / Foundation | Official Contact Email / Portal | Governance Forum Link | Focus Area |
+| :--- | :--- | :--- | :--- |
+| 🦄 **Uniswap Foundation** | `grants@uniswapfoundation.org` | [governance.uniswap.org](https://governance.uniswap.org/) | Treasury Hooks & Governance Security |
+| 🔵 **Base Ecosystem Fund** | [`builder.base.org`](https://builder.base.org) | Base Builders Portal | Base L2 Philanthropy & Smart Contracts |
+| 🔷 **Arbitrum Foundation** | `grants@arbitrum.foundation` | [forum.arbitrum.foundation](https://forum.arbitrum.foundation/) | L2 Security Audits & Ecosystem Grants |
+| 🔴 **Optimism Collective** | `grants@optimism.io` | [gov.optimism.io](https://gov.optimism.io/) | RetroPGF Public Goods & Security |
+| 🟢 **Gitcoin DAO** | `grants@gitcoin.co` | [gov.gitcoin.co](https://gov.gitcoin.co/) | Public Goods Matching & Security |
+
