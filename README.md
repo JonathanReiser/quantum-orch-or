@@ -29,6 +29,24 @@ Install the official PyPI package:
 pip install q-ai-governance
 ```
 
+---
+
+## 📁 Repository Directory Map
+
+| Directory / File | Component Description |
+| :--- | :--- |
+| 🦄 [`contracts/Q_AIGovernanceHook.sol`](contracts/Q_AIGovernanceHook.sol) | **On-Chain Solidity Uniswap v4 Governance Hook** (Enforces $\ge 80\%$ consensus) |
+| 📦 [`q_ai_governance/`](q_ai_governance/) | **PyPI Package Core Engine** (`pip install q-ai-governance`) |
+| 📄 [`full_quantum_governance_paper.tex`](full_quantum_governance_paper.tex) | **Full 15-Page RevTeX 4.2 Academic Journal Manuscript** (APS Style) |
+| 🎯 [`WEB3_QUANTUM_AI_PROTOCOL_PITCH.md`](WEB3_QUANTUM_AI_PROTOCOL_PITCH.md) | **10-Slide Web3 VC & Foundation Pitch Deck** |
+| 🦄 [`uniswap_grant_proposal.md`](uniswap_grant_proposal.md) | **$100,000 Uniswap Foundation Grant Application** |
+| 💰 [`quantum_economics_engine.py`](quantum_economics_engine.py) | **Quantum Economics Engine** (Ellsberg Paradox & Market Liquidity Shocks) |
+| 🧠 [`quantum_psychiatry_engine.py`](quantum_psychiatry_engine.py) | **Quantum Psychiatry Engine** (Depression Eigenstate Traps & Ketamine Resets) |
+| 📈 [`market_phase_collapse_bot.py`](market_phase_collapse_bot.py) | **Market Phase Collapse Signal Bot** (BTC, ETH, SPY, QQQ, NVDA, TSLA) |
+| 🧪 [`tests/`](tests/) | **116 Automated Unit Tests** (100% Pass Rate via `pytest`) |
+
+---
+
 ### CLI Subcommands (`q-ai-gov`)
 
 ```bash
