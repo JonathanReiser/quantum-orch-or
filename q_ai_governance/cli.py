@@ -21,6 +21,7 @@ try:
     from q_ai_governance.quantum_psychiatry_engine import QuantumPsychiatrySimulator
     from q_ai_governance.quantum_economics_engine import QuantumEconomicsSimulator
     from q_ai_governance.market_phase_collapse_bot import MarketPhaseCollapseBot
+    from q_ai_governance.uniswap_v4_hook_oracle import UniswapV4HookOracle
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
     from dao_budget_allocator import DAOBudgetAllocator, sample_proposals
@@ -35,6 +36,7 @@ except ImportError:
     from quantum_psychiatry_engine import QuantumPsychiatrySimulator
     from quantum_economics_engine import QuantumEconomicsSimulator
     from market_phase_collapse_bot import MarketPhaseCollapseBot
+    from uniswap_v4_hook_oracle import UniswapV4HookOracle
 
 def main():
     parser = argparse.ArgumentParser(
@@ -42,6 +44,10 @@ def main():
         description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: hook
+    hook_parser = subparsers.add_parser("hook", help="Generate Uniswap v4 Q-AI Governance Hook deployment payload")
+    hook_parser.add_argument("--output", type=str, default="uniswap_v4_hook_payload.json", help="Output JSON path")
 
     # Subcommand: market-bot
     mkt_parser = subparsers.add_parser("market-bot", help="Run Quantum Market Phase Collapse Signal Bot")
@@ -112,7 +118,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "market-bot":
+    if args.command == "hook":
+        oracle = UniswapV4HookOracle()
+        oracle.generate_hook_deployment_summary(output_json=args.output)
+
+    elif args.command == "market-bot":
         bot = MarketPhaseCollapseBot()
         bot.run_market_scan(output_json=args.output)
 
