@@ -20,8 +20,8 @@ st.set_page_config(
 
 st.title("⚛️ Quantum CBT/DBT Statevector Engine")
 st.markdown("""
-**Side-by-Side Comparison: Standard LLM vs. Quantum Representation Steering (Q-LLM)**  
-*Model cognitive statevectors in Complex Hilbert Space ($\mathcal{H} = \mathbb{C}^{64}$), apply continuous phase interference ($\cos\Delta\phi = -1$), and inject activation steering tensors ($\mathbf{v}_{steer}$).*
+**Multi-Turn Conversational Steering & Representation Engineering (Q-LLM)**  
+*Model cognitive statevectors in Complex Hilbert Space ($\mathcal{H} = \mathbb{C}^{64}$), track emotional trajectory over multi-turn conversations, and inject activation steering tensors ($\mathbf{v}_{steer}$).*
 """)
 
 st.sidebar.header("⚙️ Simulation Settings")
