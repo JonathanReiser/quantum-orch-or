@@ -71,6 +71,22 @@ For a source checkout, install only the extras you use:
 pip install -e '.[apps,chat,dev]'
 ```
 
+### Reproducible Snapshot analysis
+
+Fetch a local copy of the supported closed, cleanly-binary proposal data, then
+evaluate it on a temporal split. The newer proposals are always held out, so the
+result is a forecast-style benchmark rather than a hindsight fit.
+
+```bash
+q-ai-gov fetch-snapshot-data --output snapshot_dao_dataset.json
+q-ai-gov benchmark --data snapshot_dao_dataset.json --output benchmark_results.json
+```
+
+The JSON report includes constant and per-DAO baselines alongside the ridge
+model; a more complex model is not useful unless it beats those baselines on the
+held-out period. See [CORRECTIONS.md](CORRECTIONS.md) for the current results
+and limitations.
+
 ---
 
 ## 📁 Repository Directory Map
