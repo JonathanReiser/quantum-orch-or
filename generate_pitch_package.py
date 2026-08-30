@@ -17,6 +17,7 @@ def export_pitch_package():
         raise FileNotFoundError("Pitch or grant proposal file missing.")
 
     desktop_dir = os.path.expanduser("~/Desktop")
+    os.makedirs(desktop_dir, exist_ok=True)
     shutil.copy(pitch_src, os.path.join(desktop_dir, pitch_src))
     shutil.copy(grant_src, os.path.join(desktop_dir, grant_src))
 
