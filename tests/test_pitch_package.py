@@ -24,6 +24,8 @@ def test_pitch_documents_exist():
     assert "Uniswap Foundation Grant Application" in grant_content
     assert "$100,000 USD" in grant_content
 
-def test_export_pitch_package():
-    res = export_pitch_package()
+def test_export_pitch_package(tmp_path):
+    res = export_pitch_package(str(tmp_path))
     assert res is True
+    assert (tmp_path / "WEB3_QUANTUM_AI_PROTOCOL_PITCH.md").exists()
+    assert (tmp_path / "uniswap_grant_proposal.md").exists()

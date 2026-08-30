@@ -1,13 +1,17 @@
-# ⚛️ Quantum-Orch-OR: Quantum-Cognitive AI Policy & Governance Engine
+# ⚛️ Quantum-Orch-OR: exploratory quantum-cognition software
 
 [![PyPI Version](https://img.shields.io/pypi/v/q-ai-governance.svg)](https://pypi.org/project/q-ai-governance/)
 [![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
-[![Tests](https://img.shields.io/badge/tests-126%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
+[![Tests](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml/badge.svg)](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml)
 [![Paper PDF](https://img.shields.io/badge/Paper-PDF%20Download-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/full_quantum_governance_paper.pdf)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Quantum-Orch-OR** (`q-ai-governance`) is a world-first **Quantum-Cognitive Reinforcement Learning AI Engine**. By modeling agent decision-making in Hilbert space statevectors governed by **Penrose Orchestrated Objective Reduction (Orch-OR)** statevector collapse ($\tau = \hbar / E_G$) under **Lindblad thermal dephasing ($T = 310\text{ K}$)**, Q-AI captures non-commutative cognitive framing, question order effects, and collective voter gridlocks that classical linear models fail to predict.
+**Quantum-Orch-OR** (`q-ai-governance`) is an exploratory Python project for
+quantum-cognition simulations, DAO-vote analysis, and interactive demos. It is
+not a validated forecasting, trading, clinical, governance-security, or
+quantum-hardware decision system. Its Orch-OR calculations are research-model
+experiments, not evidence for the underlying physical theory.
 
 ---
 
@@ -55,10 +59,16 @@
 
 ## ⚡ Quickstart & Installation
 
-Install the official PyPI package:
+Install the published package core:
 
 ```bash
 pip install q-ai-governance
+```
+
+For a source checkout, install only the extras you use:
+
+```bash
+pip install -e '.[apps,chat,dev]'
 ```
 
 ---
@@ -82,7 +92,7 @@ pip install q-ai-governance
 | 💰 [`quantum_economics_engine.py`](quantum_economics_engine.py) | **Quantum Economics Engine** (Ellsberg Paradox & Market Liquidity Shocks) |
 | 🧠 [`quantum_psychiatry_engine.py`](quantum_psychiatry_engine.py) | **Quantum Psychiatry Engine** (Depression Eigenstate Traps & Ketamine Resets) |
 | 📈 [`market_phase_collapse_bot.py`](market_phase_collapse_bot.py) | **Market Phase Collapse Signal Bot** (BTC, ETH, SPY, QQQ, NVDA, TSLA) |
-| 🧪 [`tests/`](tests/) | **126 Automated Unit Tests** (100% Pass Rate via `pytest`) |
+| 🧪 [`tests/`](tests/) | Automated regression tests run with `pytest` in GitHub Actions |
 
 ---
 
@@ -179,28 +189,20 @@ print(f"State Counts: {res['counts']}")
 
 ---
 
-## 📄 Academic Research Paper & arXiv Citation
+## 📄 Publication status
 
-Read the full academic research paper PDF: **[q_ai_governance_paper.pdf](q_ai_governance_paper.pdf)**.
-
-### BibTeX Citation
-
-```bibtex
-@article{reiser2026quantum,
-  title={Quantum-Cognitive Reinforcement Learning via Penrose Objective Reduction: Empirical Validation on 835,000 Snapshot DAO Votes and Gallup Survey Order Effects},
-  author={Reiser, Jonathan},
-  journal={arXiv preprint arXiv:2408.xxxxx},
-  year={2026}
-}
-```
+The bundled paper PDFs and the linked Zenodo record contain the retracted
+empirical claims described in [CORRECTIONS.md](CORRECTIONS.md). Do not cite
+them as validation evidence. A corrected archival release should replace or
+supersede those external materials before they are cited again.
 
 ---
 
 ## 🔗 Project Links
 
 * **Live Interactive 3D Web Visualizer:** [https://jonathanreiser.github.io/quantum-orch-or/](https://jonathanreiser.github.io/quantum-orch-or/)
-* **Formal Academic PDF Paper:** [q_ai_governance_paper.pdf](q_ai_governance_paper.pdf)
-* **Official arXiv Submission Bundle:** [arxiv_submission.tar.gz](arxiv_submission.tar.gz)
+* **Historic paper PDF (contains retracted claims):** [q_ai_governance_paper.pdf](q_ai_governance_paper.pdf)
+* **Historic arXiv submission bundle (contains retracted claims):** [arxiv_submission.tar.gz](arxiv_submission.tar.gz)
 * **PyPI Package:** [https://pypi.org/project/q-ai-governance/](https://pypi.org/project/q-ai-governance/)
 * **GitHub Repository:** [https://github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)
 
@@ -208,4 +210,4 @@ Read the full academic research paper PDF: **[q_ai_governance_paper.pdf](q_ai_go
 
 ## 📄 License
 
-Distributed under the **MIT License**. See `LICENSE` for details.
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
