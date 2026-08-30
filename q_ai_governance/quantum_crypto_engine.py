@@ -47,7 +47,7 @@ class QuantumCryptoPredictor:
 
         # Quantum-Cognitive Statevector Deliberation
         # Map RSI and Momentum to 2-qubit statevector angle theta
-        theta = (rsi_proxy / 100.0) * (Math.PI / 2) if 'Math' in locals() else (rsi_proxy / 100.0) * (np.pi / 2)
+        theta = (rsi_proxy / 100.0) * (np.pi / 2)
         obs = np.array([rsi_proxy / 10.0, (1.0 + mean_return) * 5.0], dtype=np.float32)
 
         agent = QuantumOrchORAgent(num_qubits=2, state_dim=2)
