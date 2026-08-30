@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Three.js CDN for 3D Microtubule Visualizer -->
@@ -30,6 +30,7 @@
                 <button class="tab-btn" data-target="game-tab">Quantum Game Theory (EWL)</button>
                 <button class="tab-btn" data-target="spinoza-tab">Entangled Intellect (Spinoza)</button>
                 <button class="tab-btn" data-target="benchmark-tab">Human Cognition (Q-AI)</button>
+                <button class="tab-btn" data-target="experiments-tab">🔬 Experiment Lab</button>
             </nav>
         </div>
         <p class="subtitle">Interactive Real-Time Quantum Superposition, Lindblad Decoherence, & Penrose Objective Reduction Playground</p>
@@ -206,13 +207,52 @@
                 </div>
             </div>
 
+            <!-- MODE 5: REPRODUCIBLE EXPERIMENT CATALOGUE -->
+            <div id="experiments-controls" class="tab-content">
+                <div class="card glass">
+                    <div class="card-header">
+                        <h2>Reproducible Experiment Lab</h2>
+                        <span class="badge badge-success">EVIDENCE FIRST</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-instruction">Choose a registered study. The lab shows a stated hypothesis beside its strongest ordinary explanation; it does not treat a simulation as evidence of consciousness.</p>
+                        <div class="input-group">
+                            <label for="experiment-select">Registered experiment:</label>
+                            <select id="experiment-select">
+                                <option value="snapshot-temporal-baseline">Snapshot DAO vote baseline benchmark</option>
+                                <option value="dao-vote-sequences">DAO vote-order and QQ-equality test</option>
+                                <option value="dating-order-effects">Speed-dating order and dyadic-correlation tests</option>
+                                <option value="geopolitics-vote-alignment">Geopolitical order and alignment tests</option>
+                                <option value="collective-valuation">Collective valuation of competing answers</option>
+                            </select>
+                        </div>
+                        <div class="button-row-vertical">
+                            <button id="btn-view-reference" class="btn btn-glow">View registered protocol</button>
+                            <button id="btn-download-manifest" class="btn btn-outline">Download experiment manifest</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass contribution-card">
+                    <div class="card-header"><h2>Bring your own experiment</h2></div>
+                    <div class="card-body">
+                        <ol class="contribution-steps">
+                            <li>State a falsifiable hypothesis and the classical baseline before looking at results.</li>
+                            <li>Record a public data source, split, metric, and interpretation boundary.</li>
+                            <li>Submit the runnable code or a companion repository—null results belong here too.</li>
+                        </ol>
+                        <a class="btn btn-cyan contribution-link" href="https://github.com/JonathanReiser/quantum-orch-or/issues/new" target="_blank" rel="noopener">Propose an experiment on GitHub</a>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <!-- RIGHT COLUMN: 3D VIEWPORT & ANALYTICS -->
         <section class="visualizer-panel">
             
             <!-- Live Oracle Proposal Banner -->
-    <div id="oracle-live-banner" class="oracle-banner hidden">
+    <div id="oracle-live-banner" class="oracle-banner hidden lab-default-panel">
       <div class="banner-badge">🔮 LIVE SNAPSHOT ORACLE PREDICTION</div>
       <div class="banner-title" id="banner-proposal-title">Uniswap v4 Hooks Audit Proposal</div>
       <div class="banner-stats">
@@ -223,7 +263,7 @@
     </div>
 
     <!-- WebGL Visualizer Container -->
-            <div class="card glass visualization-card">
+            <div class="card glass visualization-card lab-default-panel">
                 <div class="card-header">
                     <h2>3D Microtubule Lattice & Quantum Phase Field</h2>
                     <span id="status-badge-3d" class="badge">SUPERPOSITION: ACTIVE</span>
@@ -238,7 +278,7 @@
             </div>
 
             <!-- Real-Time Metrics & Charts Grid -->
-            <div class="grid-2col">
+            <div class="grid-2col lab-default-panel">
                 <div class="card glass">
                     <div class="card-header">
                         <h2>Quantum Statevector & Action Meter</h2>
@@ -263,7 +303,7 @@
             </div>
 
             <!-- Live Event Console & Telemetry -->
-            <div class="card glass console-card">
+            <div class="card glass console-card lab-default-panel">
                 <div class="card-header">
                     <h2>Quantum Telemetry & Event Log</h2>
                     <button id="btn-clear-log" class="btn-text">Clear</button>
@@ -276,6 +316,58 @@
                 </div>
             </div>
 
+            <section id="experiment-workbench" class="experiment-workbench" hidden aria-live="polite">
+                <div class="card glass experiment-hero">
+                    <div class="card-header">
+                        <div>
+                            <p class="eyebrow">REGISTERED RESEARCH QUESTION</p>
+                            <h2 id="experiment-title">Snapshot DAO vote baseline benchmark</h2>
+                        </div>
+                        <span id="experiment-status" class="badge badge-success">RUNNABLE LOCALLY</span>
+                    </div>
+                    <div class="card-body">
+                        <p id="experiment-kind" class="experiment-kind">Real-data analysis</p>
+                        <p id="experiment-summary" class="experiment-summary"></p>
+                    </div>
+                </div>
+
+                <div class="experiment-comparison">
+                    <article class="card glass comparison-card hypothesis-card">
+                        <div class="card-header"><h2>Claim under test</h2></div>
+                        <div class="card-body"><p id="experiment-hypothesis"></p></div>
+                    </article>
+                    <article class="card glass comparison-card baseline-card">
+                        <div class="card-header"><h2>Classical explanation / baseline</h2></div>
+                        <div class="card-body"><p id="experiment-baseline"></p></div>
+                    </article>
+                </div>
+
+                <div class="card glass experiment-results-card">
+                    <div class="card-header">
+                        <h2 id="experiment-result-title">Reference result</h2>
+                        <span id="experiment-result-label" class="badge">PROTOCOL VIEW</span>
+                    </div>
+                    <div class="card-body experiment-results-body">
+                        <div class="chart-container experiment-chart-container">
+                            <canvas id="experimentChart"></canvas>
+                        </div>
+                        <div class="experiment-result-copy">
+                            <p id="experiment-result"></p>
+                            <p id="experiment-boundary" class="interpretation-boundary"></p>
+                            <a id="experiment-source" class="source-link" href="#" target="_blank" rel="noopener">Open source</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reproduction-card">
+                    <div class="card-header"><h2>Reproduce or challenge it</h2></div>
+                    <div class="card-body">
+                        <code id="experiment-command" class="reproduction-command"></code>
+                        <p id="experiment-reproduction-note" class="reproduction-note"></p>
+                    </div>
+                </div>
+            </section>
+
         </section>
     </main>
 
@@ -284,6 +376,6 @@
     </footer>
 
     <!-- App JavaScript -->
-    <script src="app.js?v=101"></script>
+    <script src="app.js?v=102"></script>
 </body>
 </html>

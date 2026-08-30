@@ -143,6 +143,11 @@ body {
     gap: 1.5rem;
 }
 
+.lab-default-panel[hidden],
+.experiment-workbench[hidden] {
+    display: none;
+}
+
 /* Main Container Grid */
 .app-container {
     flex: 1;
@@ -159,6 +164,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+}
+
+.visualizer-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
 }
 
 /* Glass Cards */
@@ -194,6 +206,136 @@ body {
 
 .card-body {
     padding: 1.5rem;
+}
+
+/* Reproducible Experiment Lab */
+.experiment-workbench {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.25rem;
+    color: var(--cyan);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+}
+
+.experiment-kind {
+    margin: 0 0 0.65rem;
+    color: var(--cyan);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.experiment-summary,
+.experiment-result-copy p,
+.contribution-steps {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.experiment-summary {
+    margin: 0;
+}
+
+.experiment-comparison {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.comparison-card {
+    min-height: 165px;
+}
+
+.hypothesis-card {
+    border-color: rgba(168, 85, 247, 0.45);
+}
+
+.baseline-card {
+    border-color: rgba(0, 242, 254, 0.45);
+}
+
+.comparison-card p {
+    margin: 0;
+    color: var(--text-primary);
+    line-height: 1.65;
+}
+
+.experiment-results-body {
+    display: grid;
+    grid-template-columns: minmax(260px, 1.1fr) minmax(230px, 0.9fr);
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.experiment-chart-container {
+    height: 245px;
+}
+
+.experiment-result-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.experiment-result-copy p {
+    margin: 0;
+}
+
+.interpretation-boundary {
+    border-left: 3px solid var(--crimson);
+    padding-left: 0.8rem;
+    color: #fda4af !important;
+    font-size: 0.9rem;
+}
+
+.source-link {
+    color: var(--cyan);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.source-link:hover {
+    text-decoration: underline;
+}
+
+.reproduction-command {
+    display: block;
+    padding: 0.85rem 1rem;
+    color: #a7f3d0;
+    background: rgba(5, 8, 15, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.reproduction-note {
+    margin: 0.8rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.contribution-steps {
+    margin: 0 0 1.25rem;
+    padding-left: 1.25rem;
+}
+
+.contribution-steps li + li {
+    margin-top: 0.65rem;
+}
+
+.contribution-link {
+    display: inline-flex;
+    text-decoration: none;
+    justify-content: center;
 }
 
 /* Controls Elements */
@@ -778,5 +920,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
     .app-header {
         padding: 1.5rem;
+    }
+    .experiment-comparison,
+    .experiment-results-body {
+        grid-template-columns: 1fr;
     }
 }

@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 
 from q_ai_governance.experiment_lab import list_experiments, run_experiment
 
@@ -23,3 +24,15 @@ def test_snapshot_experiment_uses_real_dataset():
 def test_external_experiment_explains_where_to_run():
     with pytest.raises(ValueError, match="dao-governance-research"):
         run_experiment("dao-vote-sequences")
+
+
+def test_static_experiment_lab_exposes_baselines_and_boundaries():
+    root = Path(__file__).resolve().parents[1]
+    index = (root / "index.html").read_text(encoding="utf-8")
+    app = (root / "app.js").read_text(encoding="utf-8")
+
+    assert 'data-target="experiments-tab"' in index
+    assert "Classical explanation / baseline" in index
+    assert "Download experiment manifest" in index
+    assert "Interpretation boundary" in app
+    assert "This page deliberately does not generate a score" in app

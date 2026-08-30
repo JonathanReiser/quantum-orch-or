@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Charts & 3D Three.js
         actionChart: null,
         probChart: null,
+        experimentChart: null,
         stepCount: 0
     };
 
@@ -97,6 +98,113 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnRunLinda = document.getElementById("btn-run-linda");
     const btnRunGallup = document.getElementById("btn-run-gallup");
 
+    // Experiment Lab Elements
+    const experimentSelect = document.getElementById("experiment-select");
+    const btnViewReference = document.getElementById("btn-view-reference");
+    const btnDownloadManifest = document.getElementById("btn-download-manifest");
+    const experimentWorkbench = document.getElementById("experiment-workbench");
+    const defaultLabPanels = document.querySelectorAll(".lab-default-panel");
+    const experimentTitle = document.getElementById("experiment-title");
+    const experimentStatus = document.getElementById("experiment-status");
+    const experimentKind = document.getElementById("experiment-kind");
+    const experimentSummary = document.getElementById("experiment-summary");
+    const experimentHypothesis = document.getElementById("experiment-hypothesis");
+    const experimentBaseline = document.getElementById("experiment-baseline");
+    const experimentResultTitle = document.getElementById("experiment-result-title");
+    const experimentResultLabel = document.getElementById("experiment-result-label");
+    const experimentResult = document.getElementById("experiment-result");
+    const experimentBoundary = document.getElementById("experiment-boundary");
+    const experimentSource = document.getElementById("experiment-source");
+    const experimentCommand = document.getElementById("experiment-command");
+    const experimentReproductionNote = document.getElementById("experiment-reproduction-note");
+    const experimentChartCanvas = document.getElementById("experimentChart");
+
+    // The browser catalogue mirrors q_ai_governance.experiment_lab.  Only the
+    // Snapshot entry displays a checked, bundled result; companion studies link
+    // to their own repositories instead of inventing a result in this UI.
+    const EXPERIMENTS = {
+        "snapshot-temporal-baseline": {
+            title: "Snapshot DAO vote baseline benchmark",
+            kind: "Real-data analysis",
+            status: "RUNNABLE LOCALLY",
+            summary: "A temporal hold-out analysis of 905 Snapshot DAO proposals. It asks whether information available before a vote improves on ordinary historical voting baselines.",
+            hypothesis: "Pre-vote features improve on simple historical voting baselines. This is a calibration test, not a test of consciousness or a claim that a quantum process is involved.",
+            baseline: "Train mean, train median, per-DAO historical mean, and ridge regression on pre-vote features: DAO identity, proposal length, ballot shape, voting window, quorum, and prior DAO approval.",
+            resultTitle: "Recorded reference result (temporal hold-out)",
+            resultLabel: "BUNDLED DATA",
+            result: "The train-median baseline had the lowest mean absolute error: 10.44 percentage points. The pre-vote ridge model was worse at 11.20 pp with R² = 0.013.",
+            boundary: "Interpretation boundary: this is evidence that this dataset has little usable pre-vote predictive signal. It is not evidence for Orch-OR, consciousness, or a quantum advantage.",
+            source: "https://github.com/JonathanReiser/quantum-orch-or/blob/main/data/benchmark_classical_results.json",
+            command: "q-ai-gov experiments --run snapshot-temporal-baseline --data snapshot_dao_dataset.json --output report.json",
+            reproductionNote: "Run from a local clone with the published snapshot dataset. The page displays a checked reference report; it does not execute Python or call an oracle.",
+            chart: {
+                label: "Mean absolute error (percentage points; lower is better)",
+                labels: ["Train median", "Per-DAO mean", "Ridge: pre-vote features"],
+                values: [10.44, 17.26, 11.20]
+            }
+        },
+        "dao-vote-sequences": {
+            title: "DAO vote-order and QQ-equality test",
+            kind: "Real-data analysis · companion project",
+            status: "EXTERNAL COMPANION",
+            summary: "Tests whether a parameter-free quantum-cognition signature survives in real DAO voting when assignment and calendar effects are modeled explicitly.",
+            hypothesis: "Quantum-cognition's parameter-free QQ equality holds in DAO voting.",
+            baseline: "Propensity-weighted assignment controls and calendar-order controls. If they explain the apparent effect, the quantum account earns no special status.",
+            resultTitle: "Protocol registered in companion repository",
+            resultLabel: "NO IN-APP RESULT",
+            result: "This page deliberately does not generate a score for a companion study. Use the linked repository to inspect the data, code, and results.",
+            boundary: "Interpretation boundary: a match to QQ equality would be a model-comparison result, not evidence that voters or brains maintain physical quantum coherence.",
+            source: "https://github.com/JonathanReiser/dao-governance-research",
+            command: "Open JonathanReiser/dao-governance-research and run its documented analysis.",
+            reproductionNote: "External companion: the experiment belongs to its own versioned data and code, rather than being simulated in this static interface."
+        },
+        "dating-order-effects": {
+            title: "Speed-dating order and dyadic-correlation tests",
+            kind: "Real-data analysis · companion project",
+            status: "EXTERNAL COMPANION",
+            summary: "Separates sequential context effects from dyadic dependence in a large speed-dating dataset.",
+            hypothesis: "Sequential context or non-classical dependence improves on classical preference models.",
+            baseline: "Controlled logistic models and dyadic dependence models that account for participant and partner structure.",
+            resultTitle: "Protocol registered in companion repository",
+            resultLabel: "NO IN-APP RESULT",
+            result: "No value is drawn here because a rendered chart would be a simulation, not a rerun of the companion analysis.",
+            boundary: "Interpretation boundary: behavioral order effects do not by themselves identify a quantum physical mechanism.",
+            source: "https://github.com/JonathanReiser/quantum-dating-research",
+            command: "Open JonathanReiser/quantum-dating-research and run its documented analysis.",
+            reproductionNote: "External companion: inspect the pre-processing choices and classical controls before interpreting any quantum-cognition fit."
+        },
+        "geopolitics-vote-alignment": {
+            title: "Geopolitical order and alignment tests",
+            kind: "Real-data analysis · companion project",
+            status: "EXTERNAL COMPANION",
+            summary: "Tests order effects in geopolitical and international voting data while preserving the strongest conventional explanation: bloc alignment.",
+            hypothesis: "Quantum-cognition signatures remain after classical bloc alignment is controlled.",
+            baseline: "Pre-specified regional and ideological bloc controls, with time and agenda structure treated as confounders.",
+            resultTitle: "Protocol registered in companion repository",
+            resultLabel: "NO IN-APP RESULT",
+            result: "The page links to the actual analysis rather than projecting a result from this interface.",
+            boundary: "Interpretation boundary: model residuals are not a licence to infer quantum biology or conscious agency.",
+            source: "https://github.com/JonathanReiser/quantum-geopolitics-research",
+            command: "Open JonathanReiser/quantum-geopolitics-research and run its documented analysis.",
+            reproductionNote: "External companion: its provenance and controls are part of the experiment, not optional presentation details."
+        },
+        "collective-valuation": {
+            title: "Collective valuation of competing answers",
+            kind: "Real-data analysis · companion project",
+            status: "EXTERNAL COMPANION",
+            summary: "Examines whether interactions among competing answers exceed exposure and popularity dynamics in public voting data.",
+            hypothesis: "Competing-answer dependence exceeds calibrated exposure and momentum effects.",
+            baseline: "A calibrated preferential-attachment and exposure null model, including momentum effects.",
+            resultTitle: "Protocol registered in companion repository",
+            resultLabel: "NO IN-APP RESULT",
+            result: "No result is manufactured in the browser. The companion repository is the authoritative analysis surface.",
+            boundary: "Interpretation boundary: a better mathematical description of dependence is not proof of a quantum substrate.",
+            source: "https://github.com/JonathanReiser/collective-valuation-research",
+            command: "Open JonathanReiser/collective-valuation-research and run its documented analysis.",
+            reproductionNote: "External companion: report null, mixed, and sensitivity results alongside any model comparison."
+        }
+    };
+
     // --- Logger Utility ---
     function logEvent(msg, type = "info") {
         if (!eventLog) return;
@@ -115,6 +223,102 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function selectedExperiment() {
+        return EXPERIMENTS[experimentSelect ? experimentSelect.value : "snapshot-temporal-baseline"];
+    }
+
+    function renderExperimentChart(experiment) {
+        if (!experimentChartCanvas) return;
+        const chartContainer = experimentChartCanvas.parentElement;
+        const chartData = experiment.chart;
+        chartContainer.hidden = !chartData;
+
+        if (state.experimentChart) {
+            state.experimentChart.destroy();
+            state.experimentChart = null;
+        }
+        if (!chartData || typeof Chart === "undefined") return;
+
+        state.experimentChart = new Chart(experimentChartCanvas, {
+            type: "bar",
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: chartData.label,
+                    data: chartData.values,
+                    backgroundColor: ["rgba(0, 242, 254, 0.72)", "rgba(168, 85, 247, 0.72)", "rgba(245, 158, 11, 0.72)"],
+                    borderColor: ["#00f2fe", "#a855f7", "#f59e0b"],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: "#cbd5e1", maxRotation: 0 }, grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { color: "#94a3b8" }, grid: { color: "rgba(255,255,255,0.05)" } }
+                },
+                plugins: { legend: { labels: { color: "#f8fafc" } } }
+            }
+        });
+    }
+
+    function renderExperiment() {
+        const experiment = selectedExperiment();
+        if (!experiment) return;
+
+        experimentTitle.textContent = experiment.title;
+        experimentStatus.textContent = experiment.status;
+        experimentStatus.classList.toggle("badge-success", experiment.status === "RUNNABLE LOCALLY");
+        experimentKind.textContent = experiment.kind;
+        experimentSummary.textContent = experiment.summary;
+        experimentHypothesis.textContent = experiment.hypothesis;
+        experimentBaseline.textContent = experiment.baseline;
+        experimentResultTitle.textContent = experiment.resultTitle;
+        experimentResultLabel.textContent = experiment.resultLabel;
+        experimentResult.textContent = experiment.result;
+        experimentBoundary.textContent = experiment.boundary;
+        experimentSource.href = experiment.source;
+        experimentSource.textContent = experiment.status === "RUNNABLE LOCALLY" ? "Open bundled result data" : "Open companion repository";
+        experimentCommand.textContent = experiment.command;
+        experimentReproductionNote.textContent = experiment.reproductionNote;
+        renderExperimentChart(experiment);
+    }
+
+    function setExperimentLabVisibility(isExperimentLab) {
+        defaultLabPanels.forEach(panel => { panel.hidden = isExperimentLab; });
+        if (experimentWorkbench) experimentWorkbench.hidden = !isExperimentLab;
+        if (isExperimentLab) renderExperiment();
+    }
+
+    function downloadExperimentManifest() {
+        const experiment = selectedExperiment();
+        if (!experiment) return;
+        const manifest = {
+            experiment_id: experimentSelect.value,
+            title: experiment.title,
+            kind: experiment.kind,
+            status: experiment.status,
+            hypothesis: experiment.hypothesis,
+            baseline: experiment.baseline,
+            source: experiment.source,
+            reproduction_command: experiment.command,
+            interpretation_boundary: experiment.boundary
+        };
+        const url = URL.createObjectURL(new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" }));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${experimentSelect.value}-manifest.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    if (experimentSelect) experimentSelect.addEventListener("change", renderExperiment);
+    if (btnViewReference) btnViewReference.addEventListener("click", renderExperiment);
+    if (btnDownloadManifest) btnDownloadManifest.addEventListener("click", downloadExperimentManifest);
+
     // --- Tab Navigation ---
     tabButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -129,6 +333,9 @@ document.addEventListener("DOMContentLoaded", () => {
             else if (targetId === "game-tab") document.getElementById("game-controls").classList.add("active-content");
             else if (targetId === "spinoza-tab") document.getElementById("spinoza-controls").classList.add("active-content");
             else if (targetId === "benchmark-tab") document.getElementById("benchmark-controls").classList.add("active-content");
+            else if (targetId === "experiments-tab") document.getElementById("experiments-controls").classList.add("active-content");
+
+            setExperimentLabVisibility(targetId === "experiments-tab");
         });
     });
 
@@ -341,6 +548,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     plugins: { legend: { display: false } }
                 }
             });
+
+            // A visitor can open the experiment tab before the CDN finishes
+            // loading. Render its reference chart once Chart.js is available.
+            renderExperiment();
         } catch (e) {
             console.error("Chart initialization error:", e);
         }
