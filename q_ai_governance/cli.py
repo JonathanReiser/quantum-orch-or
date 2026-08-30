@@ -138,9 +138,41 @@ def main():
     pred_parser.add_argument("--public-good", type=float, required=True, help="Public Good Score (1.0 - 10.0)")
     pred_parser.add_argument("--roi", type=float, required=True, help="Ecosystem ROI Score (1.0 - 10.0)")
 
+    # Subcommand: fetch-snapshot-data
+    fetch_parser = subparsers.add_parser(
+        "fetch-snapshot-data",
+        help="Download closed, cleanly-binary Snapshot proposals for reproducible analysis",
+    )
+    fetch_parser.add_argument(
+        "--output",
+        type=str,
+        default="snapshot_dao_dataset.json",
+        help="Destination JSON path",
+    )
+
     # Subcommand: benchmark
-    bench_parser = subparsers.add_parser("benchmark", help="Run Snapshot DAO benchmark suite against real vote data")
-    bench_parser.add_argument("--output", type=str, default="real_dao_benchmark_plot.png", help="Output plot path")
+    bench_parser = subparsers.add_parser(
+        "benchmark",
+        help="Run the temporal, hindsight-free Snapshot benchmark",
+    )
+    bench_parser.add_argument(
+        "--data",
+        type=str,
+        required=True,
+        help="Snapshot dataset JSON, produced by fetch-snapshot-data or supplied from a source checkout",
+    )
+    bench_parser.add_argument(
+        "--test-frac",
+        type=float,
+        default=0.30,
+        help="Fraction of the newest proposals reserved for testing (default: 0.30)",
+    )
+    bench_parser.add_argument(
+        "--output",
+        type=str,
+        default="benchmark_results.json",
+        help="Destination JSON report path",
+    )
 
     args = parser.parse_args()
 
@@ -267,11 +299,42 @@ def main():
         print(f"Ecosystem ROI Score: {args.roi}/10.0")
         print(f"Predicted Proposal Vote Approval: {pred_pct:.1f}% (YES)\n")
 
+    elif args.command == "fetch-snapshot-data":
+        from q_ai_governance.fetch_snapshot_dataset import build, SPACES
+
+        print("Fetching closed proposals from the Snapshot hub...")
+        proposals, dropped, seen = build()
+        payload = {
+            "source": "https://hub.snapshot.org/graphql",
+            "spaces": SPACES,
+            "closed_proposals_seen": seen,
+            "proposals_kept": len(proposals),
+            "dropped": dropped,
+            "proposals": proposals,
+        }
+        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+        with open(args.output, "w") as fh:
+            json.dump(payload, fh, indent=2)
+        print(f"Saved {len(proposals)} cleanly-binary proposals to {args.output}")
+
     elif args.command == "benchmark":
-        print(f"📊 Running Real Snapshot DAO Benchmark Suite...")
-        runner = RealDAOBenchmarkRunner()
-        summary = runner.run_benchmark()
-        runner.generate_benchmark_plot(summary, output_plot=args.output)
+        from q_ai_governance.benchmark_snapshot_real import run
+
+        summary = run(args.data, test_frac=args.test_frac)
+        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+        with open(args.output, "w") as fh:
+            json.dump(summary, fh, indent=2)
+
+        split = summary["split"]
+        print("=" * 66)
+        print("  SNAPSHOT BENCHMARK — temporal split, no hindsight")
+        print("=" * 66)
+        print(f"n = {split['n_total']}  (train {split['n_train']} / test {split['n_test']})")
+        print(f"{'model':<28}{'MAE (pp)':>10}{'RMSE (pp)':>11}{'R^2':>9}")
+        print("-" * 66)
+        for name, result in summary["results"].items():
+            print(f"{name:<28}{result['mae_pp']:>10.2f}{result['rmse_pp']:>11.2f}{result['r2']:>9.3f}")
+        print(f"\nWritten to {args.output}")
 
     else:
         parser.print_help()
