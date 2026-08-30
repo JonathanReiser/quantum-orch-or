@@ -156,6 +156,18 @@ def main():
     experiment_parser.add_argument("--test-frac", type=float, default=0.30, help="Held-out temporal fraction")
     experiment_parser.add_argument("--output", type=str, default="experiment_result.json", help="Destination JSON report")
 
+    # Subcommand: ewl-tournament
+    ewl_parser = subparsers.add_parser(
+        "ewl-tournament",
+        help="Run the EWL mechanism-blind control ladder (simulator + matched classical sampler)",
+    )
+    ewl_parser.add_argument("--p1", choices=["C", "D", "Q"], default="C", help="Player 1 strategy")
+    ewl_parser.add_argument("--p2", choices=["C", "D", "Q"], default="D", help="Player 2 strategy")
+    ewl_parser.add_argument("--entanglement", type=float, default=float(np.pi / 2), help="EWL gamma in [0, pi/2]")
+    ewl_parser.add_argument("--rounds", type=int, default=100, help="Number of replayable sampled rounds")
+    ewl_parser.add_argument("--seed", type=int, default=0, help="Pseudorandom seed recorded in the manifest")
+    ewl_parser.add_argument("--output", type=str, default="ewl_tournament_report.json", help="Destination JSON report")
+
     # Subcommand: fetch-snapshot-data
     fetch_parser = subparsers.add_parser(
         "fetch-snapshot-data",
@@ -333,13 +345,39 @@ def main():
             if args.run == "snapshot-temporal-baseline" and not args.data:
                 parser.error("experiments --run snapshot-temporal-baseline requires --data")
             try:
-                report = run_experiment(args.run, data_path=args.data, test_frac=args.test_frac)
+                if args.run == "snapshot-temporal-baseline":
+                    report = run_experiment(args.run, data_path=args.data, test_frac=args.test_frac)
+                else:
+                    report = run_experiment(args.run)
             except ValueError as exc:
                 parser.error(str(exc))
             os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
             with open(args.output, "w") as fh:
                 json.dump(report, fh, indent=2)
             print(f"Experiment report written to {args.output}")
+
+    elif args.command == "ewl-tournament":
+        from q_ai_governance.ewl_tournament import run_tournament
+
+        try:
+            report = run_tournament(
+                player_1=args.p1,
+                player_2=args.p2,
+                entanglement=args.entanglement,
+                rounds=args.rounds,
+                seed=args.seed,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+
+        os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+        with open(args.output, "w") as fh:
+            json.dump(report, fh, indent=2)
+        checks = report["control_checks"]
+        print("EWL mechanism-blind tournament report written to " + args.output)
+        print("Matched EWL/classical-control probabilities: " + str(checks["matched_probability_distribution"]))
+        print("Matched EWL/classical-control replay sequence: " + str(checks["matched_sampled_event_sequence"]))
+        print("Hardware adapter status: not executed (no QPU claim).")
 
     elif args.command == "fetch-snapshot-data":
         from q_ai_governance.fetch_snapshot_dataset import build, SPACES

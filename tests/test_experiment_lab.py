@@ -8,6 +8,7 @@ def test_experiment_catalogue_has_runnable_and_external_entries():
     records = {record["experiment_id"]: record for record in list_experiments()}
 
     assert records["snapshot-temporal-baseline"]["status"] == "runnable"
+    assert records["ewl-mechanism-blind-tournament"]["status"] == "runnable"
     assert records["dao-vote-sequences"]["status"] == "external companion"
     assert "baseline" in records["collective-valuation"]
 
@@ -36,3 +37,4 @@ def test_static_experiment_lab_exposes_baselines_and_boundaries():
     assert "Download experiment manifest" in index
     assert "Interpretation boundary" in app
     assert "This page deliberately does not generate a score" in app
+    assert "ewl-mechanism-blind-tournament" in app

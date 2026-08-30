@@ -10,6 +10,7 @@ from dataclasses import asdict, dataclass
 from typing import Callable, Dict, List, Optional
 
 from .benchmark_snapshot_real import run as run_snapshot_benchmark
+from .ewl_tournament import run_tournament
 
 
 @dataclass(frozen=True)
@@ -36,7 +37,22 @@ def _snapshot_temporal(data_path: str, test_frac: float = 0.30) -> Dict:
     return run_snapshot_benchmark(data_path, test_frac=test_frac)
 
 
+def _ewl_mechanism_blind() -> Dict:
+    """Run the default control ladder; parameterized runs use the dedicated CLI."""
+    return run_tournament()
+
+
 EXPERIMENTS: List[Experiment] = [
+    Experiment(
+        experiment_id="ewl-mechanism-blind-tournament",
+        title="EWL mechanism-blind quantum-game tournament",
+        kind="reproducible simulation protocol",
+        hypothesis="An EWL implementation changes strategic outcomes beyond a probability-matched classical mediator.",
+        baseline="A classical correlated sampler using exactly the same EWL outcome probabilities and seed.",
+        source="This repository: q_ai_governance.ewl_tournament",
+        status="runnable",
+        runner=_ewl_mechanism_blind,
+    ),
     Experiment(
         experiment_id="snapshot-temporal-baseline",
         title="Snapshot DAO vote baseline benchmark",

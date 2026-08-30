@@ -88,6 +88,23 @@ held-out period. See [CORRECTIONS.md](CORRECTIONS.md) for the current results
 and limitations. See [EXPERIMENTS.md](EXPERIMENTS.md) for the shared
 experiment format and companion projects.
 
+### EWL mechanism-blind game tournament
+
+The EWL tournament is a reproducible quantum-game **control construction**.
+It records a normal classical game, an EWL statevector calculation, and a
+classical correlated sampler matched to the EWL probabilities. Matching the
+last two is expected and prevents a probability distribution alone from being
+misrepresented as a quantum or behavioral advantage.
+
+```bash
+q-ai-gov ewl-tournament --p1 C --p2 D --rounds 100 --seed 7 --output ewl_report.json
+```
+
+The report includes all sampled events, its seed, and a replay hash. The QPU
+entry is intentionally a non-result until it has a backend, job ID, shot count,
+measurement counts, and transpilation metadata. See
+[EWL_TOURNAMENT.md](EWL_TOURNAMENT.md) for the protocol and human-study extension.
+
 ---
 
 ## 📁 Repository Directory Map

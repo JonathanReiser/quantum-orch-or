@@ -123,6 +123,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Snapshot entry displays a checked, bundled result; companion studies link
     // to their own repositories instead of inventing a result in this UI.
     const EXPERIMENTS = {
+        "ewl-mechanism-blind-tournament": {
+            title: "EWL mechanism-blind quantum-game tournament",
+            kind: "Reproducible simulation protocol",
+            status: "RUNNABLE LOCALLY",
+            summary: "A control ladder for EWL Prisoner's Dilemma runs. It makes the closest non-quantum alternative explicit: a classical sampler with exactly the same outcome probabilities.",
+            hypothesis: "An EWL implementation changes strategic outcomes beyond a probability-matched classical mediator. The first run tests the control construction; it does not test people or consciousness.",
+            baseline: "A classical correlated sampler uses the exact EWL outcome probabilities and the same recorded seed. Its sampled event sequence must match the EWL simulator exactly.",
+            resultTitle: "Registered control invariant",
+            resultLabel: "RUN LOCALLY",
+            result: "The expected initial result is a match between the EWL simulator and its classical-correlated control. A mismatch is a reproducibility bug, not a quantum effect.",
+            boundary: "Interpretation boundary: matching a quantum calculation with classical sampling shows why a future human study needs matched controls. It does not establish quantum advantage, consciousness, or Orch-OR.",
+            source: "https://github.com/JonathanReiser/quantum-orch-or/blob/main/EWL_TOURNAMENT.md",
+            command: "q-ai-gov ewl-tournament --p1 C --p2 D --rounds 100 --seed 7 --output report.json",
+            reproductionNote: "The JSON report records every event, target probabilities, seed, and replay hash. The hardware adapter is deliberately non-executed until a QPU job has complete provenance."
+        },
         "snapshot-temporal-baseline": {
             title: "Snapshot DAO vote baseline benchmark",
             kind: "Real-data analysis",

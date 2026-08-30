@@ -47,3 +47,21 @@ def test_pypi_cli_lists_experiments(monkeypatch, capsys):
 
     assert "snapshot-temporal-baseline" in captured.out
     assert "external companion" in captured.out
+
+
+def test_pypi_cli_runs_ewl_control_tournament(monkeypatch, tmp_path, capsys):
+    output = tmp_path / "ewl.json"
+    monkeypatch.setattr("sys.argv", [
+        "q-ai-gov",
+        "ewl-tournament",
+        "--rounds", "8",
+        "--seed", "4",
+        "--output", str(output),
+    ])
+    main()
+    report = __import__("json").loads(output.read_text())
+    captured = capsys.readouterr()
+
+    assert "Matched EWL/classical-control probabilities: True" in captured.out
+    assert report["control_checks"]["matched_sampled_event_sequence"] is True
+    assert report["reports"][-1]["status"] == "not-executed"
