@@ -114,7 +114,7 @@ q-ai-gov audit --proposal-id "UNI-PROP-42" --yes 550000 --no 450000
 # ⚡ Launch interactive Streamlit Web Dashboard
 q-ai-gov app
 
-# 🔮 Predict proposal vote approval
+# 🔮 Run an exploratory statevector simulation (not a vote forecast)
 q-ai-gov predict --public-good 9.5 --roi 9.8
 
 # 🦄 Uniswap v4 Q-AI Governance Hook Smart Contract Oracle

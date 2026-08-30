@@ -19,7 +19,8 @@ def test_pypi_cli_predict(monkeypatch, capsys):
     monkeypatch.setattr("sys.argv", ["q-ai-gov", "predict", "--public-good", "9.0", "--roi", "8.5"])
     main()
     captured = capsys.readouterr()
-    assert "Q-AI PREDICTIVE GOVERNANCE ORACLE RESULT" in captured.out
+    assert "EXPLORATORY STATEVECTOR SIMULATION" in captured.out
+    assert "not a validated vote forecast" in captured.out
 
 
 def test_pypi_cli_benchmark_uses_real_dataset(monkeypatch, tmp_path, capsys):

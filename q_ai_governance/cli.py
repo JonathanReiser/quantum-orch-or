@@ -42,7 +42,7 @@ except ImportError:
 def main():
     parser = argparse.ArgumentParser(
         prog="q-ai-gov",
-        description="Q-AI Governance: Quantum-Cognitive AI Policy & DAO Decision Engine"
+        description="Q-AI Governance: exploratory quantum-cognition simulations and reproducible DAO analysis"
     )
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
@@ -125,8 +125,11 @@ def main():
     econ_parser.add_argument("--output", type=str, default="quantum_econ_results.png", help="Output plot path")
 
     # Subcommand: live
-    live_parser = subparsers.add_parser("live", help="Pull and predict live active proposals from Snapshot API")
-    live_parser.add_argument("--output", type=str, default="live_snapshot_predictions.json", help="Output JSON report path")
+    live_parser = subparsers.add_parser(
+        "live",
+        help="Pull active Snapshot proposals and generate exploratory heuristic estimates",
+    )
+    live_parser.add_argument("--output", type=str, default="live_snapshot_estimates.json", help="Output JSON report path")
 
     # Subcommand: allocate
     alloc_parser = subparsers.add_parser("allocate", help="Allocate DAO budget across competing proposals")
@@ -134,9 +137,13 @@ def main():
     alloc_parser.add_argument("--output", type=str, default="budget_allocation_report.json", help="Output JSON report path")
 
     # Subcommand: predict
-    pred_parser = subparsers.add_parser("predict", help="Predict real Snapshot DAO proposal vote approval")
-    pred_parser.add_argument("--public-good", type=float, required=True, help="Public Good Score (1.0 - 10.0)")
-    pred_parser.add_argument("--roi", type=float, required=True, help="Ecosystem ROI Score (1.0 - 10.0)")
+    pred_parser = subparsers.add_parser(
+        "predict",
+        help="Run an exploratory statevector simulation from manual scores; not a vote forecast",
+    )
+    pred_parser.add_argument("--public-good", type=float, required=True, help="Manual synthetic input (1.0 - 10.0)")
+    pred_parser.add_argument("--roi", type=float, required=True, help="Manual synthetic input (1.0 - 10.0)")
+    pred_parser.add_argument("--shots", type=int, default=16, help="Toy-model measurement repetitions (default: 16)")
 
     # Subcommand: fetch-snapshot-data
     fetch_parser = subparsers.add_parser(
@@ -265,12 +272,13 @@ def main():
         run_quantum_econ_benchmark(output_plot=args.output)
 
     elif args.command == "live":
-        print(f"📡 Connecting to Snapshot GraphQL API...")
+        print("📡 Connecting to Snapshot GraphQL API...")
+        print("⚠️ Results are exploratory heuristic estimates, not validated vote forecasts.")
         oracle = SnapshotLiveOracle()
         summary = oracle.predict_live_proposals()
         with open(args.output, "w") as f:
             json.dump(summary, f, indent=2)
-        print(f"✅ Live Snapshot predictions saved to {args.output}")
+        print(f"✅ Live Snapshot estimates saved to {args.output}")
 
     elif args.command == "allocate":
         print(f"⚡ Running Q-AI DAO Budget Allocator for ${args.budget:,.2f} Treasury...")
@@ -281,23 +289,25 @@ def main():
         print(f"✅ Budget allocation complete. Total Allocated: ${report['total_allocated']:,.2f} ({report['consensus_score']:.1f}% Consensus)")
 
     elif args.command == "predict":
-        print(f"🔮 Predicting Snapshot DAO Proposal Vote Approval...")
+        if args.shots < 1:
+            parser.error("predict --shots must be at least 1")
+        print("⚠️ This is an exploratory statevector simulation, not a validated vote forecast.")
         obs = np.array([args.public_good, args.roi], dtype=np.float32)
         agent = QuantumOrchORAgent(num_qubits=2, state_dim=2)
         
         yes_count = 0
-        for _ in range(50):
+        for _ in range(args.shots):
             idx, _, _, _, _ = agent.deliberate_and_act(obs)
             if idx % 2 == 0:
                 yes_count += 1
                 
-        pred_pct = (yes_count / 50.0) * 100.0
+        pred_pct = (yes_count / args.shots) * 100.0
         print(f"\n==================================================")
-        print(f"  Q-AI PREDICTIVE GOVERNANCE ORACLE RESULT         ")
+        print(f"  EXPLORATORY STATEVECTOR SIMULATION               ")
         print(f"==================================================")
-        print(f"Public Good Score: {args.public_good}/10.0")
-        print(f"Ecosystem ROI Score: {args.roi}/10.0")
-        print(f"Predicted Proposal Vote Approval: {pred_pct:.1f}% (YES)\n")
+        print(f"Manual public-good input: {args.public_good}/10.0")
+        print(f"Manual ROI input: {args.roi}/10.0")
+        print(f"Measured toy-model YES share: {pred_pct:.1f}%\n")
 
     elif args.command == "fetch-snapshot-data":
         from q_ai_governance.fetch_snapshot_dataset import build, SPACES
