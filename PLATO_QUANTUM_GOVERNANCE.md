@@ -1,5 +1,19 @@
 # 🏛️ Platonism in Quantum AI: Hilbert Space as the Realm of Ideal Forms
 
+> ## ⚠️ RETRACTED CLAIMS — see [CORRECTIONS.md](CORRECTIONS.md)
+>
+> **Audited 2026-08-30.** The empirical claims in this document — including any
+> reference to "835,000 Snapshot DAO votes", an "86.7% error reduction",
+> "1.3% MAE", "R² = 0.98", "84% on the Linda problem", "92.8% directional
+> accuracy", or GHZ entanglement "doubling" public-good approval from 40% to
+> 80% — are **not supported by the code in this repository**. Several were
+> hardcoded literals rather than measured results; the DAO figures came from
+> five hand-written proposals, not a dataset.
+>
+> The text below is retained unedited as a record of what was published. Do not
+> cite it. [CORRECTIONS.md](CORRECTIONS.md) documents each claim and reports
+> what the real 905-proposal / 6.24M-vote Snapshot dataset actually shows.
+
 **Author:** Jonathan Reiser  
 **CERN Zenodo DOI:** [10.5281/zenodo.22151233](https://zenodo.org/records/22151233)  
 **Core Framework:** `q-ai-governance` ([GitHub](https://github.com/JonathanReiser/quantum-orch-or))  
