@@ -1,0 +1,237 @@
+.study-page {
+    min-height: 100vh;
+}
+
+.study-header .header-main {
+    width: 100%;
+}
+
+.back-link {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.study-shell {
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+    flex: 1;
+}
+
+.study-screen {
+    display: none;
+}
+
+.study-screen.active-study-screen {
+    display: block;
+}
+
+.study-card {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.consent-copy,
+.debrief-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.consent-copy p,
+.debrief-copy p {
+    margin: 0;
+}
+
+.notice-box {
+    padding: 1rem;
+    border: 1px solid rgba(0, 242, 254, 0.35);
+    border-radius: 10px;
+    background: rgba(0, 242, 254, 0.07);
+    color: var(--text-primary);
+}
+
+.warning-box {
+    border-color: rgba(245, 158, 11, 0.45);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.consent-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: var(--text-primary);
+    line-height: 1.45;
+    cursor: pointer;
+}
+
+.consent-check input {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.1rem;
+    accent-color: var(--cyan);
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(0.6);
+}
+
+.study-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.study-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(290px, 0.75fr);
+    gap: 1.5rem;
+}
+
+.study-grid .study-card {
+    width: 100%;
+}
+
+.condition-description,
+.coupling-description,
+.decision-note,
+.table-note {
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+.coupling-description {
+    padding: 0.65rem 0.8rem;
+    border-left: 3px solid var(--cyan);
+    background: rgba(0, 242, 254, 0.05);
+}
+
+.strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin: 1.25rem 0;
+}
+
+.strategy-button {
+    min-height: 118px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.04);
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.strategy-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: var(--cyan);
+    background: rgba(0, 242, 254, 0.08);
+}
+
+.strategy-button strong {
+    font-size: 2rem;
+    color: var(--cyan);
+}
+
+.strategy-button span {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.strategy-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.payoff-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.payoff-table th,
+.payoff-table td {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+}
+
+.payoff-table th {
+    color: var(--cyan);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.score-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 1.25rem;
+}
+
+.score-row div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.score-row span {
+    color: var(--text-secondary);
+}
+
+.score-row strong {
+    color: var(--cyan);
+    font-size: 1.4rem;
+}
+
+.result-card {
+    margin-top: 1.5rem;
+}
+
+.result-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.result-content h2,
+.result-content p {
+    margin: 0.3rem 0 0;
+}
+
+.integrity-status {
+    font-family: monospace;
+    overflow-wrap: anywhere;
+    color: #a7f3d0;
+}
+
+@media(max-width: 800px) {
+    .study-header .header-main,
+    .result-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .study-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .strategy-grid {
+        grid-template-columns: 1fr;
+    }
+}

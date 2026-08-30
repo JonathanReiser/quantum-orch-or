@@ -46,3 +46,14 @@ conditions.
 
 Neither a simulator result nor a behavioral difference establishes a quantum
 biological mechanism, consciousness, or Orch-OR.
+
+## Participant-facing pilot
+
+Open `study.html` from the static site, or select the EWL tournament in the
+Experiment Lab and choose **Launch anonymous participant pilot**. The browser
+pilot provides consent language, randomized backend and disclosure assignments,
+12 balanced rounds, a full debrief, and optional JSON/CSV export. Nothing is
+sent to a server.
+
+The page is a protocol and interface pilot, not an approved human-subjects
+study. Obtain any required ethics review before recruitment or research use.

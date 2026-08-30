@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EWL Strategy Study Pilot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="study.css?v=1">
+</head>
+<body class="study-page">
+    <header class="app-header study-header">
+        <div class="header-main">
+            <div class="logo-container"><span class="pulse-dot"></span><h1>EWL Strategy Study Pilot</h1></div>
+            <a class="btn btn-outline back-link" href="index.html">Back to Experiment Lab</a>
+        </div>
+        <p class="subtitle">A local, anonymous pilot for testing equivalent strategic mechanisms and their presentation.</p>
+    </header>
+
+    <main class="study-shell">
+        <section id="consent-screen" class="study-screen active-study-screen">
+            <div class="card glass study-card">
+                <div class="card-header"><h2>Before you begin</h2><span class="badge">LOCAL PILOT</span></div>
+                <div class="card-body consent-copy">
+                    <p>This prototype asks you to make 12 strategic choices against a scripted opponent. It records choices, response times, outcomes, and randomized study assignments in your browser.</p>
+                    <div class="notice-box">
+                        <strong>No data is transmitted.</strong> Results remain in this browser unless you choose to download them. Do not enter your name, email, wallet address, or other identifying information.
+                    </div>
+                    <div class="notice-box warning-box">
+                        This is not an approved human-subjects study. Do not recruit participants or present its output as research evidence until the protocol receives any ethics review required by your institution or jurisdiction.
+                    </div>
+                    <label class="consent-check"><input id="consent-age" type="checkbox"> I confirm that I am at least 18 and am participating voluntarily.</label>
+                    <label class="consent-check"><input id="consent-local" type="checkbox"> I understand that this pilot stores no result remotely and that downloading is optional.</label>
+                    <button id="btn-begin-study" class="btn btn-glow" disabled>Begin anonymous session</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="game-screen" class="study-screen" hidden>
+            <div class="study-status-row">
+                <span id="session-label" class="badge"></span>
+                <span id="round-label" class="badge badge-success">Round 1 of 12</span>
+                <span id="mechanism-label" class="badge"></span>
+            </div>
+
+            <div class="study-grid">
+                <div class="card glass study-card">
+                    <div class="card-header"><h2>Choose your strategy</h2></div>
+                    <div class="card-body">
+                        <p id="condition-description" class="condition-description"></p>
+                        <p id="coupling-description" class="coupling-description"></p>
+                        <div class="strategy-grid">
+                            <button class="strategy-button" data-strategy="C"><strong>C</strong><span>Cooperate / identity</span></button>
+                            <button class="strategy-button" data-strategy="D"><strong>D</strong><span>Defect / flip</span></button>
+                            <button class="strategy-button" data-strategy="Q"><strong>Q</strong><span>Extended phase strategy</span></button>
+                        </div>
+                        <p class="decision-note">The opponent's choice is hidden until you commit. Higher cumulative payoff is better.</p>
+                    </div>
+                </div>
+
+                <div class="card glass study-card">
+                    <div class="card-header"><h2>Payoff table</h2></div>
+                    <div class="card-body">
+                        <table class="payoff-table">
+                            <thead><tr><th>You / opponent</th><th>C</th><th>D</th></tr></thead>
+                            <tbody>
+                                <tr><th>C</th><td>3 / 3</td><td>0 / 5</td></tr>
+                                <tr><th>D</th><td>5 / 0</td><td>1 / 1</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="table-note">Q is an extended EWL strategy. Its measured outcome is converted to C/D before the same payoff table is applied.</p>
+                        <div class="score-row">
+                            <div><span>You</span><strong id="participant-score">0</strong></div>
+                            <div><span>Opponent</span><strong id="opponent-score">0</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="round-result" class="card glass result-card" hidden>
+                <div class="card-body result-content">
+                    <div><span class="eyebrow">ROUND RESULT</span><h2 id="outcome-heading"></h2><p id="outcome-detail"></p></div>
+                    <button id="btn-next-round" class="btn btn-cyan">Next round</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="debrief-screen" class="study-screen" hidden>
+            <div class="card glass study-card">
+                <div class="card-header"><h2>Session complete</h2><span class="badge badge-success">DEBRIEF</span></div>
+                <div class="card-body debrief-copy">
+                    <p id="debrief-summary"></p>
+                    <div class="notice-box">
+                        Both backend conditions use the same EWL probability distribution. The classical-correlated condition samples it conventionally; the EWL-simulator condition calculates it as an EWL statevector. This pilot can test framing and data collection, not quantum advantage.
+                    </div>
+                    <p id="assignment-reveal"></p>
+                    <p id="integrity-status" class="integrity-status">Preparing integrity hash…</p>
+                    <div class="button-row">
+                        <button id="btn-download-json" class="btn btn-glow" disabled>Download JSON record</button>
+                        <button id="btn-download-csv" class="btn btn-cyan" disabled>Download CSV events</button>
+                        <button id="btn-new-session" class="btn btn-outline">Start a new session</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer"><p>Research prototype only · No remote storage · Protocol: ewl-participant-pilot/v1</p></footer>
+    <script src="ewl_core.js?v=1"></script>
+    <script src="study.js?v=1"></script>
+</body>
+</html>

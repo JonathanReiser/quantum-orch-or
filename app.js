@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const experimentCommand = document.getElementById("experiment-command");
     const experimentReproductionNote = document.getElementById("experiment-reproduction-note");
     const experimentChartCanvas = document.getElementById("experimentChart");
+    const participantStudyLink = document.getElementById("participant-study-link");
 
     // The browser catalogue mirrors q_ai_governance.experiment_lab.  Only the
     // Snapshot entry displays a checked, bundled result; companion studies link
@@ -297,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         experimentSource.textContent = experiment.status === "RUNNABLE LOCALLY" ? "Open bundled result data" : "Open companion repository";
         experimentCommand.textContent = experiment.command;
         experimentReproductionNote.textContent = experiment.reproductionNote;
+        participantStudyLink.hidden = experimentSelect.value !== "ewl-mechanism-blind-tournament";
         renderExperimentChart(experiment);
     }
 

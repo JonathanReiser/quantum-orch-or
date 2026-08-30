@@ -323,6 +323,16 @@ body {
     line-height: 1.5;
 }
 
+.participant-study-link {
+    display: inline-flex;
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+.participant-study-link[hidden] {
+    display: none;
+}
+
 .contribution-steps {
     margin: 0 0 1.25rem;
     padding-left: 1.25rem;

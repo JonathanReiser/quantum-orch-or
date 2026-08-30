@@ -104,6 +104,9 @@ The report includes all sampled events, its seed, and a replay hash. The QPU
 entry is intentionally a non-result until it has a backend, job ID, shot count,
 measurement counts, and transpilation metadata. See
 [EWL_TOURNAMENT.md](EWL_TOURNAMENT.md) for the protocol and human-study extension.
+The static Experiment Lab also links to `study.html`, an anonymous local pilot
+with consent, randomized assignments, repeated choices, debriefing, and
+optional JSON/CSV export. It is not approved for participant recruitment.
 
 ---
 
