@@ -145,6 +145,17 @@ def main():
     pred_parser.add_argument("--roi", type=float, required=True, help="Manual synthetic input (1.0 - 10.0)")
     pred_parser.add_argument("--shots", type=int, default=16, help="Toy-model measurement repetitions (default: 16)")
 
+    # Subcommand: experiments
+    experiment_parser = subparsers.add_parser(
+        "experiments",
+        help="List or run transparent decision-making experiments",
+    )
+    experiment_parser.add_argument("--list", action="store_true", help="List the experiment catalogue")
+    experiment_parser.add_argument("--run", type=str, help="ID of a runnable local experiment")
+    experiment_parser.add_argument("--data", type=str, help="Input dataset for the selected experiment")
+    experiment_parser.add_argument("--test-frac", type=float, default=0.30, help="Held-out temporal fraction")
+    experiment_parser.add_argument("--output", type=str, default="experiment_result.json", help="Destination JSON report")
+
     # Subcommand: fetch-snapshot-data
     fetch_parser = subparsers.add_parser(
         "fetch-snapshot-data",
@@ -308,6 +319,27 @@ def main():
         print(f"Manual public-good input: {args.public_good}/10.0")
         print(f"Manual ROI input: {args.roi}/10.0")
         print(f"Measured toy-model YES share: {pred_pct:.1f}%\n")
+
+    elif args.command == "experiments":
+        from q_ai_governance.experiment_lab import list_experiments, run_experiment
+
+        if args.list or not args.run:
+            for experiment in list_experiments():
+                print(f"{experiment['experiment_id']}: {experiment['title']}")
+                print(f"  {experiment['kind']} | {experiment['status']}")
+                print(f"  Hypothesis: {experiment['hypothesis']}")
+                print(f"  Baseline: {experiment['baseline']}\n")
+        else:
+            if args.run == "snapshot-temporal-baseline" and not args.data:
+                parser.error("experiments --run snapshot-temporal-baseline requires --data")
+            try:
+                report = run_experiment(args.run, data_path=args.data, test_frac=args.test_frac)
+            except ValueError as exc:
+                parser.error(str(exc))
+            os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
+            with open(args.output, "w") as fh:
+                json.dump(report, fh, indent=2)
+            print(f"Experiment report written to {args.output}")
 
     elif args.command == "fetch-snapshot-data":
         from q_ai_governance.fetch_snapshot_dataset import build, SPACES

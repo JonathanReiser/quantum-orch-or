@@ -85,7 +85,8 @@ q-ai-gov benchmark --data snapshot_dao_dataset.json --output benchmark_results.j
 The JSON report includes constant and per-DAO baselines alongside the ridge
 model; a more complex model is not useful unless it beats those baselines on the
 held-out period. See [CORRECTIONS.md](CORRECTIONS.md) for the current results
-and limitations.
+and limitations. See [EXPERIMENTS.md](EXPERIMENTS.md) for the shared
+experiment format and companion projects.
 
 ---
 

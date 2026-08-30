@@ -38,3 +38,12 @@ def test_pypi_cli_benchmark_uses_real_dataset(monkeypatch, tmp_path, capsys):
     assert "temporal split, no hindsight" in captured.out
     assert report["split"]["n_total"] == 905
     assert "ridge_prevote_features" in report["results"]
+
+
+def test_pypi_cli_lists_experiments(monkeypatch, capsys):
+    monkeypatch.setattr("sys.argv", ["q-ai-gov", "experiments", "--list"])
+    main()
+    captured = capsys.readouterr()
+
+    assert "snapshot-temporal-baseline" in captured.out
+    assert "external companion" in captured.out
