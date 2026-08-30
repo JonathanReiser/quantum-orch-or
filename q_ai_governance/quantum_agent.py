@@ -129,7 +129,7 @@ class QuantumOrchORAgent:
         init_qc = self._build_initial_circuit(rotations)
         init_qc.save_statevector()
         
-        t_qc = transpile(init_qc, target=self._target)
+        t_qc = transpile(init_qc, target=self._target, optimization_level=0)
         result = self.simulator.run(t_qc).result()
         current_statevector = np.array(result.get_statevector(t_qc))
         
@@ -160,7 +160,7 @@ class QuantumOrchORAgent:
             append_trotter_step(qc_step, self.num_qubits, J_coupling, g_tunneling, dt)
             qc_step.save_statevector()
             
-            t_qc = transpile(qc_step, target=self._target)
+            t_qc = transpile(qc_step, target=self._target, optimization_level=0)
             result = self.simulator.run(t_qc).result()
             current_statevector = np.array(result.get_statevector(t_qc))
 
