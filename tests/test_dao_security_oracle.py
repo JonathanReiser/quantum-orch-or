@@ -7,10 +7,15 @@ from q_ai_governance.dao_security_oracle import DAOSecurityOracle
 
 def test_dao_security_oracle_approval():
     oracle = DAOSecurityOracle(dao_name="Uniswap DAO")
+    # Public Goods' interference_boost is 1.35x, so the breakeven raw YES ratio
+    # for the 80% consensus threshold is 0.80/1.35 = 59.26%. The previous fixture
+    # (55% YES) was below that line and could never pass regardless of the
+    # formula being correct — this uses a clear, comfortably-passing majority
+    # instead, matching what the assertions below actually claim.
     cert = oracle.audit_proposal(
         proposal_id="UNI-PROP-42",
-        yes_votes=550000,
-        no_votes=450000,
+        yes_votes=650000,
+        no_votes=350000,
         category="Public Goods"
     )
     assert cert["dao_name"] == "Uniswap DAO"

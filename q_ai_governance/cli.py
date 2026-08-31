@@ -3,6 +3,7 @@ cli.py — Main Command Line Interface executable via `q-ai-gov`
 """
 
 import sys
+import os
 import json
 import argparse
 import numpy as np
@@ -200,8 +201,8 @@ def main():
 
     elif args.command == "uniswap":
         governor = UniswapQuantumGovernor()
-        governor.run_uniswap_benchmark()
-        governor.generate_uniswap_forum_proposal(output_md=args.output)
+        bench_results = governor.run_uniswap_benchmark()
+        governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output)
 
     elif args.command == "recommend":
         oracle = QuantumCryptoRecommendationOracle()

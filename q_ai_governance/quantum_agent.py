@@ -79,20 +79,41 @@ class QuantumOrchORAgent:
     Hybrid Quantum Policy Agent using parameterized Qiskit quantum circuits
     and Penrose Objective Reduction for non-deterministic action collapse.
     """
-    def __init__(self, num_qubits=4, state_dim=2, learning_rate=0.05, hbar_scale=1.0e17):
+    def __init__(self, num_qubits=4, state_dim=2, learning_rate=0.05, hbar_scale=1.0e17, weights_path=None):
         self.num_qubits = num_qubits
         self.state_dim = state_dim
         self.lr = learning_rate
         self.hbar_scale = hbar_scale
-        
+
         # Policy parameters mapping state input to circuit rotation angles (Rx, Ry) and coupling (J, g)
         # Weights shape: (num_params, state_dim)
         self.num_rotations = num_qubits * 2
         self.weights = np.random.randn(self.num_rotations + 2, state_dim) * 0.1
         self.bias = np.zeros(self.num_rotations + 2)
-        
+
+        # Optionally load weights fit to real data (see train_uniswap_governance_agent.py)
+        # instead of the random init above. Default is unchanged random init — this only
+        # activates for callers that explicitly ask for fitted weights.
+        if weights_path is not None:
+            import os
+            if os.path.exists(weights_path):
+                fitted = np.load(weights_path)
+                if fitted["weights"].shape == self.weights.shape and fitted["bias"].shape == self.bias.shape:
+                    self.weights = fitted["weights"]
+                    self.bias = fitted["bias"]
+                else:
+                    print(f"⚠️ weights_path={weights_path} shape mismatch for "
+                          f"num_qubits={num_qubits}/state_dim={state_dim} — using random init.")
+            else:
+                print(f"⚠️ weights_path={weights_path} not found — using random init "
+                      f"(run train_uniswap_governance_agent.py to produce it).")
+
         self.single_eg = calculate_single_tubulin_eg() * self.hbar_scale
         self.simulator = AerSimulator()
+        # AerSimulator.target rebuilds its full Target object from scratch on every
+        # access; deliberate_and_act() calls transpile() many times per rollout, so
+        # cache it once here instead of paying that cost on every Trotter step.
+        self._target = self.simulator.target
         
     def _compute_circuit_params(self, state_obs):
         # Linear layer output
@@ -125,7 +146,7 @@ class QuantumOrchORAgent:
         init_qc = self._build_initial_circuit(rotations)
         init_qc.save_statevector()
         
-        t_qc = transpile(init_qc, self.simulator)
+        t_qc = transpile(init_qc, target=self._target, optimization_level=0)
         result = self.simulator.run(t_qc).result()
         current_statevector = np.array(result.get_statevector(t_qc))
         
@@ -156,7 +177,7 @@ class QuantumOrchORAgent:
             append_trotter_step(qc_step, self.num_qubits, J_coupling, g_tunneling, dt)
             qc_step.save_statevector()
             
-            t_qc = transpile(qc_step, self.simulator)
+            t_qc = transpile(qc_step, target=self._target, optimization_level=0)
             result = self.simulator.run(t_qc).result()
             current_statevector = np.array(result.get_statevector(t_qc))
 

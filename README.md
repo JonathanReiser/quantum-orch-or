@@ -11,13 +11,56 @@
 
 ---
 
-## 🌟 Key Empirical Benchmarks
+> ### ⚠️ Corrected claims
+>
+> An audit on 2026-08-30 found that this project's previously advertised
+> headline results — "835,000 Snapshot DAO votes", "86.7% error reduction",
+> "1.3% MAE", "R² = 0.98", "GHZ entanglement doubles public-good approval
+> 40% → 80%", "84% on the Linda problem", and "92.8% directional accuracy" —
+> were **not produced by the code in this repository**. Several were hardcoded
+> literals; the DAO figures came from five hand-written proposals, not a
+> dataset. See **[CORRECTIONS.md](CORRECTIONS.md)** for the full accounting and
+> for what the real data shows. Documents elsewhere in this repository and the
+> Zenodo record still carry the uncorrected wording.
 
-* **835,000 Snapshot DAO Votes Analyzed:** Achieves an **86.7% error reduction** over classical models ($1.3\%$ MAE vs $9.8\%$ classical linear regression, $R^2 = 0.98$) across Uniswap, Arbitrum, Optimism, Gitcoin, and Aave.
-* **Gallup Survey Cognition Fit:** **98% Coefficient of Determination ($R^2 = 0.98$)** fitting national Gallup survey question order effects and **84% accuracy** on the Linda conjunction fallacy.
-* **GHZ Entanglement Consensus Doubling:** $N$-qubit GHZ statevector entanglement $|\text{GHZ}\rangle = \frac{1}{\sqrt{2}}(|00...0\rangle + |11...1\rangle)$ doubles public-good proposal approval rates from **40% to 80%**.
-* **Real IBM Quantum Hardware Integration:** Connects directly to 127-qubit IBM Quantum QPUs (`ibm_brisbane`, `ibm_kyiv`) via Qiskit Runtime with AerSimulator fallback.
-* **Real Quantitative Crypto Market Oracle:** Generates 24h price forecasts and stop-loss boundaries for **BTC, ETH, SOL, ARB, OP** (**92.8% directional accuracy**).
+## 🌟 Empirical Status
+
+* **Real Snapshot DAO dataset (new):** 905 closed, cleanly-binary proposals
+  covering **6,242,940 vote records** across Uniswap, Arbitrum, Optimism,
+  Gitcoin, and Aave (2020-09-11 → 2026-08-20), pulled reproducibly from the
+  Snapshot GraphQL hub by
+  [`q_ai_governance/fetch_snapshot_dataset.py`](q_ai_governance/fetch_snapshot_dataset.py).
+* **Headline result on that dataset:** DAO proposals overwhelmingly pass — the
+  median proposal carries **99.75% YES**. On a hindsight-free temporal split,
+  the lowest error comes from ignoring the proposal and predicting the
+  historical median (**10.44 pp MAE**). A ridge model on pre-vote features does
+  *worse* (11.20 pp), and every R² sits within noise of zero. From information
+  available before a vote closes, the YES share is close to unpredictable
+  beyond "it will probably pass."
+* **GHZ "entanglement consensus":** the implemented mechanism is a 75% chance of
+  copying voter 0; the GHZ statevector it computes is never read. Measured over
+  5 seeds by
+  [`q_ai_governance/measure_ghz_effect.py`](q_ai_governance/measure_ghz_effect.py),
+  it raises voter *agreement* in 5/5 seeds (+2.9pp) while public-good approval
+  rises in only 2/5 and falls by 2.9pp on average. It manufactures agreement,
+  not public-good alignment. See CORRECTIONS.md §3.
+* **Entanglement and equilibrium (a result that does hold):** the retracted GHZ
+  claim is replaced by a reproduction of Eisert–Wilkens–Lewenstein (1999) in
+  [`q_ai_governance/ewl_equilibrium.py`](q_ai_governance/ewl_equilibrium.py).
+  Above a *derived* entanglement threshold, cos²γ_c = (R−S)/(T−S) = 3/5, the
+  quantised Prisoner's Dilemma acquires a cooperative equilibrium at (3,3) that
+  no classical correlated equilibrium can reach — both classical baselines are
+  stuck at (1,1). It then reproduces the Benjamin–Hayden (1999) objection: widen
+  the strategy space to full SU(2) and that equilibrium disappears entirely.
+  Payoffs are analytic, the search is exhaustive, nothing is fitted, and nine
+  tests pin the landmarks to published values. Write-up:
+  [EWL_EQUILIBRIUM.md](EWL_EQUILIBRIUM.md).
+* **Real IBM Quantum Hardware Integration:** Connects directly to 127-qubit IBM
+  Quantum QPUs (`ibm_brisbane`, `ibm_kyiv`) via Qiskit Runtime with
+  AerSimulator fallback.
+* **Crypto market oracle:** generates 24h forecasts for BTC, ETH, SOL, ARB, OP.
+  No accuracy figure is claimed — the previously published "92.8% directional
+  accuracy" was a hardcoded constant with no backtest behind it.
 
 ---
 

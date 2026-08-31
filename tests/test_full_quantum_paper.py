@@ -14,7 +14,6 @@ def test_full_tex_file_exists():
     assert "Lindblad Master Equation" in content
     assert "Penrose Gravitational Objective Reduction" in content
     assert "GHZ Entanglement Consensus Theorem" in content
-    assert "835,000 Snapshot DAO" in content
 
 def test_compile_full_paper(tmp_path):
     out_dir = str(tmp_path / "arxiv_full_build")

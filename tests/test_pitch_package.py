@@ -12,8 +12,13 @@ def test_pitch_documents_exist():
 
     pitch_content = open("WEB3_QUANTUM_AI_PROTOCOL_PITCH.md").read()
     assert "On-Chain Quantum AI Governance" in pitch_content
-    assert "835,000 Snapshot DAO votes" in pitch_content
     assert "Q_AIGovernanceHook.sol" in pitch_content
+    # The pitch deck still contains the retracted "835,000 Snapshot DAO votes"
+    # figure, so it must carry the retraction banner. Asserting the banner —
+    # rather than the marketing string, as this test used to — means the test
+    # fails if the correction is ever dropped. See CORRECTIONS.md.
+    assert "RETRACTED CLAIMS" in pitch_content
+    assert "CORRECTIONS.md" in pitch_content
 
     grant_content = open("uniswap_grant_proposal.md").read()
     assert "Uniswap Foundation Grant Application" in grant_content

@@ -1,0 +1,56 @@
+{
+  "method": "leave-one-out CV, (1+1) hill-climb supervised fit (see train_uniswap_governance_agent.py docstring)",
+  "n_examples": 5,
+  "n_rollouts_eval_per_prediction": 50,
+  "hillclimb_iters": 35,
+  "mean_absolute_error_pct": 32.74,
+  "elapsed_seconds": 1880.2,
+  "folds": [
+    {
+      "held_out_proposal_id": "UNI-PROP-12",
+      "dao": "Uniswap",
+      "real_yes_pct": 98.4,
+      "predicted_yes_pct": 26.0,
+      "abs_error_pct": 72.4,
+      "train_loss_start": 0.3166,
+      "train_loss_end": 0.0641
+    },
+    {
+      "held_out_proposal_id": "ARB-STIP-1",
+      "dao": "Arbitrum",
+      "real_yes_pct": 64.2,
+      "predicted_yes_pct": 92.0,
+      "abs_error_pct": 27.8,
+      "train_loss_start": 0.4955,
+      "train_loss_end": 0.0051
+    },
+    {
+      "held_out_proposal_id": "OP-RPGF-3",
+      "dao": "Optimism",
+      "real_yes_pct": 91.8,
+      "predicted_yes_pct": 100.0,
+      "abs_error_pct": 8.2,
+      "train_loss_start": 0.0485,
+      "train_loss_end": 0.0087
+    },
+    {
+      "held_out_proposal_id": "GTC-GR15",
+      "dao": "Gitcoin",
+      "real_yes_pct": 88.6,
+      "predicted_yes_pct": 96.0,
+      "abs_error_pct": 7.4,
+      "train_loss_start": 0.2761,
+      "train_loss_end": 0.018
+    },
+    {
+      "held_out_proposal_id": "AAVE-V3-10",
+      "dao": "Aave",
+      "real_yes_pct": 52.1,
+      "predicted_yes_pct": 100.0,
+      "abs_error_pct": 47.9,
+      "train_loss_start": 0.1827,
+      "train_loss_end": 0.037
+    }
+  ],
+  "caveat": "n=5 is too small to support a headline accuracy claim; this is an honest signal on the only real historical data currently in the repo, not a statistically meaningful validation."
+}

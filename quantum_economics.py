@@ -70,7 +70,7 @@ class QuantumFinancialOrderEffect:
         
         t_ab = transpile(qc_ab, self.simulator)
         res_ab = self.simulator.run(t_ab).result()
-        sv_ab = np.array(res_ab.get_statevector(t_qc if 't_qc' in locals() else t_ab))
+        sv_ab = np.array(res_ab.get_statevector(t_ab))
         p_bull_ab = float(np.abs(sv_ab[0]) ** 2)
 
         # Path BA: News B then News A

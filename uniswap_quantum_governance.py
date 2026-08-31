@@ -6,6 +6,7 @@ dynamics using Hilbert space statevectors, generating a formal Uniswap Forum Pro
 """
 
 import json
+import os
 import argparse
 import numpy as np
 
@@ -13,6 +14,13 @@ try:
     from q_ai_governance.quantum_agent import QuantumOrchORAgent
 except ImportError:
     from quantum_agent import QuantumOrchORAgent
+
+# Weights fit to real historical DAO outcomes by train_uniswap_governance_agent.py.
+# If this file doesn't exist yet, QuantumOrchORAgent falls back to (documented,
+# printed) random init rather than silently pretending to be trained.
+TRAINED_WEIGHTS_PATH = os.path.join(
+    os.path.dirname(__file__), "q_ai_governance", "trained_uniswap_agent_weights.npz"
+)
 
 UNISWAP_PROPOSALS = [
     {
@@ -54,11 +62,9 @@ class UniswapQuantumGovernor:
             roi = prop["roi_score"]
             real_vote = prop["real_yes_pct"]
 
-            # Map to Statevector Angle theta
-            theta = (public_good / 10.0) * (np.pi / 2)
             obs = np.array([public_good, roi], dtype=np.float32)
 
-            agent = QuantumOrchORAgent(num_qubits=2, state_dim=2)
+            agent = QuantumOrchORAgent(num_qubits=2, state_dim=2, weights_path=TRAINED_WEIGHTS_PATH)
             yes_count = 0
             for _ in range(50):
                 idx, _, _, _, _ = agent.deliberate_and_act(obs)
@@ -83,10 +89,33 @@ class UniswapQuantumGovernor:
 
         return results
 
-    def generate_uniswap_forum_proposal(self, output_md="UNISWAP_GOVERNANCE_PROPOSAL.md"):
+    def generate_uniswap_forum_proposal(self, results=None, output_md="UNISWAP_GOVERNANCE_PROPOSAL.md"):
+        """Renders the forum proposal from ACTUAL benchmark results — no hardcoded
+        performance numbers. If results isn't passed, runs the benchmark itself."""
+        if results is None:
+            results = self.run_uniswap_benchmark()
+
+        rows = "\n".join(
+            f"| **{r['id']}** ({r['title']}) | **{r['real_vote_yes_pct']}%** | "
+            f"**{r['q_ai_predicted_yes_pct']}%** | **{r['prediction_error_pct']}% Error** |"
+            for r in results
+        )
+        mae = round(float(np.mean([r["prediction_error_pct"] for r in results])), 1)
+
         proposal_text = (
             "# [Proposal] Q-AI Governance Oracle: Quantum-Cognitive Vote Prediction & Fee Parameter Simulation for Uniswap v4\n\n"
             "**Author:** Jonathan Reiser (Quantum-Cognitive AI Systems)\n"
+            "\n---\n\n"
+            "> ## \u26a0\ufe0f Numbers below come from an n=3 sample fit by a procedure with a known defect\n"
+            ">\n"
+            "> See [CORRECTIONS.md](CORRECTIONS.md). This project's previously published\n"
+            "> governance figures (\"835,000 Snapshot DAO votes\", \"86.7% error reduction\",\n"
+            "> \"R\u00b2 = 0.98\") are retracted \u2014 they were not produced by the code that cited\n"
+            "> them. The agent behind the table below was fit by a (1+1) hill climb that\n"
+            "> never re-measures its incumbent, so it can accept nothing and still report a\n"
+            "> flat, converged-looking loss. Do not cite these numbers as validated accuracy.\n"
+            "> On the real 905-proposal Snapshot record, no model in this repository beats\n"
+            "> predicting the historical median YES share.\n\n"
             "**Target Category:** Governance & Tooling / Grants\n"
             "**Live Visualizer:** https://jonathanreiser.github.io/quantum-orch-or/\n"
             "**GitHub Repository:** https://github.com/JonathanReiser/quantum-orch-or\n\n"
@@ -96,14 +125,15 @@ class UniswapQuantumGovernor:
             "Classical voting models fail to capture non-commutative delegate preference shifts and framing order effects. "
             "Here we propose deploying the **Q-AI Governance Oracle**—a quantum-cognitive reinforcement learning engine "
             "governed by Penrose Orchestrated Objective Reduction (Orch-OR) statevector collapse.\n\n"
-            "## Empirical Benchmarks on Real Uniswap Proposals\n\n"
-            "We evaluated our Q-AI model against historical Uniswap Snapshot governance votes:\n\n"
+            "## Benchmarks on Real Uniswap Proposals\n\n"
+            "We evaluated our Q-AI model, fit via leave-one-out cross-validation on a small set of historical "
+            "Uniswap Snapshot governance votes (see `train_uniswap_governance_agent.py` in the repository for "
+            "the fitting methodology). **This is a small sample (n=3 shown here) — treat these numbers as an "
+            "early signal, not a statistically validated accuracy claim.**\n\n"
             "| Proposal ID & Title | Real Vote YES (%) | Q-AI Forecast YES (%) | Prediction Error |\n"
             "| :--- | :--- | :--- | :--- |\n"
-            "| **UNI-PROP-12** (v3 Arbitrum Deployment) | **98.4%** | **98.0%** | **0.4% Error** |\n"
-            "| **UNI-PROP-18** (v4 Hooks Security Audit) | **96.2%** | **96.0%** | **0.2% Error** |\n"
-            "| **UNI-PROP-24** (Protocol Fee Switch) | **58.4%** | **58.0%** | **0.4% Error** |\n\n"
-            "**Key Metric:** Q-AI achieves an **86.7% error reduction** (1.3% MAE vs 9.8% classical models, $R^2 = 0.98$).\n\n"
+            f"{rows}\n\n"
+            f"**Mean Absolute Error on this sample:** {mae}pp.\n\n"
             "## Proposed Deliverables for Uniswap v4\n\n"
             "1. **Uniswap v4 Hooks Parameter Simulator:** Live simulation tool allowing delegates to model pool fee tier shifts and hook liquidity risks.\n"
             "2. **Delegate Alert Bot:** Real-time Telegram/Discord & X forecasting bot querying Snapshot GraphQL API.\n"
@@ -124,5 +154,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     governor = UniswapQuantumGovernor()
-    governor.run_uniswap_benchmark()
-    governor.generate_uniswap_forum_proposal(output_md=args.output)
+    bench_results = governor.run_uniswap_benchmark()
+    governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output)

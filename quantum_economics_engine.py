@@ -25,8 +25,10 @@ class QuantumEconomicsSimulator:
         whereas Quantum Cognition models ambiguity aversion as statevector interference.
         """
         theta_classical = np.pi / 4.0 # 50%
-        # Quantum interference term reduces expected probability under ambiguity
-        interference = -0.2 * ambiguity_level
+        # Quantum interference term reduces expected probability under ambiguity.
+        # cos^2(theta) is decreasing on [0, pi/2], so *increasing* theta is what
+        # reduces the probability — interference must be positive here.
+        interference = 0.2 * ambiguity_level
         theta_quantum = np.clip(theta_classical + interference, 0.05, np.pi / 2.0)
         
         prob_classical = np.cos(theta_classical) ** 2
