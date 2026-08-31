@@ -44,6 +44,17 @@
   it raises voter *agreement* in 5/5 seeds (+2.9pp) while public-good approval
   rises in only 2/5 and falls by 2.9pp on average. It manufactures agreement,
   not public-good alignment. See CORRECTIONS.md §3.
+* **Entanglement and equilibrium (a result that does hold):** the retracted GHZ
+  claim is replaced by a reproduction of Eisert–Wilkens–Lewenstein (1999) in
+  [`q_ai_governance/ewl_equilibrium.py`](q_ai_governance/ewl_equilibrium.py).
+  Above a *derived* entanglement threshold, cos²γ_c = (R−S)/(T−S) = 3/5, the
+  quantised Prisoner's Dilemma acquires a cooperative equilibrium at (3,3) that
+  no classical correlated equilibrium can reach — both classical baselines are
+  stuck at (1,1). It then reproduces the Benjamin–Hayden (1999) objection: widen
+  the strategy space to full SU(2) and that equilibrium disappears entirely.
+  Payoffs are analytic, the search is exhaustive, nothing is fitted, and nine
+  tests pin the landmarks to published values. Write-up:
+  [EWL_EQUILIBRIUM.md](EWL_EQUILIBRIUM.md).
 * **Real IBM Quantum Hardware Integration:** Connects directly to 127-qubit IBM
   Quantum QPUs (`ibm_brisbane`, `ibm_kyiv`) via Qiskit Runtime with
   AerSimulator fallback.
