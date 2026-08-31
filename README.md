@@ -20,8 +20,9 @@
 > were **not produced by the code in this repository**. Several were hardcoded
 > literals; the DAO figures came from five hand-written proposals, not a
 > dataset. See **[CORRECTIONS.md](CORRECTIONS.md)** for the full accounting and
-> for what the real data shows. Documents elsewhere in this repository and the
-> Zenodo record still carry the uncorrected wording.
+> for what the real data shows. The other documents in this repository retain
+> their original wording beneath retraction banners, kept as a record of what was
+> published; the Zenodo record is not yet corrected.
 
 ## 🌟 Empirical Status
 
@@ -37,6 +38,13 @@
   *worse* (11.20 pp), and every R² sits within noise of zero. From information
   available before a vote closes, the YES share is close to unpredictable
   beyond "it will probably pass."
+* **Which proposals get contested (real, but not what it looks like):**
+  reframing the task from "what YES share?" to "will this be contested?" does
+  find signal — AUC 0.660, 95% CI [0.555, 0.763]. But conditioning on the DAO
+  collapses it: median within-DAO AUC is **0.416**, below chance. The pooled
+  result is Simpson's paradox, driven by fixed voting windows acting as venue
+  fingerprints. Some DAOs argue and others rubber-stamp; the individual proposal
+  adds nothing. Write-up: [CONTESTEDNESS.md](CONTESTEDNESS.md).
 * **GHZ "entanglement consensus":** the implemented mechanism is a 75% chance of
   copying voter 0; the GHZ statevector it computes is never read. Measured over
   5 seeds by
@@ -51,7 +59,10 @@
   quantised Prisoner's Dilemma acquires a cooperative equilibrium at (3,3) that
   no classical correlated equilibrium can reach — both classical baselines are
   stuck at (1,1). It then reproduces the Benjamin–Hayden (1999) objection: widen
-  the strategy space to full SU(2) and that equilibrium disappears entirely.
+  the strategy space to full SU(2) and that equilibrium disappears entirely —
+  though not back to the classical game: the full space still has an exact
+  Haar-uniform equilibrium worth 2.25 against the classical 1.00, which it buys
+  with randomisation rather than cooperation.
   Payoffs are analytic, the search is exhaustive, nothing is fitted, and nine
   tests pin the landmarks to published values. Write-up:
   [EWL_EQUILIBRIUM.md](EWL_EQUILIBRIUM.md).

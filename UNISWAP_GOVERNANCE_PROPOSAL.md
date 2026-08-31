@@ -12,6 +12,12 @@
 > them. The agent behind the table below was fit by a (1+1) hill climb that
 > never re-measures its incumbent, so it can accept nothing and still report a
 > flat, converged-looking loss. Do not cite these numbers as validated accuracy.
+>
+> They are also not stable. This table is regenerated on every run, and the
+> agent's weights are effectively a random draw, so the numbers change each
+> time. Observed mean absolute error across runs of this same generator has
+> ranged from about 5pp to about 14pp on the identical three proposals. Any
+> single value below is an artefact of one run.
 > On the real 905-proposal Snapshot record, no model in this repository beats
 > predicting the historical median YES share.
 
@@ -31,11 +37,11 @@ We evaluated our Q-AI model, fit via leave-one-out cross-validation on a small s
 
 | Proposal ID & Title | Real Vote YES (%) | Q-AI Forecast YES (%) | Prediction Error |
 | :--- | :--- | :--- | :--- |
-| **UNI-PROP-12** (Uniswap v3 Deployment on Arbitrum One) | **98.4%** | **90.0%** | **8.4% Error** |
-| **UNI-PROP-18** (v4 Hooks Security Audit & Developer Grant Fund) | **96.2%** | **96.0%** | **0.2% Error** |
-| **UNI-PROP-24** (Protocol Fee Switch Activation & Dynamic Pool Tier Adjustment) | **58.4%** | **66.0%** | **7.6% Error** |
+| **UNI-PROP-12** (Uniswap v3 Deployment on Arbitrum One) | **98.4%** | **96.0%** | **2.4% Error** |
+| **UNI-PROP-18** (v4 Hooks Security Audit & Developer Grant Fund) | **96.2%** | **94.0%** | **2.2% Error** |
+| **UNI-PROP-24** (Protocol Fee Switch Activation & Dynamic Pool Tier Adjustment) | **58.4%** | **64.0%** | **5.6% Error** |
 
-**Mean Absolute Error on this sample:** 5.4pp.
+**Mean Absolute Error on this sample:** 3.4pp.
 
 ## Proposed Deliverables for Uniswap v4
 
