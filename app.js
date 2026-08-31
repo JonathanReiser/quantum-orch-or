@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const experimentReproductionNote = document.getElementById("experiment-reproduction-note");
     const experimentChartCanvas = document.getElementById("experimentChart");
     const participantStudyLink = document.getElementById("participant-study-link");
+    const researcherConsoleLink = document.getElementById("researcher-console-link");
 
     // The browser catalogue mirrors q_ai_governance.experiment_lab.  Only the
     // Snapshot entry displays a checked, bundled result; companion studies link
@@ -299,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
         experimentCommand.textContent = experiment.command;
         experimentReproductionNote.textContent = experiment.reproductionNote;
         participantStudyLink.hidden = experimentSelect.value !== "ewl-mechanism-blind-tournament";
+        researcherConsoleLink.hidden = experimentSelect.value !== "ewl-mechanism-blind-tournament";
         renderExperimentChart(experiment);
     }
 

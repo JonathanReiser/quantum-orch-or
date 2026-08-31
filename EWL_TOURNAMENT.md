@@ -57,3 +57,13 @@ sent to a server.
 
 The page is a protocol and interface pilot, not an approved human-subjects
 study. Obtain any required ethics review before recruitment or research use.
+
+## Researcher console
+
+Open `researcher.html` to import one or more participant JSON records locally.
+The console verifies the protocol, 12-round structure, strategies, EWL
+probabilities, random-draw replay, payoffs, cumulative totals, treatment
+consistency, SHA-256 integrity, and duplicate session IDs. Accepted sessions
+are summarized across the four backend × disclosure arms and can be exported as
+combined event CSV or descriptive-summary JSON. The console performs no
+significance testing and uploads nothing.

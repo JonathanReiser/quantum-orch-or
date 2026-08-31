@@ -202,22 +202,41 @@ document.addEventListener("DOMContentLoaded", () => {
         btnDownloadCsv.disabled = false;
     }
 
+    function fallbackHash(text) {
+        // window.crypto.subtle is unavailable in non-secure contexts, including
+        // file:// in Chrome. Without a fallback, a participant who simply opens
+        // this page from disk produces an unhashed record that the researcher
+        // console rejects outright, silently losing real data.
+        if (!(window.Sha256Fallback && typeof window.Sha256Fallback.hex === "function")) return null;
+        return window.Sha256Fallback.hex(text);
+    }
+
     async function addIntegrityHash() {
-        if (!(window.crypto && window.crypto.subtle)) {
-            session.integrity = { algorithm: "unavailable", sha256: null };
-            integrityStatus.textContent = "SHA-256 unavailable in this browser context; the record remains exportable.";
-            enableDownloads();
-            return;
-        }
+        const canonical = canonicalRecord();
         try {
-            const bytes = new TextEncoder().encode(canonicalRecord());
-            const digest = await window.crypto.subtle.digest("SHA-256", bytes);
-            const hash = Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, "0")).join("");
-            session.integrity = { algorithm: "SHA-256", sha256: hash };
-            integrityStatus.textContent = `Record SHA-256: ${hash}`;
+            let hash = null;
+            if (window.crypto && window.crypto.subtle) {
+                const digest = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+                hash = Array.from(new Uint8Array(digest)).map(byte => byte.toString(16).padStart(2, "0")).join("");
+            } else {
+                hash = fallbackHash(canonical);
+            }
+            if (hash) {
+                session.integrity = { algorithm: "SHA-256", sha256: hash };
+                integrityStatus.textContent = `Record SHA-256: ${hash}`;
+            } else {
+                session.integrity = { algorithm: "unavailable", sha256: null };
+                integrityStatus.textContent = "SHA-256 could not be computed; this record will not import into the researcher console.";
+            }
         } catch (error) {
-            session.integrity = { algorithm: "error", sha256: null };
-            integrityStatus.textContent = "The integrity hash could not be generated; the record remains exportable.";
+            const hash = fallbackHash(canonical);
+            if (hash) {
+                session.integrity = { algorithm: "SHA-256", sha256: hash };
+                integrityStatus.textContent = `Record SHA-256: ${hash}`;
+            } else {
+                session.integrity = { algorithm: "error", sha256: null };
+                integrityStatus.textContent = "The integrity hash could not be generated; this record will not import into the researcher console.";
+            }
         } finally {
             enableDownloads();
         }

@@ -107,6 +107,9 @@ measurement counts, and transpilation metadata. See
 The static Experiment Lab also links to `study.html`, an anonymous local pilot
 with consent, randomized assignments, repeated choices, debriefing, and
 optional JSON/CSV export. It is not approved for participant recruitment.
+`researcher.html` validates those JSON records locally, rejects broken or
+duplicate sessions, compares randomized arms descriptively, and exports a
+combined analysis dataset without uploading participant data.
 
 ---
 

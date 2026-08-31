@@ -1,0 +1,289 @@
+{
+  "protocol": "ewl-participant-pilot/v1",
+  "session_id": "qa-valid-session-0001",
+  "created_at": "2026-08-30T12:00:00.000Z",
+  "consent": {
+    "adult_confirmed": true,
+    "voluntary_local_pilot_confirmed": true
+  },
+  "assignments": {
+    "backend": "ewl-simulator",
+    "disclosure": "neutral"
+  },
+  "totals": {
+    "participant": 23,
+    "opponent": 18
+  },
+  "events": [
+    {
+      "round": 1,
+      "response_time_ms": 400,
+      "participant_strategy": "C",
+      "opponent_strategy": "Q",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.611681221053,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 1,
+      "cumulative_opponent_payoff": 1
+    },
+    {
+      "round": 2,
+      "response_time_ms": 537,
+      "participant_strategy": "C",
+      "opponent_strategy": "Q",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 0,
+        "DD": 1
+      },
+      "random_draw": 0.289531000191,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 2,
+      "cumulative_opponent_payoff": 2
+    },
+    {
+      "round": 3,
+      "response_time_ms": 674,
+      "participant_strategy": "D",
+      "opponent_strategy": "D",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 0,
+        "DD": 1
+      },
+      "random_draw": 0.150648315204,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 3,
+      "cumulative_opponent_payoff": 3
+    },
+    {
+      "round": 4,
+      "response_time_ms": 811,
+      "participant_strategy": "Q",
+      "opponent_strategy": "D",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0.4999999999999999,
+        "DC": 0.5000000000000001,
+        "DD": 0
+      },
+      "random_draw": 0.546132433694,
+      "measured_outcome": "DC",
+      "participant_payoff": 5,
+      "opponent_payoff": 0,
+      "cumulative_participant_payoff": 8,
+      "cumulative_opponent_payoff": 3
+    },
+    {
+      "round": 5,
+      "response_time_ms": 948,
+      "participant_strategy": "Q",
+      "opponent_strategy": "D",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0.4999999999999999,
+        "DC": 0.5000000000000001,
+        "DD": 0
+      },
+      "random_draw": 0.44551187777,
+      "measured_outcome": "CD",
+      "participant_payoff": 0,
+      "opponent_payoff": 5,
+      "cumulative_participant_payoff": 8,
+      "cumulative_opponent_payoff": 8
+    },
+    {
+      "round": 6,
+      "response_time_ms": 1085,
+      "participant_strategy": "D",
+      "opponent_strategy": "C",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 1,
+        "DD": 0
+      },
+      "random_draw": 0.073155987076,
+      "measured_outcome": "DC",
+      "participant_payoff": 5,
+      "opponent_payoff": 0,
+      "cumulative_participant_payoff": 13,
+      "cumulative_opponent_payoff": 8
+    },
+    {
+      "round": 7,
+      "response_time_ms": 1222,
+      "participant_strategy": "C",
+      "opponent_strategy": "Q",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.896297973581,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 14,
+      "cumulative_opponent_payoff": 9
+    },
+    {
+      "round": 8,
+      "response_time_ms": 459,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.092577423668,
+      "measured_outcome": "CC",
+      "participant_payoff": 3,
+      "opponent_payoff": 3,
+      "cumulative_participant_payoff": 17,
+      "cumulative_opponent_payoff": 12
+    },
+    {
+      "round": 9,
+      "response_time_ms": 596,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.927004545229,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 18,
+      "cumulative_opponent_payoff": 13
+    },
+    {
+      "round": 10,
+      "response_time_ms": 733,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 0,
+        "DD": 1
+      },
+      "random_draw": 0.111337443115,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 19,
+      "cumulative_opponent_payoff": 14
+    },
+    {
+      "round": 11,
+      "response_time_ms": 870,
+      "participant_strategy": "C",
+      "opponent_strategy": "Q",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 1,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.953561187023,
+      "measured_outcome": "CC",
+      "participant_payoff": 3,
+      "opponent_payoff": 3,
+      "cumulative_participant_payoff": 22,
+      "cumulative_opponent_payoff": 17
+    },
+    {
+      "round": 12,
+      "response_time_ms": 1007,
+      "participant_strategy": "D",
+      "opponent_strategy": "D",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "ewl-simulator",
+      "disclosure": "neutral",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 0,
+        "DD": 1
+      },
+      "random_draw": 0.520275980001,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 23,
+      "cumulative_opponent_payoff": 18
+    }
+  ],
+  "completed_at": "2026-08-30T12:05:00.000Z",
+  "integrity": {
+    "algorithm": "SHA-256",
+    "sha256": "d7b5d684058c9fcd542597e0eab9ffc7ab8038c9a4918af593e48eccf71eae66"
+  },
+  "interpretation_boundary": "This local pilot tests data collection and mechanism framing. It is not evidence of quantum advantage, consciousness, or Orch-OR."
+}

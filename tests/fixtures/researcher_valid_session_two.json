@@ -1,0 +1,289 @@
+{
+  "protocol": "ewl-participant-pilot/v1",
+  "session_id": "qa-valid-session-0002",
+  "created_at": "2026-08-30T13:00:00.000Z",
+  "consent": {
+    "adult_confirmed": true,
+    "voluntary_local_pilot_confirmed": true
+  },
+  "assignments": {
+    "backend": "classical-correlated",
+    "disclosure": "mechanism-labeled"
+  },
+  "totals": {
+    "participant": 18,
+    "opponent": 33
+  },
+  "events": [
+    {
+      "round": 1,
+      "response_time_ms": 400,
+      "participant_strategy": "C",
+      "opponent_strategy": "C",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 1,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.337435292779,
+      "measured_outcome": "CC",
+      "participant_payoff": 3,
+      "opponent_payoff": 3,
+      "cumulative_participant_payoff": 3,
+      "cumulative_opponent_payoff": 3
+    },
+    {
+      "round": 2,
+      "response_time_ms": 537,
+      "participant_strategy": "Q",
+      "opponent_strategy": "D",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 1,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.740151636302,
+      "measured_outcome": "CD",
+      "participant_payoff": 0,
+      "opponent_payoff": 5,
+      "cumulative_participant_payoff": 3,
+      "cumulative_opponent_payoff": 8
+    },
+    {
+      "round": 3,
+      "response_time_ms": 674,
+      "participant_strategy": "Q",
+      "opponent_strategy": "D",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0.4999999999999999,
+        "DC": 0.5000000000000001,
+        "DD": 0
+      },
+      "random_draw": 0.711224519182,
+      "measured_outcome": "DC",
+      "participant_payoff": 5,
+      "opponent_payoff": 0,
+      "cumulative_participant_payoff": 8,
+      "cumulative_opponent_payoff": 8
+    },
+    {
+      "round": 4,
+      "response_time_ms": 811,
+      "participant_strategy": "D",
+      "opponent_strategy": "D",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0,
+        "DC": 0,
+        "DD": 1
+      },
+      "random_draw": 0.880888492567,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 9,
+      "cumulative_opponent_payoff": 9
+    },
+    {
+      "round": 5,
+      "response_time_ms": 948,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.965586022707,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 10,
+      "cumulative_opponent_payoff": 10
+    },
+    {
+      "round": 6,
+      "response_time_ms": 1085,
+      "participant_strategy": "Q",
+      "opponent_strategy": "Q",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 1,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.862691110466,
+      "measured_outcome": "CC",
+      "participant_payoff": 3,
+      "opponent_payoff": 3,
+      "cumulative_participant_payoff": 13,
+      "cumulative_opponent_payoff": 13
+    },
+    {
+      "round": 7,
+      "response_time_ms": 1222,
+      "participant_strategy": "C",
+      "opponent_strategy": "Q",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.742360772798,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 14,
+      "cumulative_opponent_payoff": 14
+    },
+    {
+      "round": 8,
+      "response_time_ms": 459,
+      "participant_strategy": "D",
+      "opponent_strategy": "Q",
+      "coupling": "high",
+      "gamma": 1.5707963267948966,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 1,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.289054323919,
+      "measured_outcome": "CD",
+      "participant_payoff": 0,
+      "opponent_payoff": 5,
+      "cumulative_participant_payoff": 14,
+      "cumulative_opponent_payoff": 19
+    },
+    {
+      "round": 9,
+      "response_time_ms": 596,
+      "participant_strategy": "Q",
+      "opponent_strategy": "D",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0.4999999999999999,
+        "DC": 0.5000000000000001,
+        "DD": 0
+      },
+      "random_draw": 0.399699604139,
+      "measured_outcome": "CD",
+      "participant_payoff": 0,
+      "opponent_payoff": 5,
+      "cumulative_participant_payoff": 14,
+      "cumulative_opponent_payoff": 24
+    },
+    {
+      "round": 10,
+      "response_time_ms": 733,
+      "participant_strategy": "D",
+      "opponent_strategy": "Q",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0,
+        "CD": 0.5000000000000001,
+        "DC": 0.4999999999999999,
+        "DD": 0
+      },
+      "random_draw": 0.063211533939,
+      "measured_outcome": "CD",
+      "participant_payoff": 0,
+      "opponent_payoff": 5,
+      "cumulative_participant_payoff": 14,
+      "cumulative_opponent_payoff": 29
+    },
+    {
+      "round": 11,
+      "response_time_ms": 870,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "low",
+      "gamma": 0,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 1,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0
+      },
+      "random_draw": 0.821095114574,
+      "measured_outcome": "CC",
+      "participant_payoff": 3,
+      "opponent_payoff": 3,
+      "cumulative_participant_payoff": 17,
+      "cumulative_opponent_payoff": 32
+    },
+    {
+      "round": 12,
+      "response_time_ms": 1007,
+      "participant_strategy": "Q",
+      "opponent_strategy": "C",
+      "coupling": "medium",
+      "gamma": 0.7853981633974483,
+      "backend": "classical-correlated",
+      "disclosure": "mechanism-labeled",
+      "probabilities": {
+        "CC": 0.4999999999999999,
+        "CD": 0,
+        "DC": 0,
+        "DD": 0.5000000000000001
+      },
+      "random_draw": 0.894423690159,
+      "measured_outcome": "DD",
+      "participant_payoff": 1,
+      "opponent_payoff": 1,
+      "cumulative_participant_payoff": 18,
+      "cumulative_opponent_payoff": 33
+    }
+  ],
+  "completed_at": "2026-08-30T13:06:00.000Z",
+  "integrity": {
+    "algorithm": "SHA-256",
+    "sha256": "4aa6572cca6cf608b2944a25e4a8d2838b7144c1576db57eb4963474a2d06d1a"
+  },
+  "interpretation_boundary": "This local pilot tests data collection and mechanism framing. It is not evidence of quantum advantage, consciousness, or Orch-OR."
+}

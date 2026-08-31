@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EWL Researcher Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="researcher.css?v=2">
+</head>
+<body class="researcher-page">
+    <header class="app-header researcher-header">
+        <div class="header-main">
+            <div class="logo-container"><span class="pulse-dot"></span><h1>EWL Researcher Console</h1></div>
+            <div class="header-links">
+                <a class="btn btn-outline" href="study.html">Participant pilot</a>
+                <a class="btn btn-outline" href="index.html">Experiment Lab</a>
+            </div>
+        </div>
+        <p class="subtitle">Validate anonymous pilot records and compare randomized arms entirely in your browser.</p>
+    </header>
+
+    <main class="researcher-shell">
+        <section class="card glass import-card">
+            <div class="card-header"><h2>1. Import participant records</h2><span class="badge">LOCAL ONLY</span></div>
+            <div class="card-body import-body">
+                <div class="notice-box"><strong>Nothing is uploaded.</strong> Selected JSON files are read in browser memory and discarded when this page closes.</div>
+                <label class="file-drop" for="record-files">
+                    <strong>Select EWL study JSON files</strong>
+                    <span>Choose one or many records exported by the participant pilot.</span>
+                    <input id="record-files" type="file" accept="application/json,.json" multiple>
+                </label>
+                <div class="button-row">
+                    <button id="btn-process-files" class="btn btn-glow" disabled>Validate selected records</button>
+                    <button id="btn-clear-records" class="btn btn-outline" disabled>Clear imported records</button>
+                </div>
+                <p id="import-status" class="import-status" aria-live="polite">No files selected.</p>
+            </div>
+        </section>
+
+        <section id="quality-section" class="card glass" hidden>
+            <div class="card-header"><h2>2. Data-quality report</h2></div>
+            <div class="card-body">
+                <div class="summary-grid">
+                    <div class="summary-tile"><span>Files inspected</span><strong id="count-files">0</strong></div>
+                    <div class="summary-tile good"><span>Accepted sessions</span><strong id="count-valid">0</strong></div>
+                    <div class="summary-tile bad"><span>Rejected records</span><strong id="count-invalid">0</strong></div>
+                    <div class="summary-tile warn"><span>Duplicates</span><strong id="count-duplicates">0</strong></div>
+                </div>
+                <div class="table-scroll">
+                    <table class="research-table">
+                        <thead><tr><th>File</th><th>Session</th><th>Status</th><th>Details</th></tr></thead>
+                        <tbody id="validation-rows"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis-section" class="analysis-section" hidden>
+            <div class="card glass">
+                <div class="card-header"><h2>3. Descriptive arm comparison</h2><span class="badge badge-success">NO INFERENCE</span></div>
+                <div class="card-body">
+                    <p class="analysis-boundary">These summaries are quality-control statistics, not significance tests or proof of a quantum effect. Empty arms remain visible so imbalance cannot be hidden.</p>
+                    <div class="table-scroll">
+                        <table class="research-table arm-table">
+                            <thead>
+                                <tr><th>Backend</th><th>Disclosure</th><th>Sessions</th><th>C rate</th><th>Q rate</th><th>Mean payoff</th><th>Joint payoff</th><th>Median response</th></tr>
+                            </thead>
+                            <tbody id="arm-rows"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-grid">
+                <div class="card glass metric-card"><div class="card-header"><h2>Cooperation rate</h2></div><div id="chart-cooperation" class="bar-chart"></div></div>
+                <div class="card glass metric-card"><div class="card-header"><h2>Q-strategy rate</h2></div><div id="chart-q-rate" class="bar-chart"></div></div>
+                <div class="card glass metric-card"><div class="card-header"><h2>Mean participant payoff</h2></div><div id="chart-payoff" class="bar-chart"></div></div>
+                <div class="card glass metric-card"><div class="card-header"><h2>Median response time</h2></div><div id="chart-response" class="bar-chart"></div></div>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header"><h2>4. Aggregate contrasts</h2></div>
+                <div class="card-body">
+                    <div id="effect-grid" class="effect-grid"></div>
+                    <p class="analysis-boundary">Contrasts are simple differences across imported sessions. They are not adjusted estimates and have no uncertainty intervals.</p>
+                </div>
+            </div>
+
+            <div class="card glass export-card">
+                <div class="card-header"><h2>5. Export analysis data</h2></div>
+                <div class="card-body">
+                    <div class="button-row">
+                        <button id="btn-export-events" class="btn btn-glow">Export combined event CSV</button>
+                        <button id="btn-export-summary" class="btn btn-cyan">Export summary JSON</button>
+                    </div>
+                    <p class="export-note">Exports include accepted records only. Raw participant JSON files are never modified.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer"><p>Research prototype only · Local analysis · Protocol: ewl-participant-pilot/v1</p></footer>
+    <script src="ewl_core.js?v=1"></script>
+    <script src="research_core.js?v=1"></script>
+    <script src="researcher.js?v=1"></script>
+</body>
+</html>
