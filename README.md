@@ -38,6 +38,13 @@
   *worse* (11.20 pp), and every R² sits within noise of zero. From information
   available before a vote closes, the YES share is close to unpredictable
   beyond "it will probably pass."
+* **Which proposals get contested (real, but not what it looks like):**
+  reframing the task from "what YES share?" to "will this be contested?" does
+  find signal — AUC 0.660, 95% CI [0.555, 0.763]. But conditioning on the DAO
+  collapses it: median within-DAO AUC is **0.416**, below chance. The pooled
+  result is Simpson's paradox, driven by fixed voting windows acting as venue
+  fingerprints. Some DAOs argue and others rubber-stamp; the individual proposal
+  adds nothing. Write-up: [CONTESTEDNESS.md](CONTESTEDNESS.md).
 * **GHZ "entanglement consensus":** the implemented mechanism is a 75% chance of
   copying voter 0; the GHZ statevector it computes is never read. Measured over
   5 seeds by
