@@ -20,7 +20,11 @@
 > were **not produced by the code in this repository**. Several were hardcoded
 > literals; the DAO figures came from five hand-written proposals, not a
 > dataset. See **[CORRECTIONS.md](CORRECTIONS.md)** for the full accounting and
-> for what the real data shows. The other documents in this repository retain
+> for what the real data shows. Every number below is enforced by a
+> [results ledger](tools/ledger/README.md) that fails CI if a published claim
+> stops tracing to the command that produces it.
+>
+> The other documents in this repository retain
 > their original wording beneath retraction banners, kept as a record of what was
 > published; the Zenodo record is not yet corrected.
 

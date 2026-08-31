@@ -1,0 +1,156 @@
+{
+  "$schema_note": "Every number quoted in this repository's published claims must trace to a command that regenerates it. check_ledger.py enforces two things: (1) each reproducible entry's command, run fresh, byte-matches the committed output file, and (2) the doc_claims listed for every entry actually appear verbatim in the named documentation files. A claim with no entry here, or an entry whose command no longer reproduces its output, is exactly the failure mode documented in CORRECTIONS.md -- a number nobody re-ran.",
+  "entries": [
+    {
+      "id": "snapshot-classical-benchmark",
+      "description": "Classical baselines (constant/ridge) on the real Snapshot dataset \u2014 CORRECTIONS.md's headline table.",
+      "reproducible": true,
+      "committed_output": "data/benchmark_classical_results.json",
+      "sha256": "1391c9f3dc63c5d3def0949c5996cbfd9ddeea432aff63149ff1bdddc178750d",
+      "doc_claims": [
+        {
+          "file": "README.md",
+          "must_contain": [
+            "historical median (**10.44 pp MAE**)"
+          ]
+        },
+        {
+          "file": "CORRECTIONS.md",
+          "must_contain": [
+            "| **constant (train median)** | **10.44** | 26.73 | \u22120.125 |",
+            "| ridge on pre-vote features | 11.20 | 25.04 | 0.013 |"
+          ]
+        }
+      ],
+      "command": [
+        "python3",
+        "q_ai_governance/benchmark_snapshot_real.py",
+        "--data",
+        "data/snapshot_dao_dataset.json",
+        "--out",
+        "{tmp}"
+      ]
+    },
+    {
+      "id": "ewl-equilibrium",
+      "description": "EWL restricted/full-SU(2) equilibrium search and the derived entanglement threshold.",
+      "reproducible": true,
+      "committed_output": "data/ewl_equilibrium_results.json",
+      "sha256": "1e1525ca64d227c91068d72a30df05658299d1f05a64bc7ef614053408992029",
+      "doc_claims": [
+        {
+          "file": "EWL_EQUILIBRIUM.md",
+          "must_contain": [
+            "\u03b3_c = arccos(\u221a(3/5)) \u2248 0.684719 rad \u2248 39.23\u00b0"
+          ]
+        }
+      ],
+      "command": [
+        "python3",
+        "q_ai_governance/ewl_equilibrium.py",
+        "--out",
+        "{tmp}"
+      ]
+    },
+    {
+      "id": "ewl-mixed-equilibrium",
+      "description": "Closed-form Haar-uniform equilibrium value on the full SU(2) game.",
+      "reproducible": true,
+      "committed_output": "data/ewl_mixed_equilibrium_results.json",
+      "sha256": "2c5cd21c8f1d6871477be1c69b190413fe5d3348b407547fbb9d0980d127ce1c",
+      "doc_claims": [
+        {
+          "file": "EWL_EQUILIBRIUM.md",
+          "must_contain": [
+            "Its value is (T+R+P+S)/4 = **2.25**.",
+            "recovers 62.5% of the distance"
+          ]
+        },
+        {
+          "file": "README.md",
+          "must_contain": [
+            "Haar-uniform equilibrium worth 2.25"
+          ]
+        }
+      ],
+      "command": [
+        "python3",
+        "q_ai_governance/ewl_mixed_equilibrium.py",
+        "--out",
+        "{tmp}"
+      ]
+    },
+    {
+      "id": "contestedness-benchmark",
+      "description": "Contestedness classification, including the within-DAO Simpson's-paradox control.",
+      "reproducible": true,
+      "committed_output": "data/benchmark_contestedness_results.json",
+      "sha256": "439777454cb19e2f474db3091b49605c8a983d2fc38eb6245467135ab9ff1dd8",
+      "doc_claims": [
+        {
+          "file": "README.md",
+          "must_contain": [
+            "AUC 0.660, 95% CI [0.555, 0.763]",
+            "median within-DAO AUC is **0.416**"
+          ]
+        },
+        {
+          "file": "CONTESTEDNESS.md",
+          "must_contain": [
+            "| **all features** | **0.660** | [0.555, 0.763] | 0.0010 |",
+            "**Median within-DAO AUC: 0.416.**"
+          ]
+        }
+      ],
+      "command": [
+        "python3",
+        "q_ai_governance/benchmark_contestedness.py",
+        "--data",
+        "data/snapshot_dao_dataset.json",
+        "--out",
+        "{tmp}"
+      ]
+    },
+    {
+      "id": "snapshot-dataset",
+      "description": "The real Snapshot DAO dataset itself.",
+      "reproducible": false,
+      "committed_output": "data/snapshot_dao_dataset.json",
+      "sha256": "32e192e0f2b34dc860300bcea0c0eb03b348ae12459840df8b23e4ccb47ab11f",
+      "doc_claims": [
+        {
+          "file": "README.md",
+          "must_contain": [
+            "905 closed, cleanly-binary proposals",
+            "6,242,940 vote records"
+          ]
+        },
+        {
+          "file": "CORRECTIONS.md",
+          "must_contain": [
+            "| Kept (settled tally, unambiguous binary ballot) | **905** |",
+            "| Vote records across kept proposals | **6,242,940** |"
+          ]
+        }
+      ],
+      "note": "Fetched live from the Snapshot GraphQL hub by q_ai_governance/fetch_snapshot_dataset.py, which requires network access and returns whatever the hub currently holds \u2014 it is not expected to be byte-identical across runs (new proposals close over time). This entry pins the hash of the committed snapshot only, so a silent hand-edit of the file is still detectable."
+    },
+    {
+      "id": "qai-agent-benchmark",
+      "description": "QuantumOrchORAgent vs. classical baselines on the real Snapshot split.",
+      "reproducible": false,
+      "committed_output": "data/benchmark_qai_results.json",
+      "sha256": "19e2ee6fb93ea54c2bd1f5cc91f6086f9cdaafce7e09718cb4f37fe7880f58e2",
+      "doc_claims": [
+        {
+          "file": "CORRECTIONS.md",
+          "must_contain": [
+            "| Q-AI agent, random initialisation | 42.98 | 47.59 | \u22122.564 |",
+            "| Q-AI agent, after 40 fitting iterations | 28.07 | 32.62 | \u22120.675 |"
+          ]
+        }
+      ],
+      "note": "Deliberately NOT regenerated in CI. The fit accepted 0/40 moves (CORRECTIONS.md section 7) because the loss estimator's own noise exceeds any resolvable improvement at this rollout budget, so two runs differ by the spread between two random seeds, not by anything meaningful. Re-running it in CI would either flag a false mismatch every time or, worse, train a habit of raising the tolerance until the check goes quiet -- which is the failure this ledger exists to prevent. Pinning only the hash of what is committed proves the file was not edited by hand; it makes no claim that the run is reproducible, and CORRECTIONS.md says so explicitly."
+    }
+  ]
+}
