@@ -20,8 +20,9 @@
 > were **not produced by the code in this repository**. Several were hardcoded
 > literals; the DAO figures came from five hand-written proposals, not a
 > dataset. See **[CORRECTIONS.md](CORRECTIONS.md)** for the full accounting and
-> for what the real data shows. Documents elsewhere in this repository and the
-> Zenodo record still carry the uncorrected wording.
+> for what the real data shows. The other documents in this repository retain
+> their original wording beneath retraction banners, kept as a record of what was
+> published; the Zenodo record is not yet corrected.
 
 ## 🌟 Empirical Status
 
@@ -51,7 +52,10 @@
   quantised Prisoner's Dilemma acquires a cooperative equilibrium at (3,3) that
   no classical correlated equilibrium can reach — both classical baselines are
   stuck at (1,1). It then reproduces the Benjamin–Hayden (1999) objection: widen
-  the strategy space to full SU(2) and that equilibrium disappears entirely.
+  the strategy space to full SU(2) and that equilibrium disappears entirely —
+  though not back to the classical game: the full space still has an exact
+  Haar-uniform equilibrium worth 2.25 against the classical 1.00, which it buys
+  with randomisation rather than cooperation.
   Payoffs are analytic, the search is exhaustive, nothing is fitted, and nine
   tests pin the landmarks to published values. Write-up:
   [EWL_EQUILIBRIUM.md](EWL_EQUILIBRIUM.md).
