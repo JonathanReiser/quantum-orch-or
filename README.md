@@ -23,6 +23,9 @@
 > for what the real data shows. Every number below is enforced by a
 > [results ledger](tools/ledger/README.md) that fails CI if a published claim
 > stops tracing to the command that produces it.
+> [VERIFICATION_THEATER.md](VERIFICATION_THEATER.md) analyses *how* the original
+> claims passed their own checks — six mechanisms by which a verification can be
+> structurally incapable of failing.
 >
 > The other documents in this repository retain
 > their original wording beneath retraction banners, kept as a record of what was
