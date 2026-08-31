@@ -25,3 +25,25 @@ jobs:
 
       - name: Run test suite
         run: python -m pytest tests/ -v
+
+  results-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Every number this repository publishes must trace to a command that
+      # regenerates it, or to an artifact whose non-reproducibility is stated
+      # explicitly (see tools/ledger/README.md). This is the direct response to
+      # CORRECTIONS.md: it turns "a number nobody re-ran" from a silent failure
+      # into a failing build.
+      - name: Verify results ledger
+        run: python3 tools/ledger/check_ledger.py
