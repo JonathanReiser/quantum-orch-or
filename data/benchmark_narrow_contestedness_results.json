@@ -1,0 +1,173 @@
+{
+  "status": "COMPLETE",
+  "config": {
+    "contested_band_yes_pct": [
+      40.0,
+      60.0
+    ],
+    "min_voters": 100,
+    "min_usable_n": 150,
+    "test_frac": 0.3,
+    "split_on": "proposal end date",
+    "split_end_unix": 1716840000,
+    "seed": 20260904,
+    "n_rollouts": 50,
+    "n_weight_seeds": 10,
+    "n_bootstrap": 2000,
+    "num_qubits": 4,
+    "yes_share_mode": "total",
+    "yes_share_formula": "yes_vp / scores_total (includes abstain)",
+    "feature_names": [
+      "dao_uniswap",
+      "dao_arbitrum",
+      "dao_optimism",
+      "dao_gitcoin",
+      "dao_aave",
+      "log_body_len",
+      "title_len_100",
+      "duration_days",
+      "n_choices",
+      "has_quorum",
+      "has_abstain",
+      "prior_dao_yes",
+      "log_prior_dao_n",
+      "prior_dao_contested",
+      "log_prior_dao_contested_n"
+    ],
+    "dataset": "snapshot_dao_dataset.json",
+    "dataset_fetched_at": "2026-08-30T15:08:41Z"
+  },
+  "counts": {
+    "n_input": 905,
+    "n_kept": 713,
+    "dropped": {
+      "not_binary_ish": 149,
+      "low_turnout": 43,
+      "no_tally": 0
+    },
+    "n_train": 499,
+    "n_test": 214,
+    "n_contested_train": 33,
+    "n_contested_test": 9,
+    "prevalence_train": 0.06613226452905811,
+    "prevalence_test": 0.04205607476635514
+  },
+  "auc_null": 0.5,
+  "results": {
+    "trivial_constant": {
+      "auc": 0.5,
+      "ci95": {
+        "lo": 0.5,
+        "hi": 0.5,
+        "p_le_half": 1.0,
+        "n_valid": 2000
+      },
+      "pr_auc": 0.04205607476635514,
+      "pr_auc_null_prevalence": 0.04205607476635514
+    },
+    "logistic": {
+      "auc": 0.621680216802168,
+      "ci95": {
+        "lo": 0.3367579105101757,
+        "hi": 0.8798104296066253,
+        "p_le_half": 0.179,
+        "n_valid": 2000
+      },
+      "pr_auc": 0.19388821999933112,
+      "pr_auc_null_prevalence": 0.04205607476635514
+    },
+    "quantum_point": {
+      "auc": 0.4815718157181572,
+      "auc_per_seed": [
+        0.4788617886178862,
+        0.3924119241192412,
+        0.3772357723577236,
+        0.5552845528455285,
+        0.5138211382113821,
+        0.570189701897019,
+        0.7552845528455284,
+        0.32818428184281845,
+        0.4842818428184282,
+        0.1953929539295393
+      ],
+      "auc_seed_min": 0.1953929539295393,
+      "auc_seed_max": 0.7552845528455284,
+      "ci95": {
+        "lo": 0.406832298136646,
+        "hi": 0.5276473332942463,
+        "p_le_half": 0.868,
+        "n_valid": 2000
+      },
+      "pr_auc": 0.04417718926045891,
+      "pr_auc_null_prevalence": 0.04205607476635514
+    },
+    "quantum_dispersion": {
+      "auc": 0.41924119241192415,
+      "auc_per_seed": [
+        0.6230352303523036,
+        0.42981029810298105,
+        0.3100271002710027,
+        0.6292682926829268,
+        0.4086720867208672,
+        0.21788617886178863,
+        0.529539295392954,
+        0.22005420054200542,
+        0.7552845528455284,
+        0.16991869918699187
+      ],
+      "auc_seed_min": 0.16991869918699187,
+      "auc_seed_max": 0.7552845528455284,
+      "ci95": {
+        "lo": 0.3369265582213094,
+        "hi": 0.5036080722939583,
+        "p_le_half": 0.9674674674674675,
+        "n_valid": 1998
+      },
+      "pr_auc": 0.03823843962503359,
+      "pr_auc_null_prevalence": 0.04205607476635514
+    },
+    "quantum_coherence": {
+      "auc": 0.38238482384823846,
+      "auc_per_seed": [
+        0.5159891598915989,
+        0.37994579945799456,
+        0.3344173441734417,
+        0.5550135501355014,
+        0.38482384823848237,
+        0.21355013550135502,
+        0.5571815718157181,
+        0.17344173441734417,
+        0.7745257452574525,
+        0.16531165311653118
+      ],
+      "auc_seed_min": 0.16531165311653118,
+      "auc_seed_max": 0.7745257452574525,
+      "ci95": {
+        "lo": 0.31760522127626933,
+        "hi": 0.457934239498645,
+        "p_le_half": 1.0,
+        "n_valid": 2000
+      },
+      "pr_auc": 0.03651512384841292,
+      "pr_auc_null_prevalence": 0.04205607476635514
+    }
+  },
+  "preregistered_criterion": "ROC-AUC 95% CI lower bound > 0.5 AND point estimate > logistic baseline",
+  "verdict": {
+    "quantum_point": {
+      "ci_lower_above_half": false,
+      "beats_logistic": false,
+      "PASSES_PREREGISTERED_CRITERION": false
+    },
+    "quantum_dispersion": {
+      "ci_lower_above_half": false,
+      "beats_logistic": false,
+      "PASSES_PREREGISTERED_CRITERION": false
+    },
+    "quantum_coherence": {
+      "ci_lower_above_half": false,
+      "beats_logistic": false,
+      "PASSES_PREREGISTERED_CRITERION": false
+    }
+  }
+}

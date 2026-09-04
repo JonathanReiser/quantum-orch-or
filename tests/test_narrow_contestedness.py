@@ -204,3 +204,101 @@ def test_no_metric_is_clamped():
         assert 0.0 <= res["auc"] <= 1.0
         assert res["auc"] not in (0.98,), f"{name} AUC pinned at a clamp value"
         assert not math.isnan(res["auc"]), f"{name} AUC is NaN"
+
+
+# ---- the headline numbers, pinned ------------------------------------------
+@pytest.mark.skipif(not os.path.exists(RESULTS), reason="benchmark not yet run")
+def test_all_three_quantum_scores_fail_the_criterion():
+    """Fails if a future change turns the negative result positive without the
+    pre-registration being revisited.
+
+    This is the finding. All three score functions miss the criterion, and the
+    reason is not that a classical model beat them -- the logistic baseline
+    misses chance too.
+    """
+    r = json.load(open(RESULTS))
+    for k in ("quantum_point", "quantum_dispersion", "quantum_coherence"):
+        assert r["verdict"][k]["PASSES_PREREGISTERED_CRITERION"] is False
+
+
+@pytest.mark.skipif(not os.path.exists(RESULTS), reason="benchmark not yet run")
+def test_logistic_baseline_also_fails_to_clear_chance():
+    """Fails if the write-up's central caveat stops being true.
+
+    NARROW_CONTESTEDNESS.md says the honest reading is 'nothing resolves at this
+    band', not 'classical beat quantum'. That rests on the logistic CI covering
+    0.5. If it ever stops covering 0.5 the prose is wrong and must change.
+    """
+    r = json.load(open(RESULTS))
+    ci = r["results"]["logistic"]["ci95"]
+    assert ci["lo"] < 0.5 < ci["hi"], (
+        f"logistic CI {ci} no longer covers chance -- the write-up's framing is stale")
+
+
+@pytest.mark.skipif(not os.path.exists(RESULTS), reason="benchmark not yet run")
+def test_seed_spread_is_wide_enough_to_have_faked_a_result():
+    """Fails if the seed-sensitivity argument stops holding.
+
+    The pre-registered 10-seed check exists because one seed could manufacture a
+    headline. It did: across seeds the AUCs span roughly 0.17 to 0.78, and 4 of
+    10 land above chance for every score function.
+    """
+    r = json.load(open(RESULTS))
+    for k in ("quantum_point", "quantum_dispersion", "quantum_coherence"):
+        a = np.array(r["results"][k]["auc_per_seed"])
+        assert len(a) == 10
+        assert a.max() - a.min() > 0.3, f"{k} seed spread collapsed to {a.ptp():.3f}"
+        assert a.max() > 0.5, f"{k} never exceeds chance on any seed"
+        assert a.min() < 0.5
+
+
+@pytest.mark.skipif(not os.path.exists(RESULTS), reason="benchmark not yet run")
+def test_test_set_positive_count_is_small_and_said_so():
+    """Fails if n_contested_test grows without the instability caveat being
+    reconsidered. Nine positives is the binding constraint on everything."""
+    r = json.load(open(RESULTS))
+    assert r["counts"]["n_contested_test"] == 9
+    assert r["counts"]["n_test"] == 214
+
+
+@pytest.mark.skipif(not os.path.exists(RESULTS), reason="benchmark not yet run")
+def test_trivial_baseline_is_accurate_and_worthless():
+    """Fails if the accuracy-is-useless demonstration stops working.
+
+    Always predicting 'not contested' scores 1 - prevalence = 95.8% accuracy
+    while carrying an AUC of exactly 0.5 and a PR-AUC of exactly the prevalence.
+    """
+    r = json.load(open(RESULTS))
+    t = r["results"]["trivial_constant"]
+    prev = r["counts"]["prevalence_test"]
+    assert t["auc"] == 0.5
+    assert t["pr_auc"] == pytest.approx(prev), "constant scorer must score prevalence"
+    assert (1.0 - prev) > 0.95
+
+
+SENS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                    "data", "sensitivity_yes_share_definition.json")
+
+
+@pytest.mark.skipif(not os.path.exists(SENS), reason="sensitivity not yet run")
+def test_sensitivity_rederives_the_primary_exactly():
+    """Fails if the raw-scores file stops reproducing the committed primary run.
+
+    The whole point of persisting raw scores is that re-analysis needs no second
+    multi-hour engine pass. That is only safe while the re-derivation is exact.
+    """
+    s = json.load(open(SENS))
+    assert s["rederivation_max_auc_drift_vs_committed_primary"] == 0.0
+
+
+@pytest.mark.skipif(not os.path.exists(SENS), reason="sensitivity not yet run")
+def test_conclusion_survives_the_other_yes_share_definition():
+    """Fails if the negative result stops holding under the abstain-excluding
+    denominator -- in which case the answer depends on a definition the brief
+    and the dataset disagreed about, and that must be said loudly."""
+    s = json.load(open(SENS))
+    assert s["not_preregistered"] is True
+    for k in ("quantum_point", "quantum_dispersion", "quantum_coherence"):
+        b = s["results_B_sensitivity"][k]
+        assert b["ci95"]["lo"] < 0.5, f"{k} clears chance under definition B"
+    assert s["n_contested_test"]["B_sensitivity"] == 3

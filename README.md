@@ -52,6 +52,18 @@
   result is Simpson's paradox, driven by fixed voting windows acting as venue
   fingerprints. Some DAOs argue and others rubber-stamp; the individual proposal
   adds nothing. Write-up: [CONTESTEDNESS.md](CONTESTEDNESS.md).
+* **Narrowly contested proposals (negative result, pre-registered):** tightening
+  "contested" from a YES share in [5%, 95%] to a genuinely close **[40%, 60%]**
+  leaves 9 contested proposals in a 214-row test set, and **nothing resolves**.
+  All three quantum score functions fail the pre-registered criterion — point
+  estimate AUC 0.482, rollout dispersion 0.419, coherence at collapse 0.382,
+  against a null of 0.5. This is *not* a classical win: the logistic baseline's
+  CI is [0.337, 0.880], which covers chance too. The methodological finding is
+  sharper than the empirical one — across 10 random weight seeds the same score
+  functions span **0.17 to 0.78**, clearing chance on 4 of 10, so a single-seed
+  run had a 40% chance of manufacturing a positive headline. Pre-registration:
+  [PREREGISTRATION_narrow_contestedness.md](PREREGISTRATION_narrow_contestedness.md).
+  Write-up: [NARROW_CONTESTEDNESS.md](NARROW_CONTESTEDNESS.md).
 * **GHZ "entanglement consensus":** the implemented mechanism is a 75% chance of
   copying voter 0; the GHZ statevector it computes is never read. Measured over
   5 seeds by
