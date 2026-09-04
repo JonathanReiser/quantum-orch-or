@@ -53,6 +53,14 @@ FEATURE_NAMES = (
        "prior_dao_contested", "log_prior_dao_contested_n"]
 )
 
+# How "final YES share" is defined. The task brief says yes / scores_total, which
+# INCLUDES abstentions; the dataset's own stored yes_pct field instead uses
+# yes / (yes + no), which excludes them. These disagree on 694 of 905 proposals
+# by up to 55pp, so the choice is consequential and is made explicit rather than
+# inherited. "total" is the pre-registered primary; "decisive" is the disclosed
+# sensitivity analysis. See NARROW_CONTESTEDNESS.md.
+YES_SHARE_MODES = ("total", "decisive")
+
 YES_LIKE = {"for", "yes", "approve", "approve funding", "accept"}
 NO_LIKE = {"against", "no", "reject", "reject funding", "deny"}
 
@@ -82,7 +90,17 @@ def load_and_filter(path):
     return payload, kept, drop
 
 
-def build_features(props):
+def yes_share_pct(p, mode):
+    """Final YES share in percent, under an explicitly named denominator."""
+    if mode == "total":
+        return 100.0 * p["yes_vp"] / p["scores_total"]
+    if mode == "decisive":
+        d = p["yes_vp"] + p["no_vp"]
+        return 100.0 * p["yes_vp"] / d if d > 0 else float("nan")
+    raise ValueError(f"unknown yes-share mode {mode!r}")
+
+
+def build_features(props, yes_mode="total"):
     """Sort by END date and build strictly past-only features.
 
     End-order matters: a proposal that ended earlier has a settled tally, so
@@ -114,7 +132,7 @@ def build_features(props):
             prior_con,
             math.log1p(len(ch)),
         ])
-        yes_pct = 100.0 * p["yes_vp"] / p["scores_total"]
+        yes_pct = yes_share_pct(p, yes_mode)
         label = 1.0 if CONTESTED_LO <= yes_pct <= CONTESTED_HI else 0.0
         y.append(label)
         meta.append(p)
@@ -259,7 +277,8 @@ def quantum_scores(Xte_std, weight_seed, n_rollouts=N_ROLLOUTS, verbose=False):
 
 
 # ---- main -------------------------------------------------------------------
-def run(data_path, out_path, n_weight_seeds=N_WEIGHT_SEEDS, n_rollouts=N_ROLLOUTS):
+def run(data_path, out_path, n_weight_seeds=N_WEIGHT_SEEDS, n_rollouts=N_ROLLOUTS,
+        yes_mode="total", scores_path=None):
     payload, kept, drop = load_and_filter(data_path)
     print(f"dataset : {data_path}")
     print(f"fetched : {payload['fetched_at']}")
@@ -273,7 +292,7 @@ def run(data_path, out_path, n_weight_seeds=N_WEIGHT_SEEDS, n_rollouts=N_ROLLOUT
                   open(out_path, "w"), indent=2)
         return None
 
-    X, y, meta = build_features(kept)
+    X, y, meta = build_features(kept, yes_mode=yes_mode)
     cut = int(len(y) * (1 - TEST_FRAC))
     Xtr, ytr, Xte, yte = X[:cut], y[:cut], X[cut:], y[cut:]
     split_end = meta[cut]["end"]
@@ -352,6 +371,21 @@ def run(data_path, out_path, n_weight_seeds=N_WEIGHT_SEEDS, n_rollouts=N_ROLLOUT
             "pr_auc_null_prevalence": prevalence_te,
         }
 
+    # Persist raw test-set scores. The engine pass costs hours; anything that
+    # only changes the LABELS (such as the yes-share sensitivity analysis) must
+    # be answerable from this file alone, with no re-run.
+    if scores_path:
+        alt = "decisive" if yes_mode == "total" else "total"
+        y_alt = np.array([1.0 if CONTESTED_LO <= yes_share_pct(m, alt) <= CONTESTED_HI
+                          else 0.0 for m in meta[cut:]], dtype=float)
+        np.savez_compressed(
+            scores_path,
+            y_test=yte, y_test_alt_labeldef=y_alt,
+            test_end_unix=np.array([m["end"] for m in meta[cut:]]),
+            logistic=scores["logistic"], trivial_constant=scores["trivial_constant"],
+            **{k: np.vstack(v) for k, v in seed_scores.items()})
+        print(f"\nraw test-set scores -> {scores_path}")
+
     logi = results["logistic"]["auc"]
     verdict = {}
     for k in per_seed:
@@ -373,6 +407,10 @@ def run(data_path, out_path, n_weight_seeds=N_WEIGHT_SEEDS, n_rollouts=N_ROLLOUT
             "seed": SEED, "n_rollouts": n_rollouts,
             "n_weight_seeds": n_weight_seeds, "n_bootstrap": N_BOOTSTRAP,
             "num_qubits": NUM_QUBITS,
+            "yes_share_mode": yes_mode,
+            "yes_share_formula": ("yes_vp / scores_total (includes abstain)"
+                                  if yes_mode == "total"
+                                  else "yes_vp / (yes_vp + no_vp) (excludes abstain)"),
             "feature_names": FEATURE_NAMES,
             "dataset": os.path.basename(data_path),
             "dataset_fetched_at": payload["fetched_at"],
@@ -431,5 +469,9 @@ if __name__ == "__main__":
     ap.add_argument("--out", default="data/benchmark_narrow_contestedness_results.json")
     ap.add_argument("--seeds", type=int, default=N_WEIGHT_SEEDS)
     ap.add_argument("--rollouts", type=int, default=N_ROLLOUTS)
+    ap.add_argument("--yes-share", default="total", choices=YES_SHARE_MODES,
+                    help="denominator for final YES share; 'total' is pre-registered")
+    ap.add_argument("--scores-out", default="data/narrow_contestedness_raw_scores.npz")
     a = ap.parse_args()
-    run(a.data, a.out, n_weight_seeds=a.seeds, n_rollouts=a.rollouts)
+    run(a.data, a.out, n_weight_seeds=a.seeds, n_rollouts=a.rollouts,
+        yes_mode=a.yes_share, scores_path=a.scores_out)
