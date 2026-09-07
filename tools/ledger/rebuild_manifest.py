@@ -127,6 +127,66 @@ ENTRIES = [
                 "| Q-AI agent, after 40 fitting iterations | 28.07 | 32.62 | −0.675 |"]},
         ],
     },
+    {
+        "id": "narrow-contestedness-primary",
+        "description": ("Pre-registered narrow-band contestedness benchmark "
+                        "(contested := final YES share in [40%, 60%]) — the negative "
+                        "result headlined in NARROW_CONTESTEDNESS.md."),
+        "reproducible": False,
+        "note": ("Deliberately NOT regenerated in CI: the engine pass is 214 test "
+                 "rows x 50 rollouts x 10 weight seeds and takes roughly two hours, "
+                 "far beyond the 180s budget here. This is a cost limit, not a "
+                 "determinism one -- the run is seeded and does reproduce. Pinning "
+                 "the hash proves the committed file was not hand-edited; it makes "
+                 "no claim that CI re-derived it. The cheap half IS regenerated: "
+                 "narrow-contestedness-sensitivity below reruns from the committed "
+                 "raw scores in ~11s and re-derives this file's AUCs to a max drift "
+                 "of 0.00e+00, so a tampered results file is still caught."),
+        "committed_output": "data/benchmark_narrow_contestedness_results.json",
+        "doc_claims": [
+            {"file": "NARROW_CONTESTEDNESS.md", "must_contain": [
+                "| quantum — point estimate (a) | 0.482 | [0.407, 0.528] | 0.868 | 0.044 |",
+                "| quantum — rollout dispersion (b) | 0.419 | [0.337, 0.504] | 0.967 | 0.038 |",
+                "| quantum — coherence at collapse (c) | 0.382 | [0.318, 0.458] | 1.000 | 0.037 |",
+                "| logistic regression | 0.622 | [0.337, 0.880] | 0.179 | 0.194 |",
+                "**9 of 214** (4.21%)",
+                "| point estimate | 0.482 | 0.195 | 0.755 | 4 / 10 |",
+                "| coherence at collapse | 0.382 | 0.165 | 0.775 | 4 / 10 |"]},
+            {"file": "README.md", "must_contain": [
+                "point\n  estimate AUC 0.482, rollout dispersion 0.419, coherence at collapse 0.382"]},
+        ],
+    },
+    {
+        "id": "narrow-contestedness-raw-scores",
+        "description": ("Raw per-seed test-set scores from the narrow-band engine "
+                        "pass — the input that lets any label-only re-analysis skip "
+                        "the two-hour rerun."),
+        "reproducible": False,
+        "note": ("Same two-hour engine pass as narrow-contestedness-primary, so it "
+                 "is pinned rather than regenerated. Tampering with it is caught "
+                 "anyway: narrow-contestedness-sensitivity consumes this file and "
+                 "IS regenerated in CI, so any edit changes that entry's output and "
+                 "fails the check."),
+        "committed_output": "data/narrow_contestedness_raw_scores.npz",
+        "doc_claims": [],
+    },
+    {
+        "id": "narrow-contestedness-sensitivity",
+        "description": ("Disclosed (not pre-registered) sensitivity analysis: does "
+                        "the narrow-band conclusion survive the abstain-excluding "
+                        "YES-share denominator? Holds the model fixed, swaps labels."),
+        "reproducible": True,
+        "committed_output": "data/sensitivity_yes_share_definition.json",
+        "command": ["python3", "q_ai_governance/sensitivity_yes_share_definition.py",
+                    "--out", "{tmp}"],
+        "doc_claims": [
+            {"file": "NARROW_CONTESTEDNESS.md", "must_contain": [
+                "| quantum — coherence | 0.382 [0.318, 0.458] | 0.377 [0.262, 0.410]  |",
+                "| logistic | 0.622 [0.337, 0.880] | 0.559 [0.141, 0.810] |",
+                "matches the committed primary exactly (max drift `0.00e+00`)",
+                "**694 of\n905** proposals by up to **55 percentage points**"]},
+        ],
+    },
 ]
 
 
