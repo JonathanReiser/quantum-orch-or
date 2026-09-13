@@ -38,23 +38,18 @@ def _interp_at(t_grid, y, t):
     return float(np.interp(t, t_grid, y))
 
 
-def _half_life(t_grid, coh):
-    """First time coherence falls to half its initial value; None if never."""
-    c0 = coh[0]
-    if c0 <= 0:
-        return None
-    target = 0.5 * c0
-    below = np.nonzero(coh <= target)[0]
-    if below.size == 0:
-        return None
-    i = int(below[0])
-    if i == 0:
-        return 0.0
-    # linear interpolation between the bracketing samples
-    t0, t1, y0, y1 = t_grid[i - 1], t_grid[i], coh[i - 1], coh[i]
-    if y0 == y1:
-        return float(t1)
-    return float(t0 + (y0 - target) * (t1 - t0) / (y0 - y1))
+def coherence_half_life(gamma: float) -> float | None:
+    """Exact half-life for coherence exp(-gamma*t/2).
+
+    Amendment 3: measuring this only inside the fixed 10 s trajectory falsely
+    labelled positive-gamma half-lives beyond the window as undefined.
+    """
+    return None if gamma <= 0.0 else float(2.0 * np.log(2.0) / gamma)
+
+
+def coherence_at_gamma_t_2(gamma: float) -> float | None:
+    """Exact Q4 value. Dimensionless time is undefined when gamma is zero."""
+    return None if gamma <= 0.0 else float(np.exp(-1.0))
 
 
 def _spearman(a, b):
@@ -85,10 +80,10 @@ def cell(floor, scale, ceiling):
                                      mindfulness_angle=MINDFUL_ANGLE)
         base = tr
         q1.append(_interp_at(tr.time_s, tr.coherence_l1, 5.0))
-        q2.append(_half_life(tr.time_s, tr.coherence_l1))
-        # Q4: dimensionless time gamma*t = 2  ->  t = 2/gamma, only if within window
-        q4.append(_interp_at(tr.time_s, tr.coherence_l1, 2.0 / g)
-                  if g > 0 and 2.0 / g <= DURATION_S else None)
+        q2.append(coherence_half_life(g))
+        # Q4 is defined at t=2/gamma even when that time exceeds the separate
+        # 10 s wall-clock observation window used by Q1 and Q5.
+        q4.append(coherence_at_gamma_t_2(g))
         q5.append(float(with_intervention.purity[-1] - base.purity[-1]))
     q3 = _spearman(DROPS, q1)
     return {
@@ -115,6 +110,28 @@ def spread(values):
     if lo <= 0:
         return None if hi <= 0 else float("inf")
     return (hi - lo) / lo
+
+
+def continuous_summary(values):
+    """Scale-aware descriptive statistics; no categorical threshold."""
+    v = np.asarray([x for x in values if x is not None and np.isfinite(x)], float)
+    out = {"n_defined": int(v.size), "n_total": len(values)}
+    if v.size == 0:
+        return out
+    lo, hi = float(np.min(v)), float(np.max(v))
+    median = float(np.median(v))
+    q25, q75 = (float(x) for x in np.percentile(v, [25, 75]))
+    mad = float(np.median(np.abs(v - median)))
+    out.update({"min": lo, "max": hi, "median": median,
+                "iqr_over_abs_median": ((q75 - q25) / abs(median)) if median else None,
+                "mad_over_abs_median": (mad / abs(median)) if median else None,
+                "max_abs": float(np.max(np.abs(v))),
+                "n_negative": int(np.sum(v < 0)), "n_zero": int(np.sum(v == 0)),
+                "n_positive": int(np.sum(v > 0))})
+    if lo > 0:
+        out["max_over_min"] = hi / lo
+        out["log_range"] = float(np.log(hi / lo))
+    return out
 
 
 def main():
@@ -165,6 +182,16 @@ def main():
                  "n_cells": len(cells)},
         "versions": {p_: _pkg_version(p_) for p_ in ("qiskit", "qiskit-dynamics", "numpy")},
         "aggregate_at_drop_0.5": verdict,
+        "continuous_summary_at_drop_0.5": {
+            k: continuous_summary(v) for k, v in agg.items()
+        },
+        "continuous_summary_by_drop": {
+            str(drop): {
+                k: continuous_summary([c[k][i] for c in cells])
+                for k in agg
+            }
+            for i, drop in enumerate(DROPS)
+        },
         "cells": cells,
     }
     with open(args.out, "w") as fh:

@@ -247,3 +247,34 @@ read as saturation rather than noise.
 
 Nothing else moves. The grid, quantities, thresholds and settings stay as locked.
 Runs prior to this amendment are superseded and are not reported as results.
+
+---
+
+# Amendment 3 — 2026-09-13, post-result review correction
+
+## The defect
+
+An adversarial review after the result was written found that Q2 and Q4 were
+silently censored by the fixed 10-second trajectory. `_half_life` returned
+`None` both when `gamma = 0` (genuinely undefined) and when a positive-gamma
+half-life merely occurred after 10 seconds. Q4 likewise returned `None` when
+`2/gamma > 10`, although Q4's dimensionless observation time is not logically
+limited by the wall-clock window used for Q1 and Q5.
+
+At the pre-specified aggregation point `drop = 0.5`, this excluded 12 Q2 cells
+and 16 Q4 cells. The report nevertheless described both ranges as being across
+all 120 cells. The stated Q2 maximum, 9.24 s, was therefore a window artifact;
+the correct maximum is `2 ln(2) / 0.10 = 13.8629 s`.
+
+## The correction
+
+Q2 and Q4 are now evaluated from the pre-registered, solver-validated closed
+form: `Q2 = 2 ln(2) / gamma` and `Q4 = exp(-1)` for every `gamma > 0`.
+They remain undefined only at `gamma = 0`. The categorical verdicts do not
+change: Q2 remains FRAGILE and Q4 remains ROBUST.
+
+Continuous summaries (range, log-range where defined, IQR/median, MAD/median,
+maximum absolute value and sign counts) are now recorded at `drop = 0.5` and at
+all 11 drop values. These are descriptive additions; the pre-registered 10%
+decision rule is retained and explicitly labelled as an operational threshold,
+not a physically privileged boundary.

@@ -1,8 +1,8 @@
 # Result — the somatic gamma map's constants decide the answer
 
 Pre-registered in [`PREREGISTRATION_gamma_map.md`](PREREGISTRATION_gamma_map.md),
-committed at `f232bb8` before the grid ran. Two amendments, both recorded there
-before any number below was written. Every figure here traces to
+committed at `f232bb8` before the grid ran. Two pre-result amendments and one
+post-result review correction are recorded there. Every figure here traces to
 [`data/gamma_map_sensitivity.json`](data/gamma_map_sensitivity.json), produced by
 `tools/gamma_map_sensitivity.py`.
 
@@ -10,15 +10,15 @@ Run with qiskit 1.3.0, qiskit-dynamics 0.6.0, numpy 2.5.3. 120 grid cells.
 
 ## Headline
 
-**Four of the five pre-registered quantities are FRAGILE. The one that is
-ROBUST is robust because it is vacuous.**
+**Four of the five pre-registered quantities are FRAGILE. The ROBUST quantity
+is a successful structural control, not a physiological result.**
 
 | quantity | what it stands for | spread across 120 cells | verdict |
 |---|---|---|---|
 | **Q1** coherence at `t = 5 s` | *"after 5 s a stressed subject has lost X coherence"* | `0.0111 → 0.7788` (**70×**) | **FRAGILE** |
-| **Q2** coherence half-life | *"coherence half-life is X seconds"* | `0.77 s → 9.24 s` (**12×**) | **FRAGILE** |
+| **Q2** coherence half-life | *"coherence half-life is X seconds"* | `0.77 s → 13.86 s` (**18×**) | **FRAGILE** |
 | **Q3** rank corr. HRV-loss vs coherence | *"lower HRV means faster coherence loss"* | `−1.00 → −0.50` | **FRAGILE** (sign always correct) |
-| **Q4** coherence at `gamma*t = 2` | the same physics in the system's own time units | `0.367879 → 0.367916` (**1e-4**) | **ROBUST** |
+| **Q4** coherence at `gamma*t = 2` | the same physics in the system's own time units | `0.367879` (exactly invariant) | **ROBUST** |
 | **Q5** purity change from the intervention | *"the intervention changes the outcome"* | `−1.1e-05 → +0.0342`, **sign flips** | **FRAGILE** |
 
 ## What this means, stated plainly
@@ -29,14 +29,13 @@ a 50% drop in HRV — into the same code, and the reportable answer moves by a
 factor of 70, purely by choosing `floor` and `scale` differently. Nothing in
 the repository says which choice is right, because nothing derives these
 constants from anything. "Coherence half-life is 3.3 seconds" is true at the
-defaults and equally true at 0.77 s or 9.24 s elsewhere in the grid.
+defaults and equally true at 0.77 s or 13.86 s elsewhere in the grid.
 
-**The robust quantity carries no information.** Q4 is invariant to 1 part in
-10⁴ — but only because coherence at `gamma*t = 2` is `exp(−1)` for *every*
-subject, every cell, every input. It is a property of the exponential, not of
-the person wearing the watch. Stating conclusions in dimensionless time makes
-them constant-independent and simultaneously drains them of physiological
-content. **Robustness here is not reassurance.**
+**The robust quantity is a useful structural control, not physiological
+evidence.** Q4 is exactly invariant because coherence at `gamma*t = 2` is
+`exp(−1)` for every positive-gamma subject, cell and input. That successfully
+checks the generator's scale covariance. It does not discriminate between
+subjects: choosing each observation time as `2/gamma` forces the common value.
 
 **The intervention's sign is not determined.** Q5 is positive in 84 cells and
 negative in 36. Whether the "mindfulness" rotation *helps* or *hurts* final
@@ -60,13 +59,32 @@ destroy discriminability by mapping distinct subjects onto identical `gamma`.
 grid (41× at the defaults). A map near 1× cannot distinguish a calm subject from
 a stressed one no matter how correct the downstream physics is.
 
-**`floor = 0` is degenerate.** In 12 of 120 cells the half-life is undefined
-because `gamma = 0` at rest means no dynamics at all. Reported, not dropped.
+**`floor = 0` is degenerate at `drop = 0`.** In 20 of the 120 parameter cells,
+`gamma = 0` at rest, so Q2 and Q4 are genuinely undefined there. Positive-gamma
+values are no longer confused with observations beyond the 10-second window.
 
-## Two bugs found in this analysis, both before results were written
+## How to read the robustness verdicts
 
-Recorded because the pre-registration required it, and because the second one
-matters beyond this study.
+The 10% boundary is the pre-registered operational rule, not a physically
+privileged constant. The JSON therefore also reports continuous range,
+log-range, IQR/median and MAD/median summaries at the midpoint and for every
+drop value. For the signed Q5 effect, its signed range, maximum absolute effect
+and sign counts are more meaningful than a relative spread across zero.
+
+The midpoint is an illustrative estimand, not a summary of the whole response
+surface. Near `drop = 0`, the floor dominates; at intermediate drops, scale
+dominates; and near `drop = 1`, ceiling saturation can dominate. The per-drop
+summaries expose those regimes.
+
+Finally, the 16× scale grid is a global structural stress test under complete
+parameter non-identification, not a calibrated uncertainty interval. A future
+physiological calibration should motivate a separate, local grid around the
+default values.
+
+## Corrections found in this analysis
+
+The first two were caught before results were written; the third was found by
+post-result adversarial review.
 
 1. **Q1/Q3/Q4 were contaminated by a fixed-wall-clock intervention** that breaks
    the `gamma*t` scaling symmetry. Q4 looked FRAGILE when theory said it must be
@@ -79,6 +97,10 @@ matters beyond this study.
    tie-averaged Spearman is **−0.5**. Left in place it would have manufactured
    "more HRV loss, *more* coherence" out of a saturation artifact. Fixed in
    Amendment 2.
+3. **Q2 and Q4 were silently censored at 10 seconds.** This excluded 12 and 16
+   positive-gamma midpoint cells respectively while the report said "across 120
+   cells." Q2's corrected range is 0.77–13.86 s; Q4 is exactly `exp(-1)` in all
+   120 midpoint cells. Fixed in Amendment 3.
 
 ## What this does not establish
 
