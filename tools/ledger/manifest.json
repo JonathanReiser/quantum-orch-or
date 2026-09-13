@@ -6,7 +6,7 @@
       "description": "Classical baselines (constant/ridge) on the real Snapshot dataset \u2014 CORRECTIONS.md's headline table.",
       "reproducible": true,
       "committed_output": "data/benchmark_classical_results.json",
-      "sha256": "1391c9f3dc63c5d3def0949c5996cbfd9ddeea432aff63149ff1bdddc178750d",
+      "sha256": "168bb1af7e7dc0d56fc70783ca35a604076b0325628dc4c418dd59855b7055e8",
       "doc_claims": [
         {
           "file": "README.md",
@@ -85,7 +85,7 @@
       "description": "Contestedness classification, including the within-DAO Simpson's-paradox control.",
       "reproducible": true,
       "committed_output": "data/benchmark_contestedness_results.json",
-      "sha256": "439777454cb19e2f474db3091b49605c8a983d2fc38eb6245467135ab9ff1dd8",
+      "sha256": "c8db3543aa347191e1edc96382824cba36140478b3de04a6a7453a6be667e77f",
       "doc_claims": [
         {
           "file": "README.md",
