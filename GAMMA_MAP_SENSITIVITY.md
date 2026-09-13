@@ -13,12 +13,12 @@ Run with qiskit 1.3.0, qiskit-dynamics 0.6.0, numpy 2.5.3. 120 grid cells.
 **Four of the five pre-registered quantities are FRAGILE. The ROBUST quantity
 is a successful structural control, not a physiological result.**
 
-| quantity | what it stands for | spread across 120 cells | verdict |
+| quantity | what it stands for | range across 120 cells at `drop = 0.5` | verdict |
 |---|---|---|---|
 | **Q1** coherence at `t = 5 s` | *"after 5 s a stressed subject has lost X coherence"* | `0.0111 → 0.7788` (**70×**) | **FRAGILE** |
 | **Q2** coherence half-life | *"coherence half-life is X seconds"* | `0.77 s → 13.86 s` (**18×**) | **FRAGILE** |
 | **Q3** rank corr. HRV-loss vs coherence | *"lower HRV means faster coherence loss"* | `−1.00 → −0.50` | **FRAGILE** (sign always correct) |
-| **Q4** coherence at `gamma*t = 2` | the same physics in the system's own time units | `0.367879` (exactly invariant) | **ROBUST** |
+| **Q4** coherence at `gamma*t = 2` | the same physics in the system's own time units | `0.367879464` ± `2.3e-08` (measured) | **ROBUST** |
 | **Q5** purity change from the intervention | *"the intervention changes the outcome"* | `−1.1e-05 → +0.0342`, **sign flips** | **FRAGILE** |
 
 ## What this means, stated plainly
@@ -32,10 +32,12 @@ constants from anything. "Coherence half-life is 3.3 seconds" is true at the
 defaults and equally true at 0.77 s or 13.86 s elsewhere in the grid.
 
 **The robust quantity is a useful structural control, not physiological
-evidence.** Q4 is exactly invariant because coherence at `gamma*t = 2` is
-`exp(−1)` for every positive-gamma subject, cell and input. That successfully
-checks the generator's scale covariance. It does not discriminate between
-subjects: choosing each observation time as `2/gamma` forces the common value.
+evidence.** Measured from the solver, coherence at `gamma*t = 2` lands on
+`exp(−1)` to within `2.3e-08` across all 120 cells and every input. That is a
+genuine check that the generator is scale-covariant — and it is only a check:
+choosing each observation time as `2/gamma` forces the common value, so Q4
+cannot discriminate between subjects. Its invariance says the solver behaves,
+not that the bridge measures anything.
 
 **The intervention's sign is not determined.** Q5 is positive in 84 cells and
 negative in 36. Whether the "mindfulness" rotation *helps* or *hurts* final
@@ -65,16 +67,20 @@ values are no longer confused with observations beyond the 10-second window.
 
 ## How to read the robustness verdicts
 
-The 10% boundary is the pre-registered operational rule, not a physically
+Ratios written "70×" and "18×" are `max / min`; the JSON's `relative_spread`
+is `(max − min) / min`, so the two differ by one. The 10% boundary is applied to
+`relative_spread` and is the pre-registered operational rule, not a physically
 privileged constant. The JSON therefore also reports continuous range,
 log-range, IQR/median and MAD/median summaries at the midpoint and for every
 drop value. For the signed Q5 effect, its signed range, maximum absolute effect
 and sign counts are more meaningful than a relative spread across zero.
 
 The midpoint is an illustrative estimand, not a summary of the whole response
-surface. Near `drop = 0`, the floor dominates; at intermediate drops, scale
-dominates; and near `drop = 1`, ceiling saturation can dominate. The per-drop
-summaries expose those regimes.
+surface, and it is not the worst case. Q1's `max/min` ratio runs from 1.6× at
+`drop = 0.0` through 70× at the midpoint to a peak of **110× at `drop = 0.6`**;
+Q2's runs from 26× down to 10×. Near `drop = 0` the floor dominates, at
+intermediate drops scale dominates, and near `drop = 1` ceiling saturation can
+dominate. The per-drop summaries in the JSON expose those regimes.
 
 Finally, the 16× scale grid is a global structural stress test under complete
 parameter non-identification, not a calibrated uncertainty interval. A future
@@ -99,8 +105,14 @@ post-result adversarial review.
    Amendment 2.
 3. **Q2 and Q4 were silently censored at 10 seconds.** This excluded 12 and 16
    positive-gamma midpoint cells respectively while the report said "across 120
-   cells." Q2's corrected range is 0.77–13.86 s; Q4 is exactly `exp(-1)` in all
-   120 midpoint cells. Fixed in Amendment 3.
+   cells." Q2's corrected range is 0.77–13.86 s. Fixed in Amendment 3.
+4. **That fix replaced both measurements with formulas.** Q4 became a literal
+   `exp(-1)`, making its ROBUST verdict true by construction, and the tests
+   asserted each formula against its own implementation. Mutation testing
+   confirmed the decoupling: doubling the dissipators, adding a Hamiltonian or
+   halving the thermal steady state all left the suite passing. Q2 and Q4 are
+   measured from the solver again on a `1/gamma`-scaled window, and the tests
+   now check the formulas against the solver. Fixed in Amendment 4.
 
 ## What this does not establish
 
