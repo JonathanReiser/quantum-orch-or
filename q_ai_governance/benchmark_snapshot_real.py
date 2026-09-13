@@ -25,8 +25,10 @@ import statistics as stats
 
 try:
     from .features import build_matrix, FEATURE_NAMES, DAOS
+    from .canonical_json import canonicalise
 except ImportError:
     from features import build_matrix, FEATURE_NAMES, DAOS
+    from canonical_json import canonicalise
 
 import numpy as np
 
@@ -132,7 +134,10 @@ def main():
     top = sorted(out["ridge_coefficients"].items(), key=lambda kv: -abs(kv[1]))[:6]
     for k, v in top:
         print(f"   {k:<20}{v:>8.3f}")
-    json.dump(out, open(args.out, "w"), indent=2)
+    # Canonicalise before serialising: a raw float64 dump is not
+    # byte-reproducible across BLAS backends, and this artifact is
+    # pinned in the results ledger by sha256. See canonical_json.py.
+    json.dump(canonicalise(out), open(args.out, "w"), indent=2)
     print(f"\nwritten to {args.out}")
 
 

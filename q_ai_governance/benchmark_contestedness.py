@@ -43,8 +43,10 @@ import numpy as np
 
 try:
     from .features import build_matrix, FEATURE_NAMES, DAOS
+    from .canonical_json import canonicalise
 except ImportError:
     from features import build_matrix, FEATURE_NAMES, DAOS
+    from canonical_json import canonicalise
 
 CONTESTED_LO, CONTESTED_HI = 5.0, 95.0
 
@@ -268,7 +270,10 @@ def main():
     print("\nlargest standardised coefficients:")
     for k, v in sorted(out["coefficients"].items(), key=lambda kv: -abs(kv[1]))[:7]:
         print(f"   {k:<26}{v:>9.4f}")
-    json.dump(out, open(args.out, "w"), indent=2)
+    # Canonicalise before serialising: a raw float64 dump is not
+    # byte-reproducible across BLAS backends, and this artifact is
+    # pinned in the results ledger by sha256. See canonical_json.py.
+    json.dump(canonicalise(out), open(args.out, "w"), indent=2)
     print(f"\nwritten to {args.out}")
 
 

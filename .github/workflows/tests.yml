@@ -27,7 +27,17 @@ jobs:
         run: python -m pytest tests/ -v
 
   results-ledger:
-    runs-on: ubuntu-latest
+    # Run the ledger on both platforms. The benchmark artifacts are pinned by
+    # sha256, and a raw float64 dump is not byte-reproducible across BLAS
+    # backends -- so this matrix is what actually proves the canonicalisation
+    # in q_ai_governance/canonical_json.py works, rather than trusting that
+    # rounding is enough. If a value ever lands on a rounding boundary, this
+    # job is where it surfaces.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
