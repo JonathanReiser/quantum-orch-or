@@ -35,6 +35,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import math
 import subprocess
 import sys
 import tempfile
@@ -83,8 +84,25 @@ def check_reproducibility(entry):
         if fresh_hash != pinned:
             fresh = json.loads(out_path.read_text())
             committed_data = json.loads(committed.read_text())
+
+            # Two INDEPENDENTLY COMPUTED floating-point outputs may differ in the
+            # last bits between BLAS backends (Apple Accelerate locally vs
+            # OpenBLAS on a Linux CI runner) for identical code, inputs and seed.
+            # A byte hash is still the right check for the committed file against
+            # its own pinned hash above -- that catches hand-tampering. It is the
+            # wrong check here. Backported from quantum-orch-or-verified, where a
+            # real CI failure demonstrated exactly this.
+            close, mismatch = deep_close(fresh, committed_data)
+            if close:
+                return True, (
+                    "regenerated output matches the committed file within "
+                    "rtol=1e-6 but is not byte-identical -- expected on a "
+                    "different BLAS backend."
+                )
+
             diff_keys = _top_level_diff(fresh, committed_data)
             return False, (
+                f"      first numeric mismatch: {mismatch}\n"
                 f"regenerated output does NOT match the committed file.\n"
                 f"      command:   {' '.join(cmd)}\n"
                 f"      expected:  {pinned}\n"
@@ -96,6 +114,45 @@ def check_reproducibility(entry):
                 f"      this manifest entry's sha256 -- do not just widen a tolerance."
             )
     return True, "regenerated output byte-matches the committed file"
+
+
+def deep_close(a, b, path="", rtol=1e-6, atol=1e-9):
+    """Recursively compare JSON-like structures, tolerant of the floating-point
+    noise that legitimately differs between BLAS backends (e.g. Apple Accelerate
+    on a dev machine vs OpenBLAS on a Linux CI runner) even for identical code,
+    identical inputs, and an identical fixed random seed.
+
+    A byte-exact hash is still the right check for a *committed* artifact
+    against its own pinned hash -- that catches hand-tampering of the same
+    file. It is the wrong check for comparing two *independently computed*
+    floating-point outputs, which is what regeneration does. Returns
+    (matches: bool, first_mismatch_description: str | None).
+    """
+    if isinstance(a, dict) and isinstance(b, dict):
+        if set(a) != set(b):
+            return False, f"{path}: key sets differ: {sorted(set(a) ^ set(b))}"
+        for key in a:
+            ok, msg = deep_close(a[key], b[key], f"{path}.{key}" if path else str(key), rtol, atol)
+            if not ok:
+                return False, msg
+        return True, None
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b):
+            return False, f"{path}: list length differs: {len(a)} vs {len(b)}"
+        for i, (x, y) in enumerate(zip(a, b)):
+            ok, msg = deep_close(x, y, f"{path}[{i}]", rtol, atol)
+            if not ok:
+                return False, msg
+        return True, None
+    if isinstance(a, bool) or isinstance(b, bool):
+        return (a is b), (None if a is b else f"{path}: {a!r} != {b!r}")
+    if isinstance(a, (int, float)) and isinstance(b, (int, float)):
+        if math.isclose(a, b, rel_tol=rtol, abs_tol=atol):
+            return True, None
+        return False, f"{path}: {a!r} != {b!r} (outside rtol={rtol}, atol={atol})"
+    if a == b:
+        return True, None
+    return False, f"{path}: {a!r} != {b!r}"
 
 
 def _top_level_diff(a, b):
