@@ -18,3 +18,10 @@ __pycache__/
 # Simulation outputs
 *.png
 !simulation_results.png
+
+# Generated bundles and local secrets
+*.tar.gz
+*.zip
+.env
+.env.*
+!.env.example

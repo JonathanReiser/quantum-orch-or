@@ -1,13 +1,19 @@
-# ⚛️ Quantum-Orch-OR: Quantum-Cognitive AI Policy & Governance Engine
+# Quantum-Orch-OR research sandbox
 
 [![PyPI Version](https://img.shields.io/pypi/v/q-ai-governance.svg)](https://pypi.org/project/q-ai-governance/)
 [![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
-[![Tests](https://img.shields.io/badge/tests-126%20passed-brightgreen.svg)](https://github.com/JonathanReiser/quantum-orch-or)
+[![Tests](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml/badge.svg)](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml)
 [![Paper PDF](https://img.shields.io/badge/Paper-PDF%20Download-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/full_quantum_governance_paper.pdf)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Quantum-Orch-OR** (`q-ai-governance`) is a world-first **Quantum-Cognitive Reinforcement Learning AI Engine**. By modeling agent decision-making in Hilbert space statevectors governed by **Penrose Orchestrated Objective Reduction (Orch-OR)** statevector collapse ($\tau = \hbar / E_G$) under **Lindblad thermal dephasing ($T = 310\text{ K}$)**, Q-AI captures non-commutative cognitive framing, question order effects, and collective voter gridlocks that classical linear models fail to predict.
+**Quantum-Orch-OR** is an open research sandbox containing governance models,
+open-system simulations, reproducibility tooling, and historical publications.
+Quantum formalism is used as a mathematical modeling language; this repository
+does not establish that cognition is quantum, validate Orch-OR as neuroscience,
+or provide a medical device. Start with the [repository map](REPOSITORY_MAP.md)
+and treat [CORRECTIONS.md](CORRECTIONS.md) as authoritative wherever historical
+claims conflict with it.
 
 ---
 
@@ -92,7 +98,9 @@ pip install q-ai-governance
 
 ---
 
-## 📁 Repository Directory Map
+## Repository directory map
+
+The detailed map and compatibility policy are in [REPOSITORY_MAP.md](REPOSITORY_MAP.md).
 
 | Directory / File | Component Description |
 | :--- | :--- |
