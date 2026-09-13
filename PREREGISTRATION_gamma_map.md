@@ -278,3 +278,50 @@ maximum absolute value and sign counts) are now recorded at `drop = 0.5` and at
 all 11 drop values. These are descriptive additions; the pre-registered 10%
 decision rule is retained and explicitly labelled as an operational threshold,
 not a physically privileged boundary.
+
+---
+
+# Amendment 4 — 2026-09-13, second post-result review correction
+
+## The defect
+
+A second adversarial review found that Amendment 3 fixed the censoring by
+**replacing two measurements with formulas**, which removed the quantities'
+only connection to the module they describe.
+
+`coherence_at_gamma_t_2` had become `return float(np.exp(-1.0))` — a constant
+with no `gamma` dependence and no call into the solver. Its ROBUST verdict was
+then true by construction: the recorded relative spread was exactly `0`, from a
+single distinct value across all 120 cells. This violates this pre-registration's
+own guardrail, "No hardcoded numbers" — the literal `exp(-1)` is precisely the
+`"q_ai_directional_accuracy": 92.8` pattern that guardrail was written against.
+`coherence_half_life` had likewise become `2 ln(2) / gamma` with no solver call.
+
+The regression tests asserted each formula against its own implementation, so
+they could not detect the decoupling. Mutation testing confirmed it: doubling
+the dissipator strengths, adding a Hamiltonian, or halving the thermal steady
+state all left the entire suite passing, while the study went on reporting
+numbers about a model that no longer existed.
+
+The report's claim that Q4 "successfully checks the generator's scale
+covariance" was false for the same reason: Q4 no longer touched the generator.
+
+## The correction
+
+Q2 and Q4 are measured from the solver again, on a trajectory whose window is
+scaled to `1/gamma` (`DIMENSIONLESS_HORIZON = 6.0` in units of `gamma*t`, which
+covers both the half-life at `gamma*t = 2 ln 2` and Q4's point at `gamma*t = 2`
+with headroom). This keeps Amendment 3's fix — nothing is censored, and both are
+defined in all 120 midpoint cells — without giving up the measurement. Falling
+outside the window now raises rather than silently returning `None`.
+
+Q4's recorded spread is consequently `3.5e-11` across 26 distinct measured
+values rather than exactly `0`, and Q2 agrees with `2 ln(2) / gamma` to
+`8.9e-07`. **No verdict changes**: Q2 stays FRAGILE at an 18x ratio, Q4 stays
+ROBUST, and the Q1/Q3/Q5 results are untouched.
+
+Tests now assert the closed forms **against the solver** rather than against
+themselves, and are verified to fail under all five mutations tried: doubled
+dissipation, a `sigma_x` Hamiltonian, a halved thermal steady state, a shortened
+horizon, and — via a full density-matrix check — a `sigma_z` Hamiltonian, which
+winds a gamma-independent phase that the two reported observables cannot see.
