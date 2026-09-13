@@ -9,6 +9,7 @@ setup(
     install_requires=[
         "qiskit>=1.0",
         "qiskit-aer>=0.14",
+        "qiskit-dynamics>=0.6,<0.7",
         "numpy>=1.22",
         "matplotlib>=3.5",
         "scipy>=1.8"
