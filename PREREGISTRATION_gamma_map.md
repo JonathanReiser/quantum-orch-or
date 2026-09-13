@@ -145,3 +145,105 @@ is physically meaningful. Given disclosure (5), the honest reading of a ROBUST
 result is "this conclusion does not depend on constants that are themselves
 unvalidated" — which is weaker than it sounds, and must not be reported as
 support for the Orch-OR framing.
+
+---
+
+# Amendment 1 — 2026-09-13, written after a first grid run, before any result is reported
+
+## The defect
+
+The first run of the locked grid returned **FRAGILE for Q4**, the quantity that
+prediction **P1** said must be *exactly invariant*. Under the rule fixed above —
+
+> If the grid contradicts P1, P2 or P3, that is a bug in this analysis or in the
+> module, and gets reported as such rather than as a finding about the bridge.
+
+— this was investigated before anything was written up. It is a bug in this
+analysis, and the original specification of Q1–Q4 is at fault.
+
+Q1, Q3 and Q4 were all measured on a trajectory produced with the module default
+`mindfulness_at_s = 4.0`, i.e. an instantaneous rotation at a **fixed wall-clock
+time**. That rotation breaks the `gamma*t` scaling symmetry, because as `gamma`
+varies the intervention lands at a different *dimensionless* time `gamma*4.0`.
+Q1/Q3/Q4 therefore measured the gamma map's constants **confounded with the
+intervention's relative timing**, which is a separate parameter that this study
+does not vary and never intended to test.
+
+Direct evidence, run on intervention-free trajectories:
+
+| gamma | coherence at `gamma*t = 2` |
+|---|---|
+| 0.02 | 0.3678794642 |
+| 0.10 | 0.3678794642 |
+| 0.40 | 0.3678794412 |
+| 0.82 | 0.3678795626 |
+| 2.00 | 0.3678794412 |
+
+against `exp(-1) = 0.3678794412`. **P1 holds exactly**, to ~1e-7, across two
+orders of magnitude in `gamma`. The apparent fragility was entirely an artifact
+of the fixed-time rotation.
+
+The same contamination hit Q3. With no clip binding and no intervention, the
+Spearman rho is `-1.0000` exactly, as **P2** predicted. With the intervention it
+ranged from `-0.99` to `+0.50` — the rotation can invert the apparent
+relationship between HRV loss and coherence loss.
+
+## The correction
+
+**Q1, Q3 and Q4 are measured on intervention-free trajectories**
+(`mindfulness_at_s = None`). Q5 is unchanged: it is *defined* as the difference
+the intervention makes, so it must keep it, and its fixed wall-clock timing is
+part of what it measures.
+
+Nothing else moves. The grid, the drop sweep, the ROBUST/FRAGILE thresholds and
+the simulation settings are as locked above. The first (contaminated) run is
+superseded and its numbers are not reported as results.
+
+## A finding that survives the correction, recorded here because it is not a bug
+
+The ceiling clip **binds in 53 of the 120 cells**. Where it binds, multiple
+values of `drop` map to the same `gamma`, the map stops being injective, and
+rank discriminability degrades on its own — Spearman rho at
+`(floor=0.02, scale=3.20, ceiling=1.00)` is `-0.4909` with no intervention at
+all, against `-1.0000` where nothing clips. That is a real property of the map,
+not an artifact, and it is reported as a result.
+
+---
+
+# Amendment 2 — 2026-09-13, written before any result is reported
+
+## The defect
+
+After Amendment 1, Q3 still reported a span of 1.5, which requires some cell to
+have a **positive** Spearman rho between HRV loss and coherence at 5 s on an
+intervention-free trajectory. That is physically impossible here: `gamma` is
+non-decreasing in `drop`, and coherence at fixed `t` is strictly decreasing in
+`gamma`, so rho can only be negative or, under ties, zero.
+
+The cause is the rank implementation in `tools/gamma_map_sensitivity.py`. It used
+`argsort(argsort(x))`, which assigns **distinct ranks to tied values in index
+order** instead of averaging them. The ceiling clip produces exact ties — that is
+its entire effect — so the cells where the clip binds are precisely the cells
+where the naive ranking misbehaves.
+
+Worked example, `floor=0.20, scale=3.20, ceiling=0.50`, where ten of the eleven
+`drop` values clip to `gamma = 0.50`:
+
+| method | rho |
+|---|---|
+| `argsort(argsort(.))` (what was used) | **+0.5** |
+| `scipy.stats.spearmanr` (tie-averaged) | **−0.5** |
+
+The naive estimator does not merely lose precision — it **inverts the sign of the
+conclusion**, turning "more HRV loss, less coherence" into its opposite. Had this
+gone unnoticed it would have manufactured a positive finding out of a tie.
+
+## The correction
+
+Q3 uses `scipy.stats.spearmanr`, which averages tied ranks. `scipy` is already a
+dependency of this repository (`requirements.txt`: `scipy>=1.10.0`). Ties are
+reported explicitly per cell (`n_distinct_gamma`) so that a degraded rho can be
+read as saturation rather than noise.
+
+Nothing else moves. The grid, quantities, thresholds and settings stay as locked.
+Runs prior to this amendment are superseded and are not reported as results.
