@@ -38,18 +38,64 @@ def _interp_at(t_grid, y, t):
     return float(np.interp(t, t_grid, y))
 
 
-def coherence_half_life(gamma: float) -> float | None:
-    """Exact half-life for coherence exp(-gamma*t/2).
+# Dimensionless horizon for the Q2/Q4 trajectory, in units of gamma*t. It must
+# exceed both the coherence half-life (gamma*t = 2 ln 2 ~ 1.386) and Q4's
+# observation point (gamma*t = 2), with headroom.
+DIMENSIONLESS_HORIZON = 6.0
+DIMENSIONLESS_SAMPLES = 4001
 
-    Amendment 3: measuring this only inside the fixed 10 s trajectory falsely
-    labelled positive-gamma half-lives beyond the window as undefined.
+
+def dimensionless_trajectory(gamma: float):
+    """Trajectory on a window scaled to 1/gamma, so nothing is censored.
+
+    Amendment 4: Q2 and Q4 are measured from the solver here. Amendment 3 had
+    replaced them with closed forms -- which removed the wall-clock censoring
+    but also decoupled both quantities from the module they describe, leaving
+    Q4 a literal exp(-1) that no measurement produces.
     """
-    return None if gamma <= 0.0 else float(2.0 * np.log(2.0) / gamma)
+    if gamma <= 0.0:
+        return None
+    return simulate(gamma, duration_s=DIMENSIONLESS_HORIZON / gamma,
+                    samples=DIMENSIONLESS_SAMPLES,
+                    thermal_excited_fraction=THERMAL, mindfulness_at_s=None)
 
 
-def coherence_at_gamma_t_2(gamma: float) -> float | None:
-    """Exact Q4 value. Dimensionless time is undefined when gamma is zero."""
-    return None if gamma <= 0.0 else float(np.exp(-1.0))
+def coherence_half_life(gamma: float, trajectory=None) -> float | None:
+    """Half-life of coherence, measured from the solver trajectory."""
+    if gamma <= 0.0:
+        return None
+    tr = dimensionless_trajectory(gamma) if trajectory is None else trajectory
+    coh = tr.coherence_l1
+    c0 = coh[0]
+    if c0 <= 0:
+        return None
+    target = 0.5 * c0
+    below = np.nonzero(coh <= target)[0]
+    if below.size == 0:
+        # Only reachable if DIMENSIONLESS_HORIZON is set below 2 ln 2.
+        raise RuntimeError(
+            f"half-life not reached within gamma*t={DIMENSIONLESS_HORIZON}; "
+            "the horizon is too short, which would silently censor Q2")
+    i = int(below[0])
+    if i == 0:
+        return 0.0
+    t0, t1, y0, y1 = tr.time_s[i - 1], tr.time_s[i], coh[i - 1], coh[i]
+    if y0 == y1:
+        return float(t1)
+    return float(t0 + (y0 - target) * (t1 - t0) / (y0 - y1))
+
+
+def coherence_at_gamma_t_2(gamma: float, trajectory=None) -> float | None:
+    """Coherence at dimensionless time gamma*t = 2, measured from the solver."""
+    if gamma <= 0.0:
+        return None
+    tr = dimensionless_trajectory(gamma) if trajectory is None else trajectory
+    t_star = 2.0 / gamma
+    if t_star > tr.time_s[-1]:
+        raise RuntimeError(
+            "gamma*t=2 lies outside the dimensionless window; "
+            "the horizon is too short, which would silently censor Q4")
+    return _interp_at(tr.time_s, tr.coherence_l1, t_star)
 
 
 def _spearman(a, b):
@@ -79,11 +125,13 @@ def cell(floor, scale, ceiling):
                                      mindfulness_at_s=MINDFUL_AT_S,
                                      mindfulness_angle=MINDFUL_ANGLE)
         base = tr
+        # Amendment 4: one gamma-scaled trajectory serves both Q2 and Q4, so
+        # each is a solver measurement rather than an asserted closed form, and
+        # neither is censored by the 10 s wall-clock window Q1 and Q5 use.
+        dtr = dimensionless_trajectory(g)
         q1.append(_interp_at(tr.time_s, tr.coherence_l1, 5.0))
-        q2.append(coherence_half_life(g))
-        # Q4 is defined at t=2/gamma even when that time exceeds the separate
-        # 10 s wall-clock observation window used by Q1 and Q5.
-        q4.append(coherence_at_gamma_t_2(g))
+        q2.append(coherence_half_life(g, dtr))
+        q4.append(coherence_at_gamma_t_2(g, dtr))
         q5.append(float(with_intervention.purity[-1] - base.purity[-1]))
     q3 = _spearman(DROPS, q1)
     return {
@@ -176,7 +224,13 @@ def main():
         "settings": {"duration_s": DURATION_S, "samples": SAMPLES,
                      "thermal_excited_fraction": THERMAL,
                      "mindfulness_at_s": MINDFUL_AT_S,
-                     "mindfulness_angle": float(MINDFUL_ANGLE)},
+                     "mindfulness_angle": float(MINDFUL_ANGLE),
+                     # Q1 and Q5 use the fixed wall-clock window above. Q2 and
+                     # Q4 are measured on a separate per-cell trajectory whose
+                     # window is scaled to 1/gamma, so record its settings too.
+                     "Q2_Q4_dimensionless_trajectory": {
+                         "dimensionless_horizon_gamma_t": DIMENSIONLESS_HORIZON,
+                         "samples": DIMENSIONLESS_SAMPLES}},
         "grid": {"floors": list(FLOORS), "scales": list(SCALES),
                  "ceilings": list(CEILINGS), "drops": list(DROPS),
                  "n_cells": len(cells)},
