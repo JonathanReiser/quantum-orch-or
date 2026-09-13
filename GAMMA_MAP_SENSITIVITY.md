@@ -1,8 +1,8 @@
 # Result — the somatic gamma map's constants decide the answer
 
 Pre-registered in [`PREREGISTRATION_gamma_map.md`](PREREGISTRATION_gamma_map.md),
-committed at `f232bb8` before the grid ran. Two pre-result amendments and one
-post-result review correction are recorded there. Every figure here traces to
+committed at `f232bb8` before the grid ran. Two pre-result amendments and two
+post-result review corrections are recorded there. Every figure here traces to
 [`data/gamma_map_sensitivity.json`](data/gamma_map_sensitivity.json), produced by
 `tools/gamma_map_sensitivity.py`.
 
@@ -33,8 +33,10 @@ defaults and equally true at 0.77 s or 13.86 s elsewhere in the grid.
 
 **The robust quantity is a useful structural control, not physiological
 evidence.** Measured from the solver, coherence at `gamma*t = 2` lands on
-`exp(−1)` to within `2.3e-08` across all 120 cells and every input. That is a
-genuine check that the generator is scale-covariant — and it is only a check:
+`exp(−1)` to within `2.3e-08` for every positive-gamma cell/input combination
+— all 120 cells at `drop = 0.5`, and 100 of 120 at `drop = 0`, where the
+floor-zero cells give `gamma = 0` and Q4 is undefined. That is a genuine check
+that the generator is scale-covariant — and it is only a check:
 choosing each observation time as `2/gamma` forces the common value, so Q4
 cannot discriminate between subjects. Its invariance says the solver behaves,
 not that the bridge measures anything.
@@ -89,8 +91,8 @@ default values.
 
 ## Corrections found in this analysis
 
-The first two were caught before results were written; the third was found by
-post-result adversarial review.
+The first two were caught before results were written; the third and fourth
+were found by post-result adversarial review.
 
 1. **Q1/Q3/Q4 were contaminated by a fixed-wall-clock intervention** that breaks
    the `gamma*t` scaling symmetry. Q4 looked FRAGILE when theory said it must be

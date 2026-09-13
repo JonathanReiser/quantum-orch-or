@@ -224,7 +224,13 @@ def main():
         "settings": {"duration_s": DURATION_S, "samples": SAMPLES,
                      "thermal_excited_fraction": THERMAL,
                      "mindfulness_at_s": MINDFUL_AT_S,
-                     "mindfulness_angle": float(MINDFUL_ANGLE)},
+                     "mindfulness_angle": float(MINDFUL_ANGLE),
+                     # Q1 and Q5 use the fixed wall-clock window above. Q2 and
+                     # Q4 are measured on a separate per-cell trajectory whose
+                     # window is scaled to 1/gamma, so record its settings too.
+                     "Q2_Q4_dimensionless_trajectory": {
+                         "dimensionless_horizon_gamma_t": DIMENSIONLESS_HORIZON,
+                         "samples": DIMENSIONLESS_SAMPLES}},
         "grid": {"floors": list(FLOORS), "scales": list(SCALES),
                  "ceilings": list(CEILINGS), "drops": list(DROPS),
                  "n_cells": len(cells)},

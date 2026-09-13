@@ -11483,6 +11483,10 @@
   },
   "preregistration": "PREREGISTRATION_gamma_map.md",
   "settings": {
+    "Q2_Q4_dimensionless_trajectory": {
+      "dimensionless_horizon_gamma_t": 6.0,
+      "samples": 4001
+    },
     "duration_s": 10.0,
     "mindfulness_angle": -0.6283185307179586,
     "mindfulness_at_s": 4.0,
