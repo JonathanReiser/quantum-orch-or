@@ -3,8 +3,8 @@
     "n_total": 905,
     "n_train": 633,
     "n_test": 272,
-    "train_base_rate": 0.3001579778830964,
-    "test_base_rate": 0.18382352941176472,
+    "train_base_rate": 0.300158,
+    "test_base_rate": 0.183824,
     "contested_band": [
       5.0,
       95.0
@@ -13,13 +13,13 @@
   "results": {
     "base_rate_constant": {
       "auc": 0.5,
-      "brier": 0.16356614334749572,
-      "log_loss": 0.5125156700925423
+      "brier": 0.163566,
+      "log_loss": 0.512516
     },
     "per_dao_base_rate": {
-      "auc": 0.6284684684684685,
-      "brier": 0.14068609027858914,
-      "log_loss": 0.44754473438288755,
+      "auc": 0.628468,
+      "brier": 0.140686,
+      "log_loss": 0.447545,
       "auc_ci95": [
         0.527,
         0.719
@@ -27,14 +27,14 @@
       "auc_p_gt_0.5": 0.0095
     },
     "logistic_dao_only": {
-      "auc": 0.6284684684684685,
-      "brier": 0.1406949338127689,
-      "log_loss": 0.447636062410142
+      "auc": 0.628468,
+      "brier": 0.140695,
+      "log_loss": 0.447636
     },
     "logistic_all_features": {
-      "auc": 0.6596396396396397,
-      "brier": 0.13642618792919659,
-      "log_loss": 0.445366183235548,
+      "auc": 0.65964,
+      "brier": 0.136426,
+      "log_loss": 0.445366,
       "auc_ci95": [
         0.555,
         0.763
@@ -42,9 +42,9 @@
       "auc_p_gt_0.5": 0.001
     },
     "logistic_content_only": {
-      "auc": 0.6512612612612613,
-      "brier": 0.14539249806859253,
-      "log_loss": 0.4769586314841856,
+      "auc": 0.651261,
+      "brier": 0.145392,
+      "log_loss": 0.476959,
       "auc_ci95": [
         0.547,
         0.755
@@ -52,16 +52,16 @@
       "auc_p_gt_0.5": 0.001
     },
     "logistic_venue_only": {
-      "auc": 0.6507207207207207,
-      "brier": 0.1372708147034152,
-      "log_loss": 0.440247688314384
+      "auc": 0.650721,
+      "brier": 0.137271,
+      "log_loss": 0.440248
     }
   },
   "within_dao": {
     "Uniswap": {
       "n": 123,
       "n_test": 37,
-      "contested_rate": 0.17886178861788618,
+      "contested_rate": 0.178862,
       "content_only_auc": 0.516,
       "median_duration_contested": 5.0,
       "median_duration_uncontested": 5.0
@@ -69,7 +69,7 @@
     "Arbitrum": {
       "n": 344,
       "n_test": 104,
-      "contested_rate": 0.4011627906976744,
+      "contested_rate": 0.401163,
       "content_only_auc": 0.416,
       "median_duration_contested": 7.0,
       "median_duration_uncontested": 7.0
@@ -77,15 +77,15 @@
     "Optimism": {
       "n": 88,
       "n_test": 27,
-      "contested_rate": 0.4772727272727273,
+      "contested_rate": 0.477273,
       "content_only_auc": 0.541,
-      "median_duration_contested": 12.083333333333332,
-      "median_duration_uncontested": 6.958333333333333
+      "median_duration_contested": 12.0833,
+      "median_duration_uncontested": 6.95833
     },
     "Gitcoin": {
       "n": 139,
       "n_test": 42,
-      "contested_rate": 0.1223021582733813,
+      "contested_rate": 0.122302,
       "content_only_auc": 0.188,
       "median_duration_contested": 7.0,
       "median_duration_uncontested": 7.0
@@ -93,9 +93,9 @@
     "Aave": {
       "n": 211,
       "n_test": 64,
-      "contested_rate": 0.0995260663507109,
+      "contested_rate": 0.0995261,
       "content_only_auc": 0.137,
-      "median_duration_contested": 4.96505787037037,
+      "median_duration_contested": 4.96506,
       "median_duration_uncontested": 3.0
     }
   },
