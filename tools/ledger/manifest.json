@@ -157,14 +157,14 @@
       "description": "The generated Uniswap forum proposal. Deterministic: the document no longer embeds any model output, only real recorded votes, so regenerating it is byte-stable without a seed.",
       "reproducible": true,
       "committed_output": "UNISWAP_GOVERNANCE_PROPOSAL.md",
-      "sha256": "d1a55d22b35c47f2690aa1bac53f5e4b012ced454fd4bf34aa506a0a4337ebb4",
-      "note": "Registered by the fix for issue #12. The document previously published a mean absolute error of 3.4pp taken from a single unseeded stochastic run; re-running the identical code gave 7.4pp and 10.7pp. That claim was removed rather than re-derived. The generator still runs a 50-rollout Monte Carlo benchmark per proposal (ROLLOUTS_PER_PROPOSAL=50) for console output, and those forecasts remain non-reproducible without an explicit --seed; none of them reach this file. The honest held-out estimate the document cites is the leave-one-out CV MAE of 32.74pp over n=5 in uniswap_agent_loo_cv_results.json.",
+      "sha256": "664709be29026fd08ccb213c2cc0838175e3ddd526e4a443e158850ee8b3a4ac",
+      "note": "Registered by the fix for issue #12. The document previously published a mean absolute error of 3.4pp taken from a single unseeded stochastic run; re-running the identical code gave 7.4pp and 10.7pp. That claim was removed rather than re-derived. The generator still runs a 50-rollout Monte Carlo benchmark per proposal (ROLLOUTS_PER_PROPOSAL=50) for console output, and those forecasts remain non-reproducible without an explicit --seed; none of them reach this file. No held-out accuracy figure is endorsed: CORRECTIONS.md states that the previously reported 32.74pp leave-one-out result came from the unfixed fitting procedure and should not be treated as a fit.",
       "doc_claims": [
         {
           "file": "UNISWAP_GOVERNANCE_PROPOSAL.md",
           "must_contain": [
             "No per-run accuracy figure is published here",
-            "mean absolute error of **32.74pp** over n=5"
+            "No valid held-out accuracy estimate for this agent is currently available"
           ]
         }
       ],
