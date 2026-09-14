@@ -1,6 +1,6 @@
 # 🎧 Noise-Canceling Governance: Executive Whitepaper for Quantum-Cognitive AI (Q-AI)
 
-> ## ⚠️ RETRACTED CLAIMS — see [CORRECTIONS.md](CORRECTIONS.md)
+> ## ⚠️ RETRACTED CLAIMS — see [CORRECTIONS.md](../../CORRECTIONS.md)
 >
 > **Audited 2026-08-30.** The empirical claims in this document — including any
 > reference to "835,000 Snapshot DAO votes", an "86.7% error reduction",
@@ -11,7 +11,7 @@
 > five hand-written proposals, not a dataset.
 >
 > The text below is retained unedited as a record of what was published. Do not
-> cite it. [CORRECTIONS.md](CORRECTIONS.md) documents each claim and reports
+> cite it. [CORRECTIONS.md](../../CORRECTIONS.md) documents each claim and reports
 > what the real 905-proposal / 6.24M-vote Snapshot dataset actually shows.
 
 **Author:** Jonathan Reiser  
@@ -77,7 +77,7 @@ $$|\text{GHZ}_N\rangle = \frac{1}{\sqrt{2}} (|00\dots 0\rangle + |11\dots 1\rang
 
 Q-AI enforces quantum consensus directly on-chain through production smart contract hooks:
 
-1. 🦄 **Uniswap v4 Hook ([`Q_AIGovernanceHook.sol`](contracts/Q_AIGovernanceHook.sol)):**  
+1. 🦄 **Uniswap v4 Hook ([`Q_AIGovernanceHook.sol`](../../contracts/Q_AIGovernanceHook.sol)):**
    Enforces `MIN_CONSENSUS_THRESHOLD = 8000` (80.00% consensus in basis points) on-chain before executing DAO treasury payouts.
 2. 🔵 **Base L2 Oracle ([`Q_AIGivingOracle.sol`](https://github.com/JonathanReiser/giving-chain/blob/main/src/Q_AIGivingOracle.sol)):**  
    Verifies non-profit impact proofs on Base blockchain before grant disbursal.

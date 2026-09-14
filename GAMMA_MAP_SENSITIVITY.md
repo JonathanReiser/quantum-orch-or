@@ -125,7 +125,7 @@ measurement anywhere in this repository linking HRV to a decoherence rate.
 It is also worth restating a disclosure from the pre-registration, because it
 bears on every number above. This repository's own papers give the thermal
 decoherence rate at 310 K as `gamma ~ 1e13 s^-1`
-(`q_ai_governance_paper.md:56`), against the somatic bridge's `[0.02, 0.82]
+(`archive/historical-publications/q_ai_governance_paper.md:56`), against the somatic bridge's `[0.02, 0.82]
 s^-1` — about **13 orders of magnitude** apart — and the papers' operator is
 `sqrt(gamma) sigma_z` (pure dephasing) where the code uses `sigma_-`/`sigma_+`
 (thermal relaxation). These are different quantities that share a name. No

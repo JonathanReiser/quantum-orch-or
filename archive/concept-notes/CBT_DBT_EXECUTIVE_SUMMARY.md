@@ -1,5 +1,8 @@
 # Executive Brief: Quantum-Enhanced Cognitive Behavioral & Dialectical Behavior Therapy (Q-CBT/DBT)
 
+> **Archived concept note.** This mathematical analogy has not been clinically
+> or neuroscientifically validated and is not a therapeutic method or medical device.
+
 **Target Audience:** Digital Therapeutics VCs, NIH/NIMH Grant Committees, Computational Psychiatry Researchers  
 **Author:** Jonathan Reiser  
 **Repository:** [github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)  

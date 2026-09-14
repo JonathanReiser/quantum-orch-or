@@ -8,7 +8,7 @@ import subprocess
 
 def render_math_pdf():
     html_file = "paper_math_render.html"
-    pdf_file = "full_quantum_governance_paper.pdf"
+    pdf_file = "archive/artifacts/full_quantum_governance_paper.pdf"
 
     html_content = """<!DOCTYPE html>
 <html>

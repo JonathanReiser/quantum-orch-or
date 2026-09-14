@@ -7,7 +7,7 @@ import pytest
 from full_quantum_paper_generator import compile_full_paper
 
 def test_full_tex_file_exists():
-    tex_path = "full_quantum_governance_paper.tex"
+    tex_path = "archive/artifacts/full_quantum_governance_paper.tex"
     assert os.path.exists(tex_path)
     content = open(tex_path).read()
     assert "\\documentclass" in content
@@ -17,5 +17,8 @@ def test_full_tex_file_exists():
 
 def test_compile_full_paper(tmp_path):
     out_dir = str(tmp_path / "arxiv_full_build")
-    tarball = compile_full_paper(tex_path="full_quantum_governance_paper.tex", output_dir=out_dir)
+    tarball = compile_full_paper(
+        tex_path="archive/artifacts/full_quantum_governance_paper.tex",
+        output_dir=out_dir,
+    )
     assert os.path.exists(tarball)

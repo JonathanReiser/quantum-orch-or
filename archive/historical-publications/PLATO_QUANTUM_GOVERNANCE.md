@@ -1,6 +1,6 @@
 # 🏛️ Platonism in Quantum AI: Hilbert Space as the Realm of Ideal Forms
 
-> ## ⚠️ RETRACTED CLAIMS — see [CORRECTIONS.md](CORRECTIONS.md)
+> ## ⚠️ RETRACTED CLAIMS — see [CORRECTIONS.md](../../CORRECTIONS.md)
 >
 > **Audited 2026-08-30.** The empirical claims in this document — including any
 > reference to "835,000 Snapshot DAO votes", an "86.7% error reduction",
@@ -11,7 +11,7 @@
 > five hand-written proposals, not a dataset.
 >
 > The text below is retained unedited as a record of what was published. Do not
-> cite it. [CORRECTIONS.md](CORRECTIONS.md) documents each claim and reports
+> cite it. [CORRECTIONS.md](../../CORRECTIONS.md) documents each claim and reports
 > what the real 905-proposal / 6.24M-vote Snapshot dataset actually shows.
 
 **Author:** Jonathan Reiser  

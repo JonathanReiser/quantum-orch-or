@@ -6,7 +6,7 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-def build_academic_pdf(paper_md_path="q_ai_governance_paper.md", output_pdf_path="q_ai_governance_paper.pdf"):
+def build_academic_pdf(paper_md_path="archive/historical-publications/q_ai_governance_paper.md", output_pdf_path="archive/artifacts/q_ai_governance_paper.pdf"):
     with open(paper_md_path, "r") as f:
         content = f.read()
 

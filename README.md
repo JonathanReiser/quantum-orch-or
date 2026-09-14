@@ -1,248 +1,76 @@
 # Quantum-Orch-OR research sandbox
 
-[![PyPI Version](https://img.shields.io/pypi/v/q-ai-governance.svg)](https://pypi.org/project/q-ai-governance/)
-[![Zenodo Publication](https://img.shields.io/badge/Zenodo-DOI%2010.5281%2Fzenodo.22151233-blue.svg)](https://zenodo.org/records/22151233)
 [![Tests](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml/badge.svg)](https://github.com/JonathanReiser/quantum-orch-or/actions/workflows/tests.yml)
-[![Paper PDF](https://img.shields.io/badge/Paper-PDF%20Download-b31b1b.svg)](https://github.com/JonathanReiser/quantum-orch-or/blob/main/full_quantum_governance_paper.pdf)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-3D%20WebGL-cyan.svg)](https://jonathanreiser.github.io/quantum-orch-or/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Quantum-Orch-OR** is an open research sandbox containing governance models,
-open-system simulations, reproducibility tooling, and historical publications.
-Quantum formalism is used as a mathematical modeling language; this repository
-does not establish that cognition is quantum, validate Orch-OR as neuroscience,
-or provide a medical device. Start with the [repository map](REPOSITORY_MAP.md)
-and treat [CORRECTIONS.md](CORRECTIONS.md) as authoritative wherever historical
-claims conflict with it.
+This repository contains exploratory governance models, open-system simulations,
+and reproducibility tooling. Quantum formalism is used as a mathematical
+modeling language. The repository does **not** establish that cognition is
+quantum, validate Orch-OR as neuroscience, demonstrate quantum advantage, or
+provide a medical or financial product.
 
----
+## Read this first
 
-> ### ⚠️ Corrected claims
->
-> An audit on 2026-08-30 found that this project's previously advertised
-> headline results — "835,000 Snapshot DAO votes", "86.7% error reduction",
-> "1.3% MAE", "R² = 0.98", "GHZ entanglement doubles public-good approval
-> 40% → 80%", "84% on the Linda problem", and "92.8% directional accuracy" —
-> were **not produced by the code in this repository**. Several were hardcoded
-> literals; the DAO figures came from five hand-written proposals, not a
-> dataset. See **[CORRECTIONS.md](CORRECTIONS.md)** for the full accounting and
-> for what the real data shows. Every number below is enforced by a
-> [results ledger](tools/ledger/README.md) that fails CI if a published claim
-> stops tracing to the command that produces it.
-> [VERIFICATION_THEATER.md](VERIFICATION_THEATER.md) analyses *how* the original
-> claims passed their own checks — six mechanisms by which a verification can be
-> structurally incapable of failing.
->
-> The other documents in this repository retain
-> their original wording beneath retraction banners, kept as a record of what was
-> published; the Zenodo record is not yet corrected.
+An audit found that several previously promoted empirical claims were not
+produced by the code that cited them. The claims—including 835,000 analyzed DAO
+votes, an 86.7% error reduction, R² = 0.98, and a 40% → 80% approval
+improvement—are retracted.
 
-## 🌟 Empirical Status
+- [Corrections](CORRECTIONS.md) is the authoritative record.
+- [Checks that cannot fail](VERIFICATION_THEATER.md) explains the verification
+  failures that allowed the claims through.
+- [Historical publications](archive/README.md) are retained for transparency,
+  not as current evidence.
 
-* **Real Snapshot DAO dataset (new):** 905 closed, cleanly-binary proposals
-  covering **6,242,940 vote records** across Uniswap, Arbitrum, Optimism,
-  Gitcoin, and Aave (2020-09-11 → 2026-08-20), pulled reproducibly from the
-  Snapshot GraphQL hub by
-  [`q_ai_governance/fetch_snapshot_dataset.py`](q_ai_governance/fetch_snapshot_dataset.py).
-* **Headline result on that dataset:** DAO proposals overwhelmingly pass — the
-  median proposal carries **99.75% YES**. On a hindsight-free temporal split,
-  the lowest error comes from ignoring the proposal and predicting the
-  historical median (**10.44 pp MAE**). A ridge model on pre-vote features does
-  *worse* (11.20 pp), and every R² sits within noise of zero. From information
-  available before a vote closes, the YES share is close to unpredictable
-  beyond "it will probably pass."
-* **Which proposals get contested (real, but not what it looks like):**
-  reframing the task from "what YES share?" to "will this be contested?" does
-  find signal — AUC 0.660, 95% CI [0.555, 0.763]. But conditioning on the DAO
-  collapses it: median within-DAO AUC is **0.416**, below chance. The pooled
-  result is Simpson's paradox, driven by fixed voting windows acting as venue
-  fingerprints. Some DAOs argue and others rubber-stamp; the individual proposal
-  adds nothing. Write-up: [CONTESTEDNESS.md](CONTESTEDNESS.md).
-* **GHZ "entanglement consensus":** the implemented mechanism is a 75% chance of
-  copying voter 0; the GHZ statevector it computes is never read. Measured over
-  5 seeds by
-  [`q_ai_governance/measure_ghz_effect.py`](q_ai_governance/measure_ghz_effect.py),
-  it raises voter *agreement* in 5/5 seeds (+2.9pp) while public-good approval
-  rises in only 2/5 and falls by 2.9pp on average. It manufactures agreement,
-  not public-good alignment. See CORRECTIONS.md §3.
-* **Entanglement and equilibrium (a result that does hold):** the retracted GHZ
-  claim is replaced by a reproduction of Eisert–Wilkens–Lewenstein (1999) in
-  [`q_ai_governance/ewl_equilibrium.py`](q_ai_governance/ewl_equilibrium.py).
-  Above a *derived* entanglement threshold, cos²γ_c = (R−S)/(T−S) = 3/5, the
-  quantised Prisoner's Dilemma acquires a cooperative equilibrium at (3,3) that
-  no classical correlated equilibrium can reach — both classical baselines are
-  stuck at (1,1). It then reproduces the Benjamin–Hayden (1999) objection: widen
-  the strategy space to full SU(2) and that equilibrium disappears entirely —
-  though not back to the classical game: the full space still has an exact
-  Haar-uniform equilibrium worth 2.25 against the classical 1.00, which it buys
-  with randomisation rather than cooperation.
-  Payoffs are analytic, the search is exhaustive, nothing is fitted, and nine
-  tests pin the landmarks to published values. Write-up:
-  [EWL_EQUILIBRIUM.md](EWL_EQUILIBRIUM.md).
-* **Real IBM Quantum Hardware Integration:** Connects directly to 127-qubit IBM
-  Quantum QPUs (`ibm_brisbane`, `ibm_kyiv`) via Qiskit Runtime with
-  AerSimulator fallback.
-* **Crypto market oracle:** generates 24h forecasts for BTC, ETH, SOL, ARB, OP.
-  No accuracy figure is claimed — the previously published "92.8% directional
-  accuracy" was a hardcoded constant with no backtest behind it.
+## Current evidence
 
----
+| Study | Result | Reproduction |
+| --- | --- | --- |
+| [DAO vote-share benchmark](CORRECTIONS.md#what-the-real-data-shows) | The dataset contains 905 closed, cleanly-binary proposals and 6,242,940 vote records. On a temporal split, the historical median (**10.44 pp MAE**) beats the tested pre-vote models. | `python3 q_ai_governance/benchmark_snapshot_real.py` |
+| [Contestedness](CONTESTEDNESS.md) | AUC 0.660, 95% CI [0.555, 0.763], but median within-DAO AUC is **0.416**; the pooled signal is driven by venue differences. | `python3 q_ai_governance/benchmark_contestedness.py` |
+| [EWL equilibrium](EWL_EQUILIBRIUM.md) | Reproduces the restricted-strategy result and its failure under full SU(2); the full space retains a Haar-uniform equilibrium worth 2.25. | `python3 q_ai_governance/ewl_equilibrium.py` |
+| [Gamma-map sensitivity](GAMMA_MAP_SENSITIVITY.md) | Four of five preregistered quantities are fragile to unvalidated bridge constants; the robust quantity is a structural control. | `python3 tools/gamma_map_sensitivity.py` |
 
-## ⚡ Quickstart & Installation
+The gamma study was [preregistered](PREREGISTRATION_gamma_map.md) before the
+grid ran. Versioned outputs live in [`data/`](data/), and
+[`tools/ledger/check_ledger.py`](tools/ledger/check_ledger.py) verifies published
+results against their generators in CI.
 
-Install the official PyPI package:
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| [`q_ai_governance/`](q_ai_governance/) | Governance experiments and Python package |
+| [`quantum_orch_or/`](quantum_orch_or/) | Open-system simulations and somatic bridge |
+| [`data/`](data/) | Versioned inputs and generated results |
+| [`tools/ledger/`](tools/ledger/) | Reproducibility manifest and checker |
+| [`tests/`](tests/) | Automated tests |
+| [`archive/`](archive/) | Superseded publications and unvalidated concept notes |
+
+See [REPOSITORY_MAP.md](REPOSITORY_MAP.md) for status and compatibility details.
+
+## Install and test
 
 ```bash
-pip install q-ai-governance
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+python -m pytest -q
+python tools/ledger/check_ledger.py
 ```
 
----
+The package is also published as `q-ai-governance`, but repository results
+should be reproduced from the pinned source revision and dependencies recorded
+with each study.
 
-## Repository directory map
+## Scope and limitations
 
-The detailed map and compatibility policy are in [REPOSITORY_MAP.md](REPOSITORY_MAP.md).
+- Governance and market outputs are research prototypes, not decision advice.
+- Smart contracts in [`contracts/`](contracts/) are experimental and unaudited.
+- Somatic parameters are not physiologically validated; see the gamma study.
+- Historical papers, pitches, PDFs, and submission bundles remain available in
+  the archive so the correction trail is inspectable.
 
-| Directory / File | Component Description |
-| :--- | :--- |
-| 🛡️ [`dao_app.py`](dao_app.py) | **B2B DAO Treasury Security Audit Portal** (Interactive $\ge 80\%$ Consensus Meter) |
-| 🤖 [`q_ai_governance/q_ai_agent_swarm.py`](q_ai_governance/q_ai_agent_swarm.py) | **Enterprise AI Swarm Engine** (Entangles Multi-Agent Decision Vectors) |
-| 🎁 [`q_ai_governance/q_ai_giving_portal.py`](q_ai_governance/q_ai_giving_portal.py) | **Base L2 Q-Giving Philanthropy Portal** (Audits Non-Profit Grant Impact) |
-| 📈 [`q_ai_governance/market_signal_api.py`](q_ai_governance/market_signal_api.py) | **Quantitative Trading API** (Real-time $P(\text{BULL})$ & Stop-Loss Targets) |
-| 🔒 [`q_ai_governance/dao_security_oracle.py`](q_ai_governance/dao_security_oracle.py) | **B2B DAO Security Oracle** (Issues SHA-256 Quantum Security Certificates) |
-| ⚡ [`app.py`](app.py) | **Interactive Streamlit Web Dashboard** (Real-time Quantum Market Phase Gauges) |
-| 🦄 [`contracts/Q_AIGovernanceHook.sol`](contracts/Q_AIGovernanceHook.sol) | **On-Chain Solidity Uniswap v4 Governance Hook** (Enforces $\ge 80\%$ consensus) |
-| 📦 [`q_ai_governance/`](q_ai_governance/) | **PyPI Package Core Engine** (`pip install q-ai-governance`) |
-| 🎧 [`EXECUTIVE_WHITEPAPER.md`](EXECUTIVE_WHITEPAPER.md) | **Noise-Canceling Governance: Executive Whitepaper** (Plain-English Guide) |
-| 📄 [`full_quantum_governance_paper.md`](full_quantum_governance_paper.md) | **Full 15-Page Academic Journal Paper** (Readable Markdown Edition) |
-| 🎯 [`WEB3_QUANTUM_AI_PROTOCOL_PITCH.md`](WEB3_QUANTUM_AI_PROTOCOL_PITCH.md) | **10-Slide Web3 VC & Foundation Pitch Deck** |
-| 🦄 [`uniswap_grant_proposal.md`](uniswap_grant_proposal.md) | **$100,000 Uniswap Foundation Grant Application** |
-| 💰 [`quantum_economics_engine.py`](quantum_economics_engine.py) | **Quantum Economics Engine** (Ellsberg Paradox & Market Liquidity Shocks) |
-| 🧠 [`quantum_psychiatry_engine.py`](quantum_psychiatry_engine.py) | **Quantum Psychiatry Engine** (Depression Eigenstate Traps & Ketamine Resets) |
-| 📈 [`market_phase_collapse_bot.py`](market_phase_collapse_bot.py) | **Market Phase Collapse Signal Bot** (BTC, ETH, SPY, QQQ, NVDA, TSLA) |
-| 🧪 [`tests/`](tests/) | **126 Automated Unit Tests** (100% Pass Rate via `pytest`) |
+## License
 
----
-
-### CLI Subcommands (`q-ai-gov`)
-
-```bash
-# 🤖 Evaluate Multi-Agent AI Swarm Consensus
-q-ai-gov swarm --agents 5 --task "Autonomous Fleet Path Optimization"
-
-# 🎁 Audit Base L2 Non-Profit Grant Impact
-q-ai-gov give --nonprofit "Red Cross Disaster Relief" --grant-usd 50000
-
-# 📈 Fetch Real-Time Quantitative Trading API Signal
-q-ai-gov serve --asset BTC
-
-# 🔒 Audit DAO Proposal & Issue Security Certificate
-q-ai-gov audit --proposal-id "UNI-PROP-42" --yes 550000 --no 450000
-
-# ⚡ Launch interactive Streamlit Web Dashboard
-q-ai-gov app
-
-# 🔮 Predict proposal vote approval
-q-ai-gov predict --public-good 9.5 --roi 9.8
-
-# 🦄 Uniswap v4 Q-AI Governance Hook Smart Contract Oracle
-q-ai-gov hook
-
-# 📈 Quantum Market Phase Collapse Signal Bot (BTC, ETH, SPY, QQQ, NVDA, TSLA)
-q-ai-gov market-bot
-
-# 💰 Quantum Economics & Finance Engine (Ellsberg Paradox & Liquidity Shocks)
-q-ai-gov econ-full
-
-# 🧠 Quantum Psychiatry Engine (Depression Traps & Ketamine Resets)
-q-ai-gov psychiatry
-
-# 📈 Live Crypto Market Forecast
-q-ai-gov crypto --asset BTC
-
-# 🎯 Quantitative Crypto Trade Recommendations
-q-ai-gov recommend
-
-# 🦄 Uniswap Governance Oracle Benchmark
-q-ai-gov uniswap
-
-# 🔮 Live Snapshot GraphQL Oracle
-q-ai-gov live --output live_predictions.json
-
-# 📱 Generate Twitter/X 280-character forecast cards
-q-ai-gov tweet --simulate
-
-# 🤖 Run Telegram & Discord Alert Bot Simulation
-q-ai-gov bot --simulate
-```
-
----
-
-## 🐍 Python API Examples
-
-### 1. Execute Quantum-Cognitive Agent Policy
-
-```python
-from q_ai_governance import QuantumOrchORAgent
-import numpy as np
-
-# Initialize 2-qubit Q-AI Agent
-agent = QuantumOrchORAgent(num_qubits=2, state_dim=2)
-
-# Input observation (Public Good Score, ROI Score)
-obs = np.array([9.5, 9.8], dtype=np.float32)
-
-# Deliberate in Hilbert space and measure collapsing action
-action_idx, action_prob, theta, phi, E_G = agent.deliberate_and_act(obs)
-
-print(f"Measured Action Index: {action_idx}")
-print(f"Collapse Probability:  {action_prob:.4f}")
-print(f"Gravitational E_G:      {E_G:.4e} J")
-```
-
-### 2. Connect to Real 127-Qubit IBM Quantum QPU
-
-```python
-from q_ai_governance.ibm_quantum_backend import IBMQuantumBackendConnector
-
-# Connect to IBM Quantum Hardware (falls back to AerSimulator if no token)
-connector = IBMQuantumBackendConnector(api_token="YOUR_IBM_TOKEN", backend_name="ibm_brisbane")
-
-# Execute 2-qubit quantum deliberation circuit
-res = connector.execute_quantum_deliberation(theta=0.785, phi=1.047, shots=1024)
-
-print(f"Backend Used: {res['backend_used']}")
-print(f"State Counts: {res['counts']}")
-```
-
----
-
-## 📄 Academic Research Paper & arXiv Citation
-
-Read the full academic research paper PDF: **[q_ai_governance_paper.pdf](q_ai_governance_paper.pdf)**.
-
-### BibTeX Citation
-
-```bibtex
-@article{reiser2026quantum,
-  title={Quantum-Cognitive Reinforcement Learning via Penrose Objective Reduction: Empirical Validation on 835,000 Snapshot DAO Votes and Gallup Survey Order Effects},
-  author={Reiser, Jonathan},
-  journal={arXiv preprint arXiv:2408.xxxxx},
-  year={2026}
-}
-```
-
----
-
-## 🔗 Project Links
-
-* **Live Interactive 3D Web Visualizer:** [https://jonathanreiser.github.io/quantum-orch-or/](https://jonathanreiser.github.io/quantum-orch-or/)
-* **Formal Academic PDF Paper:** [q_ai_governance_paper.pdf](q_ai_governance_paper.pdf)
-* **Official arXiv Submission Bundle:** [arxiv_submission.tar.gz](arxiv_submission.tar.gz)
-* **PyPI Package:** [https://pypi.org/project/q-ai-governance/](https://pypi.org/project/q-ai-governance/)
-* **GitHub Repository:** [https://github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for details.
+[MIT](LICENSE)

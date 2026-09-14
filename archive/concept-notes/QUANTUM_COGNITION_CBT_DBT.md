@@ -1,5 +1,8 @@
 # Quantum Cognition & Dialectical Behavior Therapy: Hilbert Space Formulations of Statevector Collapse and Wise Mind Synthesis
 
+> **Archived concept note.** This mathematical analogy has not been clinically
+> or neuroscientifically validated and is not a therapeutic method or medical device.
+
 **Author:** Jonathan Reiser  
 **Repository:** [github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)  
 **License:** MIT  

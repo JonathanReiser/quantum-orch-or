@@ -1,7 +1,8 @@
 # Repository map
 
-This repository preserves historical paths so published links and imports keep
-working. New code must use the canonical locations below.
+Historical publications are grouped under `archive/`. Root-level Python imports
+remain available as compatibility shims; new code must use canonical package
+locations.
 
 ## Canonical source
 
@@ -21,7 +22,8 @@ working. New code must use the canonical locations below.
 | `CORRECTIONS.md` | Authoritative correction of unsupported historical claims |
 | `VERIFICATION_THEATER.md` | Failure-mode analysis |
 | `CONTESTEDNESS.md`, `EWL_EQUILIBRIUM.md` | Current focused research notes |
-| Other root `.md`, `.pdf`, and `.tex` files | Historical publications retained so citations do not break; correction notices govern where claims conflict |
+| `GAMMA_MAP_SENSITIVITY.md`, `PREREGISTRATION_gamma_map.md` | Preregistered gamma-map study and result |
+| `archive/` | Superseded publications, artifacts, and unvalidated concept notes |
 
 ## Compatibility policy
 
@@ -51,4 +53,3 @@ tests/test_cognitive_lindblad.py
 
 The quantum-cognitive layer is a mathematical analogy. It is not evidence that
 cognition is quantum and it is not a medical device.
-
