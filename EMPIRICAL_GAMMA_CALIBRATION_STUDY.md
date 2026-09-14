@@ -38,6 +38,56 @@ The answer is allowed to be no. If HRV does not improve prediction on people
 whose data were not used to build the model, the current wearable-to-gamma link
 should be rejected or described much more narrowly.
 
+## What we need from a partner
+
+The immediate need is not more simulation work or a list of possible
+participants. It is one of the following:
+
+1. **Suitable existing data.** Beat-level reference ECG or a validated chest
+   strap, a wearable measurement from the same period, a demanding task, and
+   repeated measurements of cognitive performance during recovery. Movement,
+   breathing, participant identifiers, and exact timing should also be
+   available.
+2. **Study-design and oversight support.** A researcher or institution able to
+   help choose the cognitive task, validate the physiological measurements,
+   review the analysis plan, provide the appropriate ethics route, and oversee
+   a small repeated-measures pilot.
+
+Possible partners include psychophysiology and cognitive-fatigue laboratories,
+wearable-validation researchers, and teams already collecting ECG, movement,
+breathing, and repeated task-performance data.
+
+Data containing only stress labels, questionnaires, exam grades, or cardiac
+recovery cannot answer the main question. Those are related outcomes, but they
+are not measurements of cognitive recovery. The
+[public-data screen](SECONDARY_DATA_GAMMA_FEASIBILITY.md) explains why the
+datasets reviewed so far do not meet the full requirement.
+
+## What the project is trying to produce
+
+The end product is not a more elaborate equation. It is an evidence-based
+decision about whether the wearable-to-gamma bridge deserves to exist.
+
+If the idea works, the project should produce:
+
+- a clear task-level meaning for the simulation output;
+- a wearable measurement shown to agree adequately with a reference device;
+- a preregistered formula learned without using the final test group;
+- evidence that HRV improves prediction over a simple fixed-rate model;
+- a later test on new people;
+- open analysis code, versioned summary results, and a record of every change
+  to the plan.
+
+If the idea does not work, the project should produce an equally useful result:
+the current bridge will be removed, rejected, or limited to a clearly labeled
+toy assumption. A negative result would prevent an unvalidated constant from
+being presented as physiology.
+
+Even a positive result would have narrow meaning. It could support a predictive
+link between a particular HRV measurement and recovery in a particular task.
+It would not prove that cognition is quantum, validate Orch-OR, diagnose a
+condition, or establish a medical product.
+
 ## First, define what the simulation means
 
 The simulation produces a probability called `p_choice_1`. We have not yet
