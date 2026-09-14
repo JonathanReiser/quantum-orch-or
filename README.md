@@ -36,6 +36,19 @@ grid ran. Versioned outputs live in [`data/`](data/), and
 [`tools/ledger/check_ledger.py`](tools/ledger/check_ledger.py) verifies published
 results against their generators in CI.
 
+## What comes next
+
+The next project is a [real-world test of the wearable-to-simulation
+link](EMPIRICAL_GAMMA_CALIBRATION_STUDY.md). We will first check the wearable
+against a reference device. We will then ask whether changes in heart-rate
+variability help predict recovery after a demanding task better than a model
+that ignores heart-rate variability. The idea will be allowed to fail.
+
+A [screen of public datasets](SECONDARY_DATA_GAMMA_FEASIBILITY.md) found no
+dataset containing repeated cognitive measurements during recovery. The study
+is therefore not recruiting. The next practical step is finding a research
+partner with suitable data or a suitable protocol—not collecting names.
+
 ## Repository layout
 
 | Path | Purpose |
