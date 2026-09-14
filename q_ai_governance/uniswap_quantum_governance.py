@@ -20,6 +20,16 @@ except ImportError:
 # printed) random init rather than silently pretending to be trained.
 TRAINED_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "trained_uniswap_agent_weights.npz")
 
+# Monte-Carlo rollouts behind each forecast. Named because the per-run spread of
+# the forecasts is a property of this number, and callers need to cite it.
+ROLLOUTS_PER_PROPOSAL = 50
+
+# The honest held-out estimate for this agent, from uniswap_agent_loo_cv_results.json:
+# leave-one-out CV over n=5 proposals, 50 rollouts per prediction. The proposal
+# cites this instead of an in-sample error from a single stochastic run.
+LOO_CV_MAE_PCT = 32.74
+LOO_CV_N = 5
+
 UNISWAP_PROPOSALS = [
     {
         "id": "UNI-PROP-12",
@@ -48,7 +58,7 @@ class UniswapQuantumGovernor:
     def __init__(self):
         self.proposals = UNISWAP_PROPOSALS
 
-    def run_uniswap_benchmark(self):
+    def run_uniswap_benchmark(self, rng=None):
         results = []
 
         print("==================================================")
@@ -62,14 +72,15 @@ class UniswapQuantumGovernor:
 
             obs = np.array([public_good, roi], dtype=np.float32)
 
-            agent = QuantumOrchORAgent(num_qubits=2, state_dim=2, weights_path=TRAINED_WEIGHTS_PATH)
+            agent = QuantumOrchORAgent(num_qubits=2, state_dim=2, weights_path=TRAINED_WEIGHTS_PATH,
+                                       rng=rng)
             yes_count = 0
-            for _ in range(50):
-                idx, _, _, _, _ = agent.deliberate_and_act(obs)
+            for _ in range(ROLLOUTS_PER_PROPOSAL):
+                idx, _, _, _, _ = agent.deliberate_and_act(obs, rng=rng)
                 if idx % 2 == 0:
                     yes_count += 1
 
-            q_ai_pred = round((yes_count / 50.0) * 100.0, 1)
+            q_ai_pred = round((yes_count / float(ROLLOUTS_PER_PROPOSAL)) * 100.0, 1)
             error = round(abs(q_ai_pred - real_vote), 1)
 
             res = {
@@ -87,18 +98,20 @@ class UniswapQuantumGovernor:
 
         return results
 
-    def generate_uniswap_forum_proposal(self, results=None, output_md="UNISWAP_GOVERNANCE_PROPOSAL.md"):
+    def generate_uniswap_forum_proposal(self, results=None, output_md="UNISWAP_GOVERNANCE_PROPOSAL.md",
+                                        rng=None):
         """Renders the forum proposal from ACTUAL benchmark results — no hardcoded
         performance numbers. If results isn't passed, runs the benchmark itself."""
         if results is None:
-            results = self.run_uniswap_benchmark()
+            results = self.run_uniswap_benchmark(rng=rng)
 
+        # Only the real recorded vote goes in the table. The model's forecast and
+        # its error are omitted deliberately: they are one draw from a stochastic
+        # generator and change on every run (see the note under the table).
         rows = "\n".join(
-            f"| **{r['id']}** ({r['title']}) | **{r['real_vote_yes_pct']}%** | "
-            f"**{r['q_ai_predicted_yes_pct']}%** | **{r['prediction_error_pct']}% Error** |"
+            f"| **{r['id']}** ({r['title']}) | **{r['real_vote_yes_pct']}%** |"
             for r in results
         )
-        mae = round(float(np.mean([r["prediction_error_pct"] for r in results])), 1)
 
         proposal_text = (
             "# [Proposal] Q-AI Governance Oracle: Quantum-Cognitive Vote Prediction & Fee Parameter Simulation for Uniswap v4\n\n"
@@ -130,14 +143,24 @@ class UniswapQuantumGovernor:
             "Here we propose deploying the **Q-AI Governance Oracle**—a quantum-cognitive reinforcement learning engine "
             "governed by Penrose Orchestrated Objective Reduction (Orch-OR) statevector collapse.\n\n"
             "## Benchmarks on Real Uniswap Proposals\n\n"
-            "We evaluated our Q-AI model, fit via leave-one-out cross-validation on a small set of historical "
+            "The Q-AI model was fit via leave-one-out cross-validation on a small set of historical "
             "Uniswap Snapshot governance votes (see `train_uniswap_governance_agent.py` in the repository for "
-            "the fitting methodology). **This is a small sample (n=3 shown here) — treat these numbers as an "
-            "early signal, not a statistically validated accuracy claim.**\n\n"
-            "| Proposal ID & Title | Real Vote YES (%) | Q-AI Forecast YES (%) | Prediction Error |\n"
-            "| :--- | :--- | :--- | :--- |\n"
+            "the fitting methodology). The table below lists the **real recorded outcome** of three proposals; "
+            "it contains no model output, for the reason given underneath it.\n\n"
+            "| Proposal ID & Title | Real Vote YES (%) |\n"
+            "| :--- | :--- |\n"
             f"{rows}\n\n"
-            f"**Mean Absolute Error on this sample:** {mae}pp.\n\n"
+            "**No per-run accuracy figure is published here.** An earlier version of this\n"
+            "document reported a mean absolute error of 3.4pp on these three proposals. That\n"
+            "number came from a single unseeded run of a stochastic generator and was not\n"
+            "reproducible: re-running the identical code produced 7.4pp and 10.7pp. It has been\n"
+            "removed rather than re-derived, because an in-sample error from one random draw is\n"
+            "not evidence of accuracy.\n\n"
+            f"The honest held-out estimate for this agent is a leave-one-out cross-validated\n"
+            f"mean absolute error of **{LOO_CV_MAE_PCT}pp** over n={LOO_CV_N} proposals\n"
+            f"(`uniswap_agent_loo_cv_results.json`, {ROLLOUTS_PER_PROPOSAL} rollouts per\n"
+            "prediction). That is the figure to cite. On the real 905-proposal Snapshot record,\n"
+            "no model in this repository beats predicting the historical median YES share.\n\n"
             "## Proposed Deliverables for Uniswap v4\n\n"
             "1. **Uniswap v4 Hooks Parameter Simulator:** Live simulation tool allowing delegates to model pool fee tier shifts and hook liquidity risks.\n"
             "2. **Delegate Alert Bot:** Real-time Telegram/Discord & X forecasting bot querying Snapshot GraphQL API.\n"
@@ -155,8 +178,12 @@ class UniswapQuantumGovernor:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Uniswap Q-AI Governance Oracle")
     parser.add_argument("--output", type=str, default="UNISWAP_GOVERNANCE_PROPOSAL.md", help="Output Markdown proposal path")
+    parser.add_argument("--seed", type=int, default=None,
+                        help="Seed a local RNG so the run is reproducible. The process-global "
+                             "numpy RNG is never seeded or advanced by this flag.")
     args = parser.parse_args()
 
+    rng = np.random.default_rng(args.seed) if args.seed is not None else None
     governor = UniswapQuantumGovernor()
-    bench_results = governor.run_uniswap_benchmark()
-    governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output)
+    bench_results = governor.run_uniswap_benchmark(rng=rng)
+    governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output, rng=rng)

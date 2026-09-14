@@ -79,16 +79,27 @@ class QuantumOrchORAgent:
     Hybrid Quantum Policy Agent using parameterized Qiskit quantum circuits
     and Penrose Objective Reduction for non-deterministic action collapse.
     """
-    def __init__(self, num_qubits=4, state_dim=2, learning_rate=0.05, hbar_scale=1.0e17, weights_path=None):
+    def __init__(self, num_qubits=4, state_dim=2, learning_rate=0.05, hbar_scale=1.0e17, weights_path=None,
+                 rng=None):
+        """`rng` optionally supplies a local numpy Generator for every draw this
+        agent makes -- weight init and collapse sampling. When it is None the
+        agent uses the process-global ``np.random``, exactly as before. Passing
+        one makes a run reproducible *without* seeding the global RNG, so a
+        caller asking for determinism cannot perturb anything else in the
+        process. See tests/test_uniswap_quantum_governance.py."""
         self.num_qubits = num_qubits
         self.state_dim = state_dim
         self.lr = learning_rate
         self.hbar_scale = hbar_scale
+        self.rng = rng
 
         # Policy parameters mapping state input to circuit rotation angles (Rx, Ry) and coupling (J, g)
         # Weights shape: (num_params, state_dim)
         self.num_rotations = num_qubits * 2
-        self.weights = np.random.randn(self.num_rotations + 2, state_dim) * 0.1
+        _init_source = np.random if rng is None else rng
+        self.weights = (_init_source.randn(self.num_rotations + 2, state_dim) * 0.1
+                        if rng is None else
+                        _init_source.standard_normal((self.num_rotations + 2, state_dim)) * 0.1)
         self.bias = np.zeros(self.num_rotations + 2)
 
         # Optionally load weights fit to real data (see train_uniswap_governance_agent.py)
@@ -132,7 +143,7 @@ class QuantumOrchORAgent:
             qc.ry(rotations[q + self.num_qubits], q)
         return qc
 
-    def deliberate_and_act(self, state_obs, dt=0.005, max_steps=200):
+    def deliberate_and_act(self, state_obs, dt=0.005, max_steps=200, rng=None):
         """
         Runs the quantum deliberation loop until Penrose Objective Reduction triggers collapse.
         Returns:
@@ -166,7 +177,8 @@ class QuantumOrchORAgent:
                 probs = np.abs(current_statevector) ** 2
                 probs /= np.sum(probs) # Normalize
                 
-                collapsed_idx = np.random.choice(len(current_statevector), p=probs)
+                sampler = rng if rng is not None else (self.rng if self.rng is not None else np.random)
+                collapsed_idx = sampler.choice(len(current_statevector), p=probs)
                 log_prob = np.log(probs[collapsed_idx] + 1e-10)
                 
                 return collapsed_idx, step, coherence_at_collapse, log_prob, rotations
@@ -184,7 +196,8 @@ class QuantumOrchORAgent:
         # Fallback if threshold is not reached within max_steps
         probs = np.abs(current_statevector) ** 2
         probs /= np.sum(probs)
-        collapsed_idx = np.random.choice(len(current_statevector), p=probs)
+        sampler = rng if rng is not None else (self.rng if self.rng is not None else np.random)
+        collapsed_idx = sampler.choice(len(current_statevector), p=probs)
         log_prob = np.log(probs[collapsed_idx] + 1e-10)
         
         return collapsed_idx, max_steps, coherence_at_collapse, log_prob, rotations

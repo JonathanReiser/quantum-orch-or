@@ -151,6 +151,32 @@
         }
       ],
       "note": "Deliberately NOT regenerated in CI. The fit accepted 0/40 moves (CORRECTIONS.md section 7) because the loss estimator's own noise exceeds any resolvable improvement at this rollout budget, so two runs differ by the spread between two random seeds, not by anything meaningful. Re-running it in CI would either flag a false mismatch every time or, worse, train a habit of raising the tolerance until the check goes quiet -- which is the failure this ledger exists to prevent. Pinning only the hash of what is committed proves the file was not edited by hand; it makes no claim that the run is reproducible, and CORRECTIONS.md says so explicitly."
+    },
+    {
+      "id": "uniswap-forum-proposal",
+      "description": "The generated Uniswap forum proposal. Deterministic: the document no longer embeds any model output, only real recorded votes, so regenerating it is byte-stable without a seed.",
+      "reproducible": true,
+      "committed_output": "UNISWAP_GOVERNANCE_PROPOSAL.md",
+      "sha256": "d1a55d22b35c47f2690aa1bac53f5e4b012ced454fd4bf34aa506a0a4337ebb4",
+      "note": "Registered by the fix for issue #12. The document previously published a mean absolute error of 3.4pp taken from a single unseeded stochastic run; re-running the identical code gave 7.4pp and 10.7pp. That claim was removed rather than re-derived. The generator still runs a 50-rollout Monte Carlo benchmark per proposal (ROLLOUTS_PER_PROPOSAL=50) for console output, and those forecasts remain non-reproducible without an explicit --seed; none of them reach this file. The honest held-out estimate the document cites is the leave-one-out CV MAE of 32.74pp over n=5 in uniswap_agent_loo_cv_results.json.",
+      "doc_claims": [
+        {
+          "file": "UNISWAP_GOVERNANCE_PROPOSAL.md",
+          "must_contain": [
+            "No per-run accuracy figure is published here",
+            "mean absolute error of **32.74pp** over n=5"
+          ]
+        }
+      ],
+      "command": [
+        "python3",
+        "-m",
+        "q_ai_governance.uniswap_quantum_governance",
+        "--output",
+        "{tmp}",
+        "--seed",
+        "20260913"
+      ]
     }
   ]
 }
