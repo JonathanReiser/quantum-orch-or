@@ -3,8 +3,12 @@ tests/test_market_phase_collapse_bot.py — Unit tests for Market Phase Collapse
 """
 
 import os
+from pathlib import Path
+
 import pytest
 from market_phase_collapse_bot import MarketPhaseCollapseBot
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def test_scan_asset_phase():
     bot = MarketPhaseCollapseBot()
@@ -21,8 +25,14 @@ def test_run_market_scan(tmp_path):
     assert os.path.exists(json_path)
     assert report["total_assets_scanned"] == 2
 
-def test_generate_social_broadcast_cards():
+def test_generate_social_broadcast_cards(monkeypatch, tmp_path):
+    # generate_social_broadcast_cards() performs a scan using the default output
+    # filename. Keep that side effect in pytest's temporary directory rather
+    # than leaving market_signals_report.json in the repository root.
+    monkeypatch.chdir(tmp_path)
     bot = MarketPhaseCollapseBot(assets=["BTC"])
     cards = bot.generate_social_broadcast_cards()
     assert len(cards) == 1
     assert "Q-AI Market Phase Signal [BTC]" in cards[0]
+    assert (tmp_path / "market_signals_report.json").exists()
+    assert not (REPO_ROOT / "market_signals_report.json").exists()
