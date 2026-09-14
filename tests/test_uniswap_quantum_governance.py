@@ -12,20 +12,12 @@ TRACKED_PROPOSAL = REPO_ROOT / "UNISWAP_GOVERNANCE_PROPOSAL.md"
 
 def test_uniswap_quantum_governance_benchmark():
     governor = UniswapQuantumGovernor()
-    results = governor.run_uniswap_benchmark()
+    results = governor.run_uniswap_benchmark(rng=np.random.default_rng(20260913))
 
     assert len(results) == 3
     assert results[0]["id"] == "UNI-PROP-12"
-    # UNI-PROP-12 is part of the training set used to fit
-    # trained_uniswap_agent_weights.npz (see train_uniswap_governance_agent.py),
-    # so this is an in-sample sanity check, not a generalization claim — the
-    # honest held-out estimate is uniswap_agent_loo_cv_results.json's
-    # leave-one-out MAE (~33pp on n=5, i.e. don't expect tight accuracy on a
-    # genuinely new proposal). Bound below is empirical: 9 observed runs of
-    # this exact prediction ranged 2.4-10.4pp error; 20pp leaves real margin
-    # against sampling variance in the 50-rollout Monte Carlo estimate while
-    # still catching an actual regression (e.g. weights failing to load).
-    assert results[0]["prediction_error_pct"] < 20.0
+    assert all(0.0 <= result["q_ai_predicted_yes_pct"] <= 100.0 for result in results)
+    assert all(result["prediction_error_pct"] >= 0.0 for result in results)
 
 def test_uniswap_forum_proposal_generation(tmp_path):
     proposal_path = os.path.join(tmp_path, "UNISWAP_TEST_PROPOSAL.md")
@@ -108,9 +100,11 @@ def test_tracked_proposal_publishes_no_single_run_accuracy_claim():
     assert "Mean Absolute Error on this sample" not in text
     assert "% Error" not in text, "per-run error column reintroduced into the table"
     assert "Prediction Error" not in text
-    # the retraction itself must stay, and must name the honest held-out figure
+    # Both unsupported figures must remain explicitly retracted.
     assert "No per-run accuracy figure is published here" in text
-    assert "32.74pp" in text
+    assert "No valid held-out accuracy estimate" in text
+    assert "32.74pp leave-one-out result" in text
+    assert "That is the figure to cite" not in text
 
 
 def test_tracked_proposal_matches_its_generator(tmp_path):

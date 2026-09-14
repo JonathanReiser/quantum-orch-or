@@ -48,10 +48,10 @@ reproducible: re-running the identical code produced 7.4pp and 10.7pp. It has be
 removed rather than re-derived, because an in-sample error from one random draw is
 not evidence of accuracy.
 
-The honest held-out estimate for this agent is a leave-one-out cross-validated
-mean absolute error of **32.74pp** over n=5 proposals
-(`uniswap_agent_loo_cv_results.json`, 50 rollouts per
-prediction). That is the figure to cite. On the real 905-proposal Snapshot record,
+No valid held-out accuracy estimate for this agent is currently available. The
+previously reported 32.74pp leave-one-out result was produced by the unfixed
+fitting procedure and is retracted in `CORRECTIONS.md`; it should not be treated
+as a fit or cited as model performance. On the real 905-proposal Snapshot record,
 no model in this repository beats predicting the historical median YES share.
 
 ## Proposed Deliverables for Uniswap v4

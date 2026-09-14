@@ -24,12 +24,6 @@ TRAINED_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), "trained_uniswap_
 # the forecasts is a property of this number, and callers need to cite it.
 ROLLOUTS_PER_PROPOSAL = 50
 
-# The honest held-out estimate for this agent, from uniswap_agent_loo_cv_results.json:
-# leave-one-out CV over n=5 proposals, 50 rollouts per prediction. The proposal
-# cites this instead of an in-sample error from a single stochastic run.
-LOO_CV_MAE_PCT = 32.74
-LOO_CV_N = 5
-
 UNISWAP_PROPOSALS = [
     {
         "id": "UNI-PROP-12",
@@ -156,10 +150,10 @@ class UniswapQuantumGovernor:
             "reproducible: re-running the identical code produced 7.4pp and 10.7pp. It has been\n"
             "removed rather than re-derived, because an in-sample error from one random draw is\n"
             "not evidence of accuracy.\n\n"
-            f"The honest held-out estimate for this agent is a leave-one-out cross-validated\n"
-            f"mean absolute error of **{LOO_CV_MAE_PCT}pp** over n={LOO_CV_N} proposals\n"
-            f"(`uniswap_agent_loo_cv_results.json`, {ROLLOUTS_PER_PROPOSAL} rollouts per\n"
-            "prediction). That is the figure to cite. On the real 905-proposal Snapshot record,\n"
+            "No valid held-out accuracy estimate for this agent is currently available. The\n"
+            "previously reported 32.74pp leave-one-out result was produced by the unfixed\n"
+            "fitting procedure and is retracted in `CORRECTIONS.md`; it should not be treated\n"
+            "as a fit or cited as model performance. On the real 905-proposal Snapshot record,\n"
             "no model in this repository beats predicting the historical median YES share.\n\n"
             "## Proposed Deliverables for Uniswap v4\n\n"
             "1. **Uniswap v4 Hooks Parameter Simulator:** Live simulation tool allowing delegates to model pool fee tier shifts and hook liquidity risks.\n"
