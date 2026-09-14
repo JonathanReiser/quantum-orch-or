@@ -3,11 +3,11 @@
 **Dated 2026-08-30.** This file records claims previously published in this
 repository, on Zenodo, and in grant proposals that the code does not support,
 together with what the real data actually shows. It supersedes the numbers in
-`README.md`, `full_quantum_governance_paper.md`, `EXECUTIVE_WHITEPAPER.md`,
-`WEB3_QUANTUM_AI_PROTOCOL_PITCH.md`, `DAO_GRANT_PROPOSAL.md`,
-`uniswap_grant_proposal.md`, `UNISWAP_GOVERNANCE_PROPOSAL.md`,
-`Q_AI_COMMERCIAL_ACTION_PLAN.md`, `Q_AI_GOVERNANCE_SYNTHESIS.md`,
-`PLATO_QUANTUM_GOVERNANCE.md`, and `q_ai_governance_paper.md` wherever they
+`archive/historical-publications/full_quantum_governance_paper.md`, `archive/historical-publications/EXECUTIVE_WHITEPAPER.md`,
+`archive/historical-publications/WEB3_QUANTUM_AI_PROTOCOL_PITCH.md`, `archive/historical-publications/DAO_GRANT_PROPOSAL.md`,
+`archive/historical-publications/uniswap_grant_proposal.md`, `UNISWAP_GOVERNANCE_PROPOSAL.md`,
+`archive/historical-publications/Q_AI_COMMERCIAL_ACTION_PLAN.md`, `archive/historical-publications/Q_AI_GOVERNANCE_SYNTHESIS.md`,
+`archive/historical-publications/PLATO_QUANTUM_GOVERNANCE.md`, and `archive/historical-publications/q_ai_governance_paper.md` wherever they
 disagree.
 
 ---

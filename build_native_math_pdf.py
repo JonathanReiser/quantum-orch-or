@@ -229,7 +229,7 @@ def build_pdf():
     with open(html_path, "w") as f:
         f.write(html_content)
 
-    pdf_file = "full_quantum_governance_paper.pdf"
+    pdf_file = "archive/artifacts/full_quantum_governance_paper.pdf"
     chrome_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     cmd = [
         chrome_path,

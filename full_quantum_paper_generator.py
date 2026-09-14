@@ -7,7 +7,8 @@ import shutil
 import subprocess
 import tempfile
 
-def compile_full_paper(tex_path="full_quantum_governance_paper.tex", output_dir="arxiv_build"):
+def compile_full_paper(tex_path="archive/artifacts/full_quantum_governance_paper.tex", output_dir="arxiv_build",
+                       export_dir=None):
     print("==================================================")
     print("  COMPILING FULL REVTEX 4.2 JOURNAL MANUSCRIPT    ")
     print("==================================================")
@@ -31,12 +32,11 @@ def compile_full_paper(tex_path="full_quantum_governance_paper.tex", output_dir=
     shutil.move(tmp_tarball, tarball)
     print(f"📦 Full RevTeX 4.2 manuscript package generated at {tarball}")
 
-    # Copy tarball to Desktop for easy access, if a Desktop directory exists/can be created
-    desktop_dir = os.path.expanduser("~/Desktop")
-    os.makedirs(desktop_dir, exist_ok=True)
-    desktop_tar = os.path.join(desktop_dir, "arxiv_full_package.tar.gz")
-    shutil.copy(tarball, desktop_tar)
-    print(f"🖥️ Copied to Desktop at {desktop_tar}")
+    if export_dir is not None:
+        os.makedirs(export_dir, exist_ok=True)
+        exported_tar = os.path.join(export_dir, "arxiv_full_package.tar.gz")
+        shutil.copy(tarball, exported_tar)
+        print(f"Copied archive to {exported_tar}")
 
     return tarball
 

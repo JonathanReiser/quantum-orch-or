@@ -1,5 +1,8 @@
 # Quantum Truth Alignment: Epistemic Invariance & Representation Coherence in LLM Latent Activation Steering
 
+> **Archived concept note.** This is an unvalidated architecture sketch, not
+> evidence that the proposed mechanism improves truthfulness or alignment.
+
 **Author:** Jonathan Reiser  
 **Repository:** [github.com/JonathanReiser/quantum-orch-or](https://github.com/JonathanReiser/quantum-orch-or)  
 

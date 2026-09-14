@@ -9,7 +9,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, HRFlowable
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 
-def generate_pdf(md_file="full_quantum_governance_paper.md", pdf_file="full_quantum_governance_paper.pdf"):
+def generate_pdf(md_file="archive/historical-publications/full_quantum_governance_paper.md", pdf_file="archive/artifacts/full_quantum_governance_paper.pdf"):
     doc = SimpleDocTemplate(
         pdf_file,
         pagesize=letter,
