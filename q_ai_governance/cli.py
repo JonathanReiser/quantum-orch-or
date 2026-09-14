@@ -92,6 +92,9 @@ def main():
     # Subcommand: uniswap
     uni_parser = subparsers.add_parser("uniswap", help="Run Uniswap-specific governance simulation and proposal generator")
     uni_parser.add_argument("--output", type=str, default="UNISWAP_GOVERNANCE_PROPOSAL.md", help="Output proposal path")
+    uni_parser.add_argument("--seed", type=int, default=None,
+                            help="Seed a local RNG so the run is reproducible. The process-global "
+                                 "numpy RNG is never seeded or advanced by this flag.")
 
     # Subcommand: recommend
 
@@ -200,9 +203,14 @@ def main():
         sim.run_psychiatry_benchmark(output_plot=args.plot, output_paper=args.paper)
 
     elif args.command == "uniswap":
+        import numpy as _np
+        # A local Generator, never np.random.seed(): seeding globally would make
+        # this command reproducible by silently changing the draw sequence every
+        # other component in the process sees.
+        rng = _np.random.default_rng(args.seed) if args.seed is not None else None
         governor = UniswapQuantumGovernor()
-        bench_results = governor.run_uniswap_benchmark()
-        governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output)
+        bench_results = governor.run_uniswap_benchmark(rng=rng)
+        governor.generate_uniswap_forum_proposal(results=bench_results, output_md=args.output, rng=rng)
 
     elif args.command == "recommend":
         oracle = QuantumCryptoRecommendationOracle()

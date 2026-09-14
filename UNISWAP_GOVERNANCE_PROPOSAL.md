@@ -33,15 +33,26 @@ Uniswap governance represents one of the largest decentralized decision-making b
 
 ## Benchmarks on Real Uniswap Proposals
 
-We evaluated our Q-AI model, fit via leave-one-out cross-validation on a small set of historical Uniswap Snapshot governance votes (see `train_uniswap_governance_agent.py` in the repository for the fitting methodology). **This is a small sample (n=3 shown here) — treat these numbers as an early signal, not a statistically validated accuracy claim.**
+The Q-AI model was fit via leave-one-out cross-validation on a small set of historical Uniswap Snapshot governance votes (see `train_uniswap_governance_agent.py` in the repository for the fitting methodology). The table below lists the **real recorded outcome** of three proposals; it contains no model output, for the reason given underneath it.
 
-| Proposal ID & Title | Real Vote YES (%) | Q-AI Forecast YES (%) | Prediction Error |
-| :--- | :--- | :--- | :--- |
-| **UNI-PROP-12** (Uniswap v3 Deployment on Arbitrum One) | **98.4%** | **96.0%** | **2.4% Error** |
-| **UNI-PROP-18** (v4 Hooks Security Audit & Developer Grant Fund) | **96.2%** | **94.0%** | **2.2% Error** |
-| **UNI-PROP-24** (Protocol Fee Switch Activation & Dynamic Pool Tier Adjustment) | **58.4%** | **64.0%** | **5.6% Error** |
+| Proposal ID & Title | Real Vote YES (%) |
+| :--- | :--- |
+| **UNI-PROP-12** (Uniswap v3 Deployment on Arbitrum One) | **98.4%** |
+| **UNI-PROP-18** (v4 Hooks Security Audit & Developer Grant Fund) | **96.2%** |
+| **UNI-PROP-24** (Protocol Fee Switch Activation & Dynamic Pool Tier Adjustment) | **58.4%** |
 
-**Mean Absolute Error on this sample:** 3.4pp.
+**No per-run accuracy figure is published here.** An earlier version of this
+document reported a mean absolute error of 3.4pp on these three proposals. That
+number came from a single unseeded run of a stochastic generator and was not
+reproducible: re-running the identical code produced 7.4pp and 10.7pp. It has been
+removed rather than re-derived, because an in-sample error from one random draw is
+not evidence of accuracy.
+
+The honest held-out estimate for this agent is a leave-one-out cross-validated
+mean absolute error of **32.74pp** over n=5 proposals
+(`uniswap_agent_loo_cv_results.json`, 50 rollouts per
+prediction). That is the figure to cite. On the real 905-proposal Snapshot record,
+no model in this repository beats predicting the historical median YES share.
 
 ## Proposed Deliverables for Uniswap v4
 
